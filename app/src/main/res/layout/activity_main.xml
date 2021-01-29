@@ -26,11 +26,15 @@
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pager"
-        android:layout_marginBottom="100dp"/>
+
+
+     <androidx.viewpager2.widget.ViewPager2
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:id="@+id/pager"
+         android:layout_marginBottom="90dp"
+        />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -38,6 +42,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_add"
-        app:layout_anchor="@id/bottomAppBar" />
+        app:layout_anchor="@id/bottomAppBar"
+        android:background="@android:color/holo_purple"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

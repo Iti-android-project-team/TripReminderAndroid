@@ -14,15 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
-    private final List<Fragment> mFragmentList = new ArrayList<Fragment>() {{
-        add(new TripsFragment());
-        add(new ProfileFragment());
-    }};
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+
+
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
+    public ViewPagerAdapter(@NonNull Fragment fragment) {
+        super(fragment);
+    }
 
     @NonNull
     @Override
@@ -34,4 +36,10 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return  mFragmentList.size();
     }
+
+
+    public void addFragment(Fragment fragment){
+        mFragmentList.add(fragment);
+    }
+
 }

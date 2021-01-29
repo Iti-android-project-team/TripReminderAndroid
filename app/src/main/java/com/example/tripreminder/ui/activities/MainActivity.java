@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.helper.ViewPagerAdapter;
+import com.example.tripreminder.ui.fragment.ProfileFragment;
+import com.example.tripreminder.ui.fragment.TripsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,13 +32,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         oldItemId = R.id.nav_tripe;
         viewPager = findViewById(R.id.pager);
+        viewPager.setUserInputEnabled(false);
         viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(viewPagerAdapter);
+        viewPagerAdapter.addFragment(new TripsFragment());
+        viewPagerAdapter.addFragment(new ProfileFragment());
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         if (oldItemId != item.getItemId()){
