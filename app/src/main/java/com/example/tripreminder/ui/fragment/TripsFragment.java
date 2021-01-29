@@ -55,7 +55,7 @@ public class TripsFragment extends Fragment {
                 (tab, position) -> {
             switch (position){
                 case 0:
-                    tab.setText("UoComing");
+                    tab.setText("UpComing");
                     break;
                 case 1:
                     tab.setText("History");
