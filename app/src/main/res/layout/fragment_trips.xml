@@ -6,75 +6,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.TripsFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:contentInsetEnd="0dp"
-            app:contentInsetEndWithActions="0dp"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            app:contentInsetEnd="0dp"-->
+<!--            app:contentInsetEndWithActions="0dp"-->
+<!--            app:contentInsetStart="0dp"-->
+<!--            app:contentInsetStartWithNavigation="0dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/toolbar_background">
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/toolbar_background">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="22dp"
-                    android:text="@string/trips"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <!--                <androidx.cardview.widget.CardView-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintTop_toTopOf="parent"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                   app:cardCornerRadius="32dp"-->
-                <!--                    app:strokeColor="?attr/colorAccent"-->
-                <!--                    app:strokeWidth="1dp"-->
-                <!--                    android:layout_margin="12dp">-->
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="@drawable/rounded_shape"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tabGravity="fill"
-                    app:tabIndicator="@drawable/incore_round_shape"
-                    app:tabIndicatorColor="@android:color/holo_purple"
-                    app:tabIndicatorGravity="stretch"
-                    app:tabMaxWidth="0dp"
-                    app:tabMode="fixed"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-                    app:tabTextColor="?attr/colorPrimary"></com.google.android.material.tabs.TabLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="16dp"-->
+<!--                    android:layout_marginLeft="16dp"-->
+<!--                    android:layout_marginTop="22dp"-->
+<!--                    android:text="@string/trips"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="22sp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+<!--                &lt;!&ndash;                <androidx.cardview.widget.CardView&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                &lt;!&ndash;                   app:cardCornerRadius="32dp"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:strokeColor="?attr/colorAccent"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    app:strokeWidth="1dp"&ndash;&gt;-->
+<!--                &lt;!&ndash;                    android:layout_margin="12dp">&ndash;&gt;-->
+<!--                <com.google.android.material.tabs.TabLayout-->
+<!--                    android:id="@+id/tab_layout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="35dp"-->
+<!--                    android:layout_marginStart="32dp"-->
+<!--                    android:layout_marginTop="32dp"-->
+<!--                    android:layout_marginEnd="32dp"-->
+<!--                    android:background="@drawable/rounded_shape"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:tabGravity="fill"-->
+<!--                    app:tabIndicator="@drawable/incore_round_shape"-->
+<!--                    app:tabIndicatorColor="@android:color/holo_purple"-->
+<!--                    app:tabIndicatorGravity="stretch"-->
+<!--                    app:tabMaxWidth="0dp"-->
+<!--                    app:tabMode="fixed"-->
+<!--                    app:tabSelectedTextColor="@android:color/white"-->
+<!--                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"-->
+<!--                    app:tabTextColor="?attr/colorPrimary"></com.google.android.material.tabs.TabLayout>-->
 
-                <!--                </androidx.cardview.widget.CardView>-->
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                &lt;!&ndash;                </androidx.cardview.widget.CardView>&ndash;&gt;-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        </androidx.appcompat.widget.Toolbar>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+<!--        </androidx.appcompat.widget.Toolbar>-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_toolbar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="4dp"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/toolbar_background"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="35dp"
+        android:text="@string/trips"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_shape"
+        app:layout_constraintBottom_toBottomOf="@id/img_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_toolbar"
+        app:layout_constraintWidth_percent="0.6"
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/incore_round_shape"
+        app:tabIndicatorColor="@android:color/holo_purple"
+        app:tabIndicatorGravity="stretch"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabTextColor="?attr/colorPrimary"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/img_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="4dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
