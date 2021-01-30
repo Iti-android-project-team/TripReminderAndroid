@@ -13,10 +13,10 @@
         android:theme="@style/Theme.TripReminder">
         <activity android:name=".ui.activities.MainActivity">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ui.activities.LoginActivity">
         </activity>
 
-        <activity android:name=".Register">
+        <activity android:name=".ui.activities.Register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
