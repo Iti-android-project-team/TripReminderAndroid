@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "903500925718",
+    "firebase_url": "https://trip-reminder-4ceea-default-rtdb.firebaseio.com",
+    "project_id": "trip-reminder-4ceea",
+    "storage_bucket": "trip-reminder-4ceea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903500925718:android:6fbb8de43659eff245de37",
+        "android_client_info": {
+          "package_name": "com.example.tripreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903500925718-ffa6iuo0fs0dpe0lk3ahi4cgbv3l4lrk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmAyBdhJjtIw2q_7F6hpWBXEOllPrzl68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903500925718-ffa6iuo0fs0dpe0lk3ahi4cgbv3l4lrk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

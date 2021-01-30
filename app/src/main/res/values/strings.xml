@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Trip Reminder</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signup">Sign up</string>
+    <string name="todo">ToDo</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_Registred">AlreadyRegistred ? Login</string>
 </resources>
