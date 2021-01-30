@@ -1,4 +1,4 @@
-package com.example.tripreminder;
+package com.example.tripreminder.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.example.tripreminder.R;
 import com.example.tripreminder.ui.activities.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
