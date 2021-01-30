@@ -8,4 +8,7 @@
     <string name="email">test@gmail.com</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="todo">ToDo</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_Registred">AlreadyRegistred ? Login</string>
 </resources>
