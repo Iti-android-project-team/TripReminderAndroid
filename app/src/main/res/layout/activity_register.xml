@@ -62,7 +62,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_account" />
+                    app:srcCompat="@drawable/ic_account" />
 
 
                 <EditText
@@ -93,7 +93,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_lock" />
+                    app:srcCompat="@drawable/ic_lock" />
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_lock" />
+                    app:srcCompat="@drawable/ic_lock" />
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/background_btn_login"
-                android:text="@string/signup"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="#FFF"
                 android:textSize="22sp" />
