@@ -169,7 +169,8 @@
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="#FFF"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                app:backgroundTint="@color/blue" />
 
             <TextView
                 android:id="@+id/text_sign_in"

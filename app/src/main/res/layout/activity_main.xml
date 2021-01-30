@@ -44,6 +44,7 @@
         app:srcCompat="@drawable/ic_baseline_add"
         app:tint="@color/white"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@android:color/holo_purple" />
+        app:backgroundTint="@android:color/holo_purple"
+        tools:ignore="VectorDrawableCompat" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
