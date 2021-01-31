@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
@@ -18,8 +19,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-    Button signUp, signIn;
+    Button  signIn;
     EditText editEmail , editPassword;
+    TextView register;
     ProgressDialog progressDialog;
     FirebaseAuth fAuth;
 
@@ -28,8 +30,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
        initialize();
+       /* if (fAuth.getCurrentUser()!= null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
+        }*/
 
-        signUp.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,Register.class));
@@ -67,10 +73,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     public void initialize(){
-        signIn = findViewById(R.id.btn_sign_in);
-        signUp = findViewById(R.id.btn_sign_up);
+        signIn = findViewById(R.id.btn_log_in);
         editEmail = findViewById(R.id.email_edit);
         editPassword = findViewById(R.id.pass_edit);
+        register = findViewById(R.id.text_register);
         fAuth=FirebaseAuth.getInstance();
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing In please wait...");

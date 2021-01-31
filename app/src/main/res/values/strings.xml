@@ -10,8 +10,13 @@
     <string name="sign_in">Sign In</string>
     <string name="todo">ToDo</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="already_Registred">AlreadyRegistred ? Login</string>
+    <string name="already_Registred">AlreadyRegistred ?<u> Login</u></string>
+    <string name="donot_hava_account">Do not have Account ?<u> Register</u></string>
     <string name="start">start</string>
+    <string name="login">Login</string>
     <string name="note">Note</string>
     <string name="menu">menu</string>
+    <string name="enter_text">Enter text</string>
+    <string name="reset">reset</string>
+    <string name="add">add</string>
 </resources>

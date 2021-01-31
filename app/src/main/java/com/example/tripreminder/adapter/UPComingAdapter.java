@@ -1,5 +1,6 @@
 package com.example.tripreminder.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.ui.fragment.AddNoteFragment;
+import com.example.tripreminder.ui.fragment.UpComingFragment;
 
 public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComingViewHolder> {
 
@@ -52,6 +55,7 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
             tripNote = itemView.findViewById(R.id.img_tripNote);
             imageView = itemView.findViewById(R.id.imageView);
             start = itemView.findViewById(R.id.btn_startTrip);
+
         }
     }
 }
