@@ -39,10 +39,10 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
       initialize();
-     /* if (fAuth.getCurrentUser()!= null){
+      if (fAuth.getCurrentUser()!= null){
           startActivity(new Intent(getApplicationContext(),MainActivity.class));
           finish();
-      }*/
+      }
       signup.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
