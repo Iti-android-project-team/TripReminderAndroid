@@ -19,4 +19,6 @@
     <string name="enter_text">Enter text</string>
     <string name="reset">reset</string>
     <string name="add">add</string>
+    <string name="viewTrip">View Trip</string>
+
 </resources>
