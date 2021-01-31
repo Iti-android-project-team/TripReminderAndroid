@@ -11,4 +11,8 @@
     <string name="todo">ToDo</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_Registred">AlreadyRegistred ? Login</string>
+    <string name="start">start</string>
+    <string name="note">Note</string>
+    <string name="menu">menu</string>
+    <string name="viewTrip">View Trip</string>
 </resources>
