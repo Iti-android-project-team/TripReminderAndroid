@@ -46,7 +46,15 @@ public class Trips {
     private boolean direction;
 
     @ColumnInfo(name = "notes")
-    public List<Note> notes;
+    private List<Note> notes;
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
 
     @ColumnInfo(name = "status")
     public String status;

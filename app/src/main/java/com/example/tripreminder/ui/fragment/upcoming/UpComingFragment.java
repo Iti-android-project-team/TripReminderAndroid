@@ -59,7 +59,7 @@ upComingViewModel = new ViewModelProvider(this,
 //        notes.add(n);
 
         upComingViewModel.insert(trips);
-        upComingViewModel.insertNote(n,19);
+        upComingViewModel.insertNote(n,2);
 
         //upComingViewModel.updateTrip("upComing",1);
 
@@ -68,28 +68,21 @@ upComingViewModel = new ViewModelProvider(this,
                 if(it != null){
                     List<Trips> t= it;
                     for(int i = 0 ; i< t.size(); i++){
-//                 Log.i("Data",t.get(i).getTime());
-//                 Log.i("Data",t.get(i).getTid()+"");
+                 Log.i("Data",t.get(i).getTime());
+                 Log.i("Data",t.get(i).getTid()+"");
+                        Log.i("Data",t.get(i).getNotes()+"");
+                        if(t.get(i).getNotes() != null){
+                            for (Note note:t.get(i).getNotes()) {
+                                Log.i("Data",note.getNote());
+                            }
+                        }
+
                     }
                 }
 
             }
 
         });
-
-        upComingViewModel.getAllNotes(19).observe(getViewLifecycleOwner(), it -> {
-            if (it.size() > 0) {
-                List<String> t= it;
-                for(int i = 0 ; i< t.size(); i++){
-                    Log.i("Data",t.get(i));
-                    //upComingViewModel.updateTrip("cancled",t.get(i).getTid());
-                }
-
-            }
-
-        });
-
-
         return view;
     }
 }

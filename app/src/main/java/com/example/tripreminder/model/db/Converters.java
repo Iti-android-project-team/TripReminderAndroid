@@ -18,13 +18,14 @@ public class Converters {
         if (data == null) {
             return Collections.emptyList();
         }
-        Type listType = new TypeToken<List<Note>>() {}.getType();
+        Type listType = new TypeToken<List<Note>>(){}.getType();
         return gson.fromJson(data, listType);
     }
 
     @TypeConverter
     public static String myObjectsToStoredString(List<Note> myObjects) {
         Gson gson = new Gson();
+        //Type listType = new TypeToken<List<Note>>() {}.getType();
         return gson.toJson(myObjects);
     }
 }
