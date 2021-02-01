@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.model.db.Note;
 import com.example.tripreminder.model.db.Notes;
 import com.example.tripreminder.model.db.Trips;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,7 +39,7 @@ public class UpComingFragment extends Fragment {
 upComingViewModel = new ViewModelProvider(this,
         new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
         Trips trips = new Trips();
-        trips.setTripName("hi");
+        trips.setTripName("test");
         trips.setDate("hi");
         trips.setStatus("upComing");
         trips.setDirection(false);
@@ -46,32 +48,43 @@ upComingViewModel = new ViewModelProvider(this,
         trips.setTime("hi");
         trips.setStartPoint("hi");
 
-        Notes notes = new Notes();
-        notes.setNotes("hi from note");
-        notes.setTripeId(1);
+        List<Note> n = new ArrayList<>();
+        Note nn = new Note();
+        nn.setNote("rrrrr ");
+        n.add(nn);
+        n.add(nn);
+        n.add(nn);
+        n.add(nn);
+//        List<Notes> notes = new ArrayList<>();
+//        notes.add(n);
+
         upComingViewModel.insert(trips);
-        upComingViewModel.insertNote(notes);
+        upComingViewModel.insertNote(n,19);
 
         //upComingViewModel.updateTrip("upComing",1);
 
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
-            if (it.size() > 0) {
-                 List<Trips> t= it;
-                 for(int i = 0 ; i< t.size(); i++){
-                 Log.i("Data",t.get(i).getTime());
-                     Log.i("Data",t.get(i).getTid()+"");
-                 }
+            if (it.size() != 0) {
+                if(it != null){
+                    List<Trips> t= it;
+                    for(int i = 0 ; i< t.size(); i++){
+//                 Log.i("Data",t.get(i).getTime());
+//                 Log.i("Data",t.get(i).getTid()+"");
+                    }
+                }
+
             }
 
         });
 
-        upComingViewModel.getAllNotes(1).observe(getViewLifecycleOwner(), it -> {
+        upComingViewModel.getAllNotes(19).observe(getViewLifecycleOwner(), it -> {
             if (it.size() > 0) {
-                List<Notes> t= it;
+                List<String> t= it;
                 for(int i = 0 ; i< t.size(); i++){
-                    Log.i("Data",t.get(i).getNotes());
+                    Log.i("Data",t.get(i));
                     //upComingViewModel.updateTrip("cancled",t.get(i).getTid());
                 }
+
             }
 
         });

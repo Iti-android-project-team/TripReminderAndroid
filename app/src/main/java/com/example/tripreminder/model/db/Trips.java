@@ -4,12 +4,25 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
-@Entity(tableName = "trip_table",indices = {@Index(value = {"note_id"}, unique = true)})
+import java.util.List;
+
+@Entity(tableName = "trip_table")
+//,indices = {@Index(value = {"tripe_id"}, unique = true)}
 public class Trips {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tripe_id")
-    public int tripId;
+    private int tripId;
+
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
+    }
 
     @ColumnInfo(name = "tripe_name")
     private String tripName;
@@ -32,15 +45,15 @@ public class Trips {
     @ColumnInfo(name = "direction")
     private boolean direction;
 
-//    @ColumnInfo(name = "notes")
-//    public List<Notes> notes;
+    @ColumnInfo(name = "notes")
+    public List<Note> notes;
 
     @ColumnInfo(name = "status")
     public String status;
 
 
-    @ColumnInfo(name = "note_id")
-    public int noteId;
+//    @ColumnInfo(name = "note_id")
+//    public int noteId;
 
     public int getTid() {
         return tripId;

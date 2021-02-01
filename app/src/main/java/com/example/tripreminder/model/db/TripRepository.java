@@ -11,7 +11,7 @@ public class TripRepository {
     private TripDao tripDao;
     private LiveData<List<Trips>> allTrips;
     private LiveData<List<Trips>> allHistoryTrips;
-    private LiveData<List<Notes>> allNotes = null;
+    private LiveData<List<String>> allNotes = null;
     private String status;
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
@@ -42,7 +42,7 @@ public class TripRepository {
         return allHistoryTrips;
     }
 
-    public LiveData<List<Notes>> getAllNotes(int id) {
+    public LiveData<List<String>> getAllNotes(int id) {
         if(allNotes == null){
             allNotes = tripDao.getNotes(id);
         }
@@ -57,7 +57,7 @@ public class TripRepository {
         });
     }
 
-    public void insertNote(Notes... notes) {
+    public void insertNote(List<Notes>notes) {
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.insertNote(notes);
         });
@@ -71,6 +71,12 @@ public class TripRepository {
     public void updateNote(String status, int noteId) {
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.updateNoteStatus(status, noteId);
+        });
+    }
+
+    public void setNote(List<Note> note, int tripId) {
+        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.setNote(note, tripId);
         });
     }
 

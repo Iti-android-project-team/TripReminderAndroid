@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "note_table",foreignKeys = @ForeignKey(entity = Trips.class,
-        parentColumns = "note_id",
-        childColumns = "tripe_id",
-        onDelete = CASCADE),indices = {@Index(value = {"tripe_id"})})
+        parentColumns = "tripe_id",
+        childColumns = "tripe",
+        onDelete = CASCADE))
 
 public class Notes {
 
@@ -22,7 +22,7 @@ public class Notes {
     @ColumnInfo(name = "note")
     private String notes;
 
-    @ColumnInfo(name = "tripe_id")
+    @ColumnInfo(name = "tripe")
     public int tripeId;
 
     @ColumnInfo(name = "note_status")
