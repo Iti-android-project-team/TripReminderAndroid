@@ -1,4 +1,4 @@
-package com.example.tripreminder;
+package com.example.tripreminder.model;
 
 public class User {
     private String email;
