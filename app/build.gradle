@@ -3,6 +3,11 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+ext{
+    roomVersion = '2.2.6'
+    lifecycleVersion = '2.2.0'
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -42,10 +47,18 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:22.0.1'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.google.firebase:firebase-database:19.6.0'
-    
 
-    implementation "androidx.room:room-runtime:2.2.6"
-    annotationProcessor "androidx.room:room-compiler:2.2.6"
+    // Room components
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+
 
     testImplementation 'junit:junit:4.+'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
