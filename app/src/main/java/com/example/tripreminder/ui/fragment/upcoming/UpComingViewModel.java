@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.tripreminder.model.db.Notes;
 import com.example.tripreminder.model.db.TripRepository;
 import com.example.tripreminder.model.db.Trips;
 
@@ -16,16 +17,26 @@ public class UpComingViewModel extends AndroidViewModel {
     private TripRepository mRepository;
 
     private final LiveData<List<Trips>> allTrips;
-    //private final LiveData<List<Notes>> allNotes;
+    private  LiveData<List<Notes>> allNotes = null;
 
 
     public UpComingViewModel ( Application application) {
         super(application);
-        mRepository = new TripRepository(application,"Test");
+        mRepository = new TripRepository(application);
         allTrips = mRepository.getAllTrips();
     }
 
     LiveData<List<Trips>> getAllTrips() { return allTrips; }
 
+    LiveData<List<Notes>> getAllNotes(int id){
+        if(allNotes == null) {
+            allNotes = mRepository.getAllNotes(id);
+        }
+        return allNotes;
+    }
+
     public void insert(Trips trip) { mRepository.insertTrips(trip); }
+    public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
+    public void insertNote(Notes... notes) { mRepository.insertNote(notes); }
+
 }

@@ -10,23 +10,26 @@ public class TripRepository {
 
     private TripDao tripDao;
     private LiveData<List<Trips>> allTrips;
-    private LiveData<List<Notes>> allNotes;
+    private LiveData<List<Trips>> allHistoryTrips;
+    private LiveData<List<Notes>> allNotes = null;
     private String status;
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
-    public TripRepository(Application application,String status) {
+    public TripRepository(Application application) {
         TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        allTrips = tripDao.getTrips(status);
+        allTrips = tripDao.getUpComingTrips();
+        allHistoryTrips= tripDao.getHistoryTrips();
     }
+
 
     public TripRepository(Application application,int id) {
         TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        allNotes = tripDao.getNotes(id);
+
     }
 
 
@@ -35,8 +38,14 @@ public class TripRepository {
     public LiveData<List<Trips>> getAllTrips() {
         return allTrips;
     }
+    public LiveData<List<Trips>> getAllHistoryTrips() {
+        return allHistoryTrips;
+    }
 
-    public LiveData<List<Notes>> getAllNotes() {
+    public LiveData<List<Notes>> getAllNotes(int id) {
+        if(allNotes == null){
+            allNotes = tripDao.getNotes(id);
+        }
         return allNotes;
     }
 

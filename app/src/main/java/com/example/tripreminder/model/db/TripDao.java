@@ -17,8 +17,11 @@ public interface TripDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNote(Notes... notes);
 
-    @Query("SELECT * FROM trip_table WHERE status = :status")
-    LiveData<List<Trips>> getTrips(String status);
+    @Query("SELECT * FROM trip_table WHERE status = 'upComing'")
+    LiveData<List<Trips>> getUpComingTrips();
+
+    @Query("SELECT * FROM trip_table WHERE status = 'cancled' OR status = 'done'")
+    LiveData<List<Trips>> getHistoryTrips();
 
     @Query("SELECT * FROM note_table WHERE tripe_id = :triId")
     LiveData<List<Notes>> getNotes(int triId);

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Trips.class,Notes.class}, version = 2,exportSchema = false)
+@Database(entities = {Trips.class,Notes.class}, version = 3,exportSchema = false)
 public abstract class TripRoomDatabase extends RoomDatabase {
 
     public abstract TripDao tripDao();
