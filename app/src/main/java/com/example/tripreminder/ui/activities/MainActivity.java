@@ -11,6 +11,7 @@ import com.example.tripreminder.helper.ViewPagerAdapter;
 import com.example.tripreminder.ui.fragment.ProfileFragment;
 import com.example.tripreminder.ui.fragment.TripsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private int oldItemId;
     private ViewPager2 viewPager;
     private ViewPagerAdapter viewPagerAdapter;
+    FloatingActionButton mainButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
+        mainButton = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
         oldItemId = R.id.nav_tripe;
