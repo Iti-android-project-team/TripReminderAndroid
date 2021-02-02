@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,10 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
        initialize();
-       /* if (fAuth.getCurrentUser()!= null){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }*/
+//        if (fAuth.getCurrentUser()!= null){
+//            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//            finish();
+//        }
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         progressDialog.dismiss();
+                                        SharedPref.setLogin(true);
+                                        finish();
                                     } else {
                                         Toast.makeText(LoginActivity.this,
                                                 task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -85,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         fAuth=FirebaseAuth.getInstance();
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing In please wait...");
+        SharedPref.createPrefObject(LoginActivity.this);
 
     }
 }
