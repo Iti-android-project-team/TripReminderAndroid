@@ -87,8 +87,7 @@ public class AddTripActivity extends AppCompatActivity {
     private int selectDateTimeHou;
     private int selectDateTimeMin;
     private long selectedTimeInMilliSecond;
-    private  String itemSelected;
-    int currentItem = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +139,7 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tripRepeat = repeats[position];
+
             }
 
             @Override
@@ -150,6 +150,7 @@ public class AddTripActivity extends AppCompatActivity {
         ArrayAdapter sp = new ArrayAdapter(AddTripActivity.this, android.R.layout.simple_spinner_item, repeats);
         sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp);
+        sp.notifyDataSetChanged();
 
         create.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
@@ -393,7 +394,7 @@ public class AddTripActivity extends AppCompatActivity {
         rounded = findViewById(R.id.chBox_rounded);
         viewModel =  new ViewModelProvider(this,new ViewModelProvider.AndroidViewModelFactory(
                 getApplication())).get(AddTripViewModel.class);
-        spinnerSelected();
+        //spinnerSelected();
     }
 
     private void CalTimeInMilliSecond(){
@@ -406,46 +407,17 @@ public class AddTripActivity extends AppCompatActivity {
     private  void createWorkManager(long timeInMilliSecond ){
         Calendar calendar =  Calendar.getInstance();
         int durationTime = (int) ((int)timeInMilliSecond - calendar.getTimeInMillis());
-        if(itemSelected.equals("No Repeat")){
-            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS);
-        }else{
-            if(itemSelected.equals("Repeat Daily")){
-                viewModel.addTripWorkOneTime(1, TimeUnit.DAYS);
-            }else if(itemSelected.equals("Repeat Weekly")){
-                viewModel.addTripWorkOneTime(7, TimeUnit.DAYS);
-            }else if(itemSelected.equals("Repeat Monthly")){
-                viewModel.addTripWorkOneTime(30, TimeUnit.DAYS);
+
+            if(tripRepeat.equals("Repeat Daily")){
+                viewModel.addTripWorkRepeated(durationTime,1, TimeUnit.DAYS);
+            }else if(tripRepeat.equals("Repeat Weekly")){
+                viewModel.addTripWorkRepeated(durationTime,7, TimeUnit.DAYS);
+            }else if(tripRepeat.equals("Repeat Monthly")){
+                viewModel.addTripWorkRepeated(durationTime,30, TimeUnit.DAYS);
+            }else{
+                //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
+                viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS);
             }
-
-        }
-
-
-    }
-
-    private void spinnerSelected(){
-        Log.e("itemSelected","spinnerSelected");
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(currentItem == position){
-                    Log.e("itemSelected",itemSelected);
-                    return;
-                }
-                else
-                {
-                    itemSelected = repeats[position];
-                    Log.e("itemSelected",itemSelected);
-                }
-                currentItem = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-                itemSelected = repeats[0];
-                Log.e("itemSelected",itemSelected);
-            }
-        });
     }
 
 }

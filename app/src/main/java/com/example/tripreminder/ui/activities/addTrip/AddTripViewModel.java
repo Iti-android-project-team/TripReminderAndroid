@@ -31,9 +31,10 @@ public class AddTripViewModel extends AndroidViewModel {
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
 
-    public void addTripWorkRepeated(int duration, TimeUnit timeUnit){
+    public void addTripWorkRepeated(int duration, int repeated,TimeUnit timeUnit){
         WorkRequest uploadWorkRequest =
-                new PeriodicWorkRequest.Builder(UpWorkManager.class,duration,timeUnit)
+                new PeriodicWorkRequest.Builder(UpWorkManager.class,repeated,timeUnit)
+                        .setInitialDelay(duration,timeUnit)
                         .build();
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
