@@ -52,6 +52,7 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
             tripNote = itemView.findViewById(R.id.img_tripNote);
             imageView = itemView.findViewById(R.id.imageView);
             start = itemView.findViewById(R.id.btn_startTrip);
+
         }
     }
 }

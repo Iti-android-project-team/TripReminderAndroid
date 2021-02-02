@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Register extends AppCompatActivity {
     public static final String TAG = "tag";
     Button signup;
+    TextView signLink;
     EditText editEmail, editPassword, editConfirmPassword;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -38,10 +40,10 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
       initialize();
-     /* if (fAuth.getCurrentUser()!= null){
+      if (fAuth.getCurrentUser()!= null){
           startActivity(new Intent(getApplicationContext(),MainActivity.class));
           finish();
-      }*/
+      }
       signup.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -92,7 +94,7 @@ public class Register extends AppCompatActivity {
                           startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                           progressDialog.dismiss();
                       }else {
-                          Toast.makeText(Register.this, "Error!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                          Toast.makeText(Register.this, "Error!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
                           progressDialog.dismiss();
                       }
                   }
@@ -113,5 +115,12 @@ public class Register extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing up please wait...");
+        signLink = findViewById(R.id.text_sign_in);
+        signLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Register.this,LoginActivity.class));
+            }
+        });
     }
 }
