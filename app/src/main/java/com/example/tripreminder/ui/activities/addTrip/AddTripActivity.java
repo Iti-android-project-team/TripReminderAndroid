@@ -1,11 +1,9 @@
-package com.example.tripreminder.ui.activities;
+package com.example.tripreminder.ui.activities.addTrip;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,10 +12,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,24 +31,20 @@ import android.widget.Toast;
 
 import com.example.tripreminder.HasNote;
 import com.example.tripreminder.R;
+import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.firebase.database.annotations.NotNull;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -62,6 +52,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class AddTripActivity extends AppCompatActivity {
     TextView tripTitle,tripStartPoint,tripEndPoint,tripTime,tripDate;
@@ -87,6 +78,17 @@ public class AddTripActivity extends AppCompatActivity {
     private double startLatitude, startLongitude;
     private double endLatitude, endLongitude;
     private static int AUTOCOMPLETE_REQUEST_CODE = 100;
+    private AddTripViewModel viewModel;
+    private Date date = null;
+    private String time12;
+    private int selectDateYear;
+    private int selectDateMonth;
+    private int selectDateDay;
+    private int selectDateTimeHou;
+    private int selectDateTimeMin;
+    private long selectedTimeInMilliSecond;
+    private  String itemSelected;
+    int currentItem = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +98,7 @@ public class AddTripActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AddTripActivity.this,MainActivity.class));
+                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
             }
         });
         tripStartPoint.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +164,8 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE, currentMin);
                 calendar.set(Calendar.SECOND, 0);
                 time = calendar.getTimeInMillis();
+                Log.i("currentTime", String.valueOf(time));
+
 
                 if (tripName.getText().toString().isEmpty()) {
                   //  mProgress.cancel();
@@ -217,6 +221,8 @@ public class AddTripActivity extends AppCompatActivity {
                 //insertTrip(trip);
                 //Navigation.findNavController(view).popBackStack();
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
+                CalTimeInMilliSecond();
+
             }
         });
 
@@ -269,13 +275,22 @@ public class AddTripActivity extends AppCompatActivity {
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                selectDateTimeHou = hourOfDay;
+                selectDateTimeMin = minute;
                 if (hourOfDay >= 12) {
                     amPm = "PM";
                 } else {
                     amPm = "AM";
                 }
-                String time12 = String.format("%02d:%02d ", hourOfDay, minute);
+                 time12 = String.format("%02d:%02d ", hourOfDay, minute);
                 tripTime.setText(covertTimeTo12Hours(time12) + amPm);
+                Log.e("currentTime",time12);
+//                String d =getDateSelected();
+//                long t =calTimeInMillisecond(d);
+//                Log.i("currentTime13", String.valueOf(t));
+//                tripTime.setText(covertTimeTo12Hours(time12) + amPm);
+
+
 
                 currentHour = hourOfDay;
                 currentMin = minute;
@@ -329,9 +344,13 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                 int months = month + 1;
-                Date date = null;
+                selectDateMonth = month;
+                selectDateYear = year;
+                selectDateDay = dayOfMonth;
                 try {
                     date = new SimpleDateFormat("dd/MM/yyyy").parse(dayOfMonth + "/" + months + "/" + year);
+
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -372,5 +391,61 @@ public class AddTripActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spin_choose);
         tripName = findViewById(R.id.edit_tripName);
         rounded = findViewById(R.id.chBox_rounded);
+        viewModel =  new ViewModelProvider(this,new ViewModelProvider.AndroidViewModelFactory(
+                getApplication())).get(AddTripViewModel.class);
+        spinnerSelected();
     }
+
+    private void CalTimeInMilliSecond(){
+        Calendar calendar1 =  Calendar.getInstance();
+        calendar1.set(selectDateYear,selectDateMonth,selectDateDay,selectDateTimeHou,selectDateTimeMin,00);
+        Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
+        selectedTimeInMilliSecond = calendar1.getTimeInMillis();
+        createWorkManager(selectedTimeInMilliSecond);
+    }
+    private  void createWorkManager(long timeInMilliSecond ){
+        Calendar calendar =  Calendar.getInstance();
+        int durationTime = (int) ((int)timeInMilliSecond - calendar.getTimeInMillis());
+        if(itemSelected.equals("No Repeat")){
+            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS);
+        }else{
+            if(itemSelected.equals("Repeat Daily")){
+                viewModel.addTripWorkOneTime(1, TimeUnit.DAYS);
+            }else if(itemSelected.equals("Repeat Weekly")){
+                viewModel.addTripWorkOneTime(7, TimeUnit.DAYS);
+            }else if(itemSelected.equals("Repeat Monthly")){
+                viewModel.addTripWorkOneTime(30, TimeUnit.DAYS);
+            }
+
+        }
+
+
+    }
+
+    private void spinnerSelected(){
+        Log.e("itemSelected","spinnerSelected");
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(currentItem == position){
+                    Log.e("itemSelected",itemSelected);
+                    return;
+                }
+                else
+                {
+                    itemSelected = repeats[position];
+                    Log.e("itemSelected",itemSelected);
+                }
+                currentItem = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                itemSelected = repeats[0];
+                Log.e("itemSelected",itemSelected);
+            }
+        });
+    }
+
 }

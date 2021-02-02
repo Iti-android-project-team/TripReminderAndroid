@@ -1,6 +1,7 @@
 package com.example.tripreminder.data.services;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -12,10 +13,8 @@ import com.example.tripreminder.helper.Dialog;
 
 public class UpWorkManager extends Worker {
 
-    private final Context context;
     public UpWorkManager(@NonNull  Context context,@NonNull  WorkerParameters parameters){
         super(context,parameters);
-        this.context = context;
     }
     @NonNull
     @Override
@@ -25,8 +24,7 @@ public class UpWorkManager extends Worker {
     }
 
     private void openDialog(){
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        Dialog dialog = new Dialog(context);
-        dialog.show(fragmentManager,"up-work");
+        Log.i("UpWorkManager","hi from work manager");
+
     }
 }
