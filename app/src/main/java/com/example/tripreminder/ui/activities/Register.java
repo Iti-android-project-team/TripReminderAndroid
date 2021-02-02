@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 
-import com.example.tripreminder.model.User;
+import com.example.tripreminder.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -16,9 +17,13 @@ public class Dialog extends AppCompatDialogFragment {
 
     private DialogListener dialogListener;
     private Fragment parent;
+    private Context context;
 
     public Dialog(Fragment parent) {
         this.parent = parent;
+    }
+    public Dialog(Context context) {
+        this.context = context;
     }
 
 

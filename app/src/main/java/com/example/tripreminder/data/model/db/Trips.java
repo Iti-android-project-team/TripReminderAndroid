@@ -1,11 +1,8 @@
-package com.example.tripreminder.model.db;
+package com.example.tripreminder.data.model.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
 
 import java.util.List;
 

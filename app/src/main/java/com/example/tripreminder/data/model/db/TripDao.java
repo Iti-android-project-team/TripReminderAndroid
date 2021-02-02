@@ -1,4 +1,4 @@
-package com.example.tripreminder.model.db;
+package com.example.tripreminder.data.model.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.helper.Dialog;
-import com.example.tripreminder.model.db.Note;
-import com.example.tripreminder.model.db.Trips;
+import com.example.tripreminder.data.model.db.Note;
+import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.FloatingViewService;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        openDialog();
+       // openDialog();
     }
 
     @Override

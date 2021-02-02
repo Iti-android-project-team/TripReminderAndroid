@@ -1,4 +1,4 @@
-package com.example.tripreminder.model.db;
+package com.example.tripreminder.data.model.db;
 
 import androidx.room.TypeConverter;
 
@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
