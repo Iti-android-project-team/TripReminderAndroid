@@ -12,23 +12,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.tripreminder.R;
+import com.example.tripreminder.ui.activities.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+
     Button  signIn;
     EditText editEmail , editPassword;
     TextView register;
     ProgressDialog progressDialog;
     FirebaseAuth fAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
        initialize();
        /* if (fAuth.getCurrentUser()!= null){
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -80,5 +85,6 @@ public class LoginActivity extends AppCompatActivity {
         fAuth=FirebaseAuth.getInstance();
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing In please wait...");
+
     }
 }

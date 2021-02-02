@@ -14,7 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
-import com.example.tripreminder.User;
+
+import com.example.tripreminder.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -90,7 +91,7 @@ public class Register extends AppCompatActivity {
                                   Log.d(TAG,"fail "+e.toString());
                               }
                           });*/
-                          startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                          startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                           progressDialog.dismiss();
                       }else {
                           Toast.makeText(Register.this, "Error!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();

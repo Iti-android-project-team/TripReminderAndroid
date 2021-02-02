@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.helper.ViewPagerAdapter;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TripsFragment extends Fragment {
 

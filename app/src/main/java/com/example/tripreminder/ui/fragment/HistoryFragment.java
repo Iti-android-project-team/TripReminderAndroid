@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
 
+
 public class HistoryFragment extends Fragment {
     RecyclerView historyRV;
     HistoryAdapter adapter;
+
 
 
     public HistoryFragment() {
@@ -25,13 +27,11 @@ public class HistoryFragment extends Fragment {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        historyRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HistoryAdapter();
-        historyRV.setAdapter(adapter);
     }
 
     @Override
