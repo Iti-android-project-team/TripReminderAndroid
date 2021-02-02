@@ -1,18 +1,8 @@
 package com.example.tripreminder.helper;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.Uri;
-import android.net.sip.SipSession;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.provider.Settings;
-import android.telecom.ConnectionService;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,8 +10,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.example.tripreminder.ui.activities.MainActivity;
-import com.example.tripreminder.ui.activities.ReminderService;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 
 public class Dialog extends AppCompatDialogFragment {

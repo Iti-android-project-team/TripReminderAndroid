@@ -26,10 +26,8 @@ import android.widget.Toast;
 import com.example.tripreminder.R;
 import com.example.tripreminder.helper.Dialog;
 import com.example.tripreminder.model.db.Note;
-import com.example.tripreminder.model.db.Notes;
 import com.example.tripreminder.model.db.Trips;
 import com.example.tripreminder.ui.activities.FloatingViewService;
-import com.example.tripreminder.ui.activities.ReminderService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,6 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
 
     private UpComingViewModel upComingViewModel;
     private static final int RESULT_OK = -1;
-    FloatingViewService floatingViewService;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
@@ -139,8 +136,6 @@ upComingViewModel = new ViewModelProvider(this,
     private ServiceConnection myConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            ReminderService.MyLocalBinder binder = (ReminderService.MyLocalBinder) service;
-//            reminderService = binder.getService();
             isBound = true;
         }
 
