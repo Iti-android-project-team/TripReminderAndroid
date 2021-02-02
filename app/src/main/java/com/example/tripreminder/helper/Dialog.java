@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.activities.ReminderService;
-import com.example.tripreminder.ui.fragment.UpComingFragment;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 
 public class Dialog extends AppCompatDialogFragment {
 
