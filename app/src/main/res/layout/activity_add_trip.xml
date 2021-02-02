@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.AddTripActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F4F4"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="198dp"
+            android:background="@color/blue"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="18dp"
+                android:gravity="center"
+                android:text="@string/trip_add"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/arrow_left"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_horizontal" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="-80dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/background_item_subject"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    >
+
+
+                    <EditText
+                        android:id="@+id/edit_tripName"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/background_put_subject"
+                        android:hint="@string/trip_name"
+                        android:inputType="text"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#B5B5B5"
+                        tools:ignore="Autofill,LabelFor,RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/edit_tripStartPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/background_put_subject"
+                        android:hint="@string/start_point"
+                        android:inputType="text"
+                        android:gravity="start|center"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#B5B5B5"
+                        tools:ignore="Autofill,LabelFor,RtlSymmetry"
+                        app:drawableEndCompat="@drawable/ic_search" />
+
+                    <TextView
+                        android:id="@+id/edit_tripEndPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/background_put_subject"
+                        android:drawableRight="@drawable/ic_search"
+                        android:hint="@string/end_point"
+                        android:inputType="text"
+                        android:gravity="start|center"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#B5B5B5"
+                        tools:ignore="Autofill,LabelFor,RtlSymmetry" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/edit_tripDate"
+                            app:drawableStartCompat="@drawable/ic_date"
+                            android:gravity="start|center"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_put_subject"
+                            android:hint="@string/tripDate"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="@android:color/black"
+                            android:textColorHint="#B5B5B5"
+                            tools:ignore="Autofill,LabelFor,RtlSymmetry"
+                            android:layout_marginRight="8dp" />
+
+                        <TextView
+                            android:id="@+id/edit_tripTime"
+                            app:drawableStartCompat="@drawable/ic_time"
+                            android:gravity="start|center"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_put_subject"
+                            android:hint="@string/tripTime"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="@android:color/black"
+                            android:textColorHint="#B5B5B5"
+                            tools:ignore="Autofill,LabelFor,RtlSymmetry" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <CheckBox
+                            android:id="@+id/chBox_rounded"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/rounded_direction"
+                            android:layout_marginRight="8dp" />
+
+                        <Spinner
+                            android:id="@+id/spin_choose"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/background_btn_create"
+            android:text="@string/create_now"
+            android:textAllCaps="false"
+            android:textColor="#FFF"
+            android:textSize="22sp"
+            app:backgroundTint="@color/blue" />
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/background_btn_cancel"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textSize="22sp"
+            app:backgroundTint="#C8C6C6" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,5 +20,26 @@
     <string name="reset">reset</string>
     <string name="add">add</string>
     <string name="viewTrip">View Trip</string>
+    <string name="trip_name">Trip Name</string>
+    <string name="start_point">Start Point</string>
+    <string name="end_point">End Point</string>
+    <string name="date">Date</string>
+    <string name="trip_add">Add Trip</string>
+    <string name="tripDate">Date</string>
+    <string name="tripTime">Time</string>
+    <string name="rounded_direction">Round Trip</string>
+    <string name="create_now">Create</string>
+    <string name="cancel">cancel</string>
+    <string name="text_empty">Text is empty</string>
+    <string name="name_required">name is required</string>
+    <string name="date_expired">Date is expired</string>
+    <string name="time_expired">Time is expired</string>
+    <string name="time_required">Time is required</string>
+    <string name="date_required">Date is required</string>
+    <string name="endPoint_required">EndPoint is required</string>
+    <string name="startPoint_required">StartPoint is required</string>
+    <!--<string name="api_key">AIzaSyAmAyBdhJjtIw2q_7F6hpWBXEOllPrzl68</string>-->
+    <string name="api_key">AIzaSyBSJ5zNdVPG9kfSSZd4PECU91GgRedF6Vc</string>
+
 
 </resources>
