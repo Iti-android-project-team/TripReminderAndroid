@@ -405,8 +405,8 @@ public class AddTripActivity extends AppCompatActivity {
         String repeatTrip = tripRepeat;
         String statusTrip = "UpComing";
         String userID = fAuth.getCurrentUser().getUid();
-        reference =fDatabase.getReference("users").child("Trips").child(userID);
+        reference =fDatabase.getReference("users").child(userID).child("Trips");
         Trips tripData= new Trips(NameTrip,startPointTrip,endPointTrip,dateTrip,timeTrip,repeatTrip,roundTrip,statusTrip);
-        reference.setValue(tripData);
+        reference.push().setValue(tripData);
     }
 }
