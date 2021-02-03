@@ -35,7 +35,9 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
     private View view;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemNoteClick(int position);
+        void onItemEditClick(int position);
+        void onItemStartClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -108,7 +110,27 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
                     if (listener!= null){
                         int position = getAdapterPosition();
                         if (position!= RecyclerView.NO_POSITION);
-                        listener.onItemClick(position);
+                        listener.onItemNoteClick(position);
+                    }
+                }
+            });
+            tripEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!= null){
+                        int position = getAdapterPosition();
+                        if (position!= RecyclerView.NO_POSITION);
+                        listener.onItemEditClick(position);
+                    }
+                }
+            });
+            start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!= null){
+                        int position = getAdapterPosition();
+                        if (position!= RecyclerView.NO_POSITION);
+                        listener.onItemStartClick(position);
                     }
                 }
             });

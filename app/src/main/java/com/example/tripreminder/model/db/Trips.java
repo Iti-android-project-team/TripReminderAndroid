@@ -59,11 +59,11 @@ public class Trips {
 
 //    @ColumnInfo(name = "note_id")
 //    public int noteId;
-/*
+
  public Trips(){
 
  }
-    public Trips(int tripId,String tripName, String tripStartLocation, String tripEndLocation, String time,String date, String tripStatus, boolean tripIsRound, String tripRepeat, List<Note> tripNotes) {
+    public Trips(String tripName, String tripStartLocation, String tripEndLocation, String time,String date, String tripStatus, boolean tripIsRound, String tripRepeat) {
         this.tripName = tripName;
         this.startPoint = tripStartLocation;
         this.endPoint = tripEndLocation;
@@ -72,9 +72,7 @@ public class Trips {
         this.status = tripStatus;
         this.direction = tripIsRound;
         this.repeated = tripRepeat;
-        this.notes = tripNotes;
-        this.tripId = tripId;
-    }*/
+    }
 
     public int getTid() {
         return tripId;

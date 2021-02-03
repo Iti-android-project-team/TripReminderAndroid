@@ -31,7 +31,9 @@ import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.helper.Dialog;
 import com.example.tripreminder.model.db.Note;
 import com.example.tripreminder.model.db.Trips;
+import com.example.tripreminder.ui.activities.AddNoteActivity;
 import com.example.tripreminder.ui.activities.FloatingViewService;
+import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.viewmodel.TripListViewModel;
 
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        openDialog();
+//        openDialog();
 
     }
 
@@ -112,8 +114,22 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
 
                     adapter = new UPComingAdapter(getContext(),tripList);
                     recyclerView.setAdapter(adapter);
+                    adapter.setOnItemClickListener(new UPComingAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemNoteClick(int position) {
+                           startActivity(new Intent(getContext(), AddNoteActivity.class));
+                        }
 
+                        @Override
+                        public void onItemEditClick(int position) {
 
+                        }
+
+                        @Override
+                        public void onItemStartClick(int position) {
+
+                        }
+                    });
                 }
 
             }
