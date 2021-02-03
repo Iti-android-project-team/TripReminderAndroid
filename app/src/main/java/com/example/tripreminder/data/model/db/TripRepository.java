@@ -1,10 +1,15 @@
 package com.example.tripreminder.data.model.db;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import io.grpc.SynchronizationContext;
 
 public class TripRepository {
 
@@ -13,6 +18,7 @@ public class TripRepository {
     private LiveData<List<Trips>> allHistoryTrips;
     private LiveData<List<String>> allNotes = null;
     private String status;
+    private LiveData<Integer>tripId;
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
@@ -49,18 +55,17 @@ public class TripRepository {
         return allNotes;
     }
 
-    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
-    // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insertTrips(Trips trip) {
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertTrip(trip);
-        });
+    public int getTripId(){
+        int tripID = tripDao.getTripId();
+        return tripID;
     }
 
-    public void insertNote(List<Notes>notes) {
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertNote(notes);
-        });
+    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
+    // that you're not doing any long running operations on the main thread, blocking the UI.
+      public void insertTrips(Trips trip) {
+          TripRoomDatabase.databaseWriteExecutor.execute(() -> {
+              tripDao.insertTrip(trip);
+          });
     }
 
     public void updateTrip(String status, int tripId) {
@@ -79,5 +84,6 @@ public class TripRepository {
             tripDao.setNote(note, tripId);
         });
     }
+
 
 }

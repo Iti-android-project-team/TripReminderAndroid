@@ -222,7 +222,7 @@ public class AddTripActivity extends AppCompatActivity {
                 //insertTrip(trip);
                 //Navigation.findNavController(view).popBackStack();
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                CalTimeInMilliSecond();
+                CalTimeInMilliSecond("");
 
             }
         });
@@ -397,26 +397,26 @@ public class AddTripActivity extends AppCompatActivity {
         //spinnerSelected();
     }
 
-    private void CalTimeInMilliSecond(){
+    private void CalTimeInMilliSecond(String tag){
         Calendar calendar1 =  Calendar.getInstance();
         calendar1.set(selectDateYear,selectDateMonth,selectDateDay,selectDateTimeHou,selectDateTimeMin,00);
         Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
         selectedTimeInMilliSecond = calendar1.getTimeInMillis();
-        createWorkManager(selectedTimeInMilliSecond);
+        createWorkManager(selectedTimeInMilliSecond,tag);
     }
-    private  void createWorkManager(long timeInMilliSecond ){
+    private void createWorkManager(long timeInMilliSecond,String tag ){
         Calendar calendar =  Calendar.getInstance();
         int durationTime = (int) ((int)timeInMilliSecond - calendar.getTimeInMillis());
 
             if(tripRepeat.equals("Repeat Daily")){
-                viewModel.addTripWorkRepeated(durationTime,1, TimeUnit.DAYS);
+                viewModel.addTripWorkRepeated(durationTime,1, TimeUnit.DAYS,tag);
             }else if(tripRepeat.equals("Repeat Weekly")){
-                viewModel.addTripWorkRepeated(durationTime,7, TimeUnit.DAYS);
+                viewModel.addTripWorkRepeated(durationTime,7, TimeUnit.DAYS,tag);
             }else if(tripRepeat.equals("Repeat Monthly")){
-                viewModel.addTripWorkRepeated(durationTime,30, TimeUnit.DAYS);
+                viewModel.addTripWorkRepeated(durationTime,30, TimeUnit.DAYS,tag);
             }else{
                 //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
-                viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS);
+                viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS,tag);
             }
     }
 

@@ -32,13 +32,19 @@ import com.example.tripreminder.ui.activities.FloatingViewService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class UpComingFragment extends Fragment implements Dialog.DialogListener{
 
     private UpComingViewModel upComingViewModel;
+
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +81,19 @@ upComingViewModel = new ViewModelProvider(this,
 //        List<Notes> notes = new ArrayList<>();
 //        notes.add(n);
 
-        //upComingViewModel.insert(trips);
+
+        upComingViewModel.insert(trips);
        // upComingViewModel.insertNote(n,2);
+
+        Log.e("value", String.valueOf(upComingViewModel.getTripId()+1));
+        upComingViewModel.insert(trips);
+
+
+
+        //upComingViewModel.updateManagerStatus("canceld",1);
+
+        //upComingViewModel.insertNote(n,1);
+
 
         //upComingViewModel.updateTrip("upComing",1);
 

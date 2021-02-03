@@ -12,7 +12,7 @@ import java.util.List;
 public interface TripDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertTrip(Trips trips);
+    long insertTrip(Trips trips);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNote(List<Notes> notes);
@@ -38,5 +38,10 @@ public interface TripDao {
 
     @Query("UPDATE trip_table SET notes = :note WHERE tripe_id = :tripId")
     void setNote(List<Note> note, int tripId);
+
+
+    @Query("SELECT tripe_id FROM trip_table ORDER BY tripe_id DESC LIMIT 1")
+    int getTripId();
+
 
 }
