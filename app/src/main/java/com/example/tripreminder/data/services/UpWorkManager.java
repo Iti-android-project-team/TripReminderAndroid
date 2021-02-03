@@ -9,15 +9,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
+
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.tripreminder.helper.Dialog;
-import com.example.tripreminder.ui.activities.MainActivity;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class UpWorkManager extends Worker {
     Context mcontext;
@@ -38,7 +33,6 @@ public class UpWorkManager extends Worker {
         IntentFilter intentFilter = new IntentFilter("com.wesam.services.service.ImageReceiver");
         myBroadcast =  new DialogReceiver();
         mcontext.registerReceiver(myBroadcast,intentFilter);
-
         Intent outIntent = new Intent();
         outIntent.setAction("com.wesam.services.service.ImageReceiver");
         outIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
