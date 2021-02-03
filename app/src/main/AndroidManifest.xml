@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".MyApplication"
@@ -13,17 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TripReminder">
-        <activity android:name=".ui.activities.SplashActivity">
-
-        </activity>
+        <activity android:name=".ui.activities.MainActivity2"></activity>
+        <activity android:name=".ui.activities.SplashActivity" />
+        <activity android:name=".ui.activities.AddNoteActivity" />
+        <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
 
         <service
             android:name=".ui.activities.FloatingViewService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
-        <activity android:name=".ui.activities.AddNoteActivity"></activity>
-        <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,10 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.LoginActivity" >
-
-        </activity>
+        <activity android:name=".ui.activities.LoginActivity"></activity>
         <activity android:name=".ui.activities.Register" />
+        <activity android:name=".helper.Dialog" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.tripreminder.data.model.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -23,6 +24,10 @@ public interface TripDao {
     @Query("SELECT * FROM trip_table WHERE status = 'cancled' OR status = 'done'")
     LiveData<List<Trips>> getHistoryTrips();
 
+    @Query("SELECT * FROM trip_table WHERE tripe_id = :tripId")
+    LiveData<Trips> getTripById(int tripId);
+
+
 
 //    @Query("SELECT * FROM note_table WHERE tripe = :triId")
 //    LiveData<List<Notes>> getNotes(int triId);
@@ -38,5 +43,7 @@ public interface TripDao {
 
     @Query("UPDATE trip_table SET notes = :note WHERE tripe_id = :tripId")
     void setNote(List<Note> note, int tripId);
+
+
 
 }

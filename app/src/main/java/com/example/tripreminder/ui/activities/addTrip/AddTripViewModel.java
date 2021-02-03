@@ -9,17 +9,20 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.tripreminder.data.model.db.TripRepository;
+import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.data.services.UpWorkManager;
 
 import java.util.concurrent.TimeUnit;
 
 public class AddTripViewModel extends AndroidViewModel {
-
+    private TripRepository mRepository;
     private WorkManager tripsWorkManager;
 
     public AddTripViewModel(@NonNull Application application) {
         super(application);
         tripsWorkManager = WorkManager.getInstance(application);
+        mRepository = new TripRepository(application);
     }
 
 
@@ -37,5 +40,8 @@ public class AddTripViewModel extends AndroidViewModel {
                         .setInitialDelay(duration,timeUnit)
                         .build();
         tripsWorkManager.enqueue(uploadWorkRequest);
+    }
+    public void insert(Trips trip) {
+        mRepository.insertTrips(trip);
     }
 }

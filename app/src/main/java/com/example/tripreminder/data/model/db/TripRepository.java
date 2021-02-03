@@ -9,6 +9,7 @@ import java.util.List;
 public class TripRepository {
 
     private TripDao tripDao;
+    private static TripRepository mInstance;
     private LiveData<List<Trips>> allTrips;
     private LiveData<List<Trips>> allHistoryTrips;
     private LiveData<List<String>> allNotes = null;
@@ -79,5 +80,7 @@ public class TripRepository {
             tripDao.setNote(note, tripId);
         });
     }
+
+
 
 }
