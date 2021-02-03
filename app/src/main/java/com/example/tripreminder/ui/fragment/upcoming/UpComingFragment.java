@@ -41,7 +41,7 @@ public class UpComingFragment extends Fragment {
         //implements Dialog.DialogListener{
 
     private UPComingAdapter adapter;
-   private  List<Trips>tripList;
+    private  List<Trips>tripList;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private UpComingViewModel upComingViewModel;
@@ -64,60 +64,31 @@ public class UpComingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_up_coming,container,false);
+       init(view);
+
+        return view;
+    }
+
+    private void init (View view){
         tripList =new ArrayList<>();
-       recyclerView = view.findViewById(R.id.upComing_recyclerView);
+        recyclerView = view.findViewById(R.id.upComing_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-      // listViewModel.insert(tripList);
-     //   adapter.setTrips(tripList);
-
-
-        //upComingViewModel = new ViewModelProvider(this).get(UpComingViewModel.class);
-         upComingViewModel = new ViewModelProvider(this,
-        new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
-
-
-         Trips trips = new Trips();
-        trips.setTripName("test");
-        trips.setDate("hi");
-        trips.setStatus("upComing");
-        trips.setDirection(false);
-        trips.setEndPoint("hi");
-        trips.setRepeated("hi");
-        trips.setTime("hi");
-        trips.setStartPoint("hi");
-
-        List<Note> n = new ArrayList<>();
-        Note nn = new Note();
-        nn.setNote("rrrrr ");
-        n.add(nn);
-        n.add(nn);
-        n.add(nn);
-        n.add(nn);
-//        List<Notes> notes = new ArrayList<>();
-//        notes.add(n);
-
-//        upComingViewModel.insert(trips);
-//        upComingViewModel.insertNote(n,2);
-
-        //upComingViewModel.updateTrip("upComing",1);
+        upComingViewModel = new ViewModelProvider(this,
+                new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
 
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
                 if(it != null){
                     List<Trips> t= it;
                     tripList = t;
-
                     adapter = new UPComingAdapter(getContext(),tripList);
                     recyclerView.setAdapter(adapter);
-
-
                 }
 
             }
 
         });
-        return view;
     }
 
 //    public void openDialog(){

@@ -4,12 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
 
 import com.example.tripreminder.R;
 
-public class MainActivity2 extends AppCompatActivity {
+public class DialogActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +20,7 @@ public class MainActivity2 extends AppCompatActivity {
 
 
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity2.this);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(DialogActivity.this);
         alert.setTitle("trip.getTripName() + ");
         alert.setMessage("checking");
         alert.setCancelable(false);

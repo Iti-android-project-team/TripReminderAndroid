@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TripReminder">
-        <activity android:name=".ui.activities.MainActivity2"></activity>
+        <activity android:name=".ui.activities.DialogActivity"></activity>
         <activity android:name=".ui.activities.SplashActivity" />
         <activity android:name=".ui.activities.AddNoteActivity" />
         <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
