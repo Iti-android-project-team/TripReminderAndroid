@@ -53,6 +53,5 @@ public class UpComingViewModel extends AndroidViewModel {
     }
     public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
     public void insertNote(List<Note> notes,int tripId) { mRepository.setNote(notes,tripId); }
-    public void updateManagerStatus(String status, int id) { mRepository.setManagerStatus(status,id); }
 
 }

@@ -39,8 +39,6 @@ public interface TripDao {
     @Query("UPDATE trip_table SET notes = :note WHERE tripe_id = :tripId")
     void setNote(List<Note> note, int tripId);
 
-    @Query("UPDATE trip_table SET `trip-manager` = :managerStatus WHERE tripe_id = :tripId")
-    void updateManagerStatus(String managerStatus, int tripId);
 
     @Query("SELECT tripe_id FROM trip_table ORDER BY tripe_id DESC LIMIT 1")
     int getTripId();

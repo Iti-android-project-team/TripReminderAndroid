@@ -85,11 +85,5 @@ public class TripRepository {
         });
     }
 
-    public void setManagerStatus(String managerStatus, int tripId) {
-
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-             tripDao.updateManagerStatus(managerStatus,tripId);
-        });
-    }
 
 }

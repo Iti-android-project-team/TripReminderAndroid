@@ -48,17 +48,6 @@ public class Trips {
     @ColumnInfo(name = "notes")
     private List<Note> notes;
 
-    @ColumnInfo(name = "trip-manager")
-    private String tripManger;
-
-    public String getTripManger() {
-        return tripManger;
-    }
-
-    public void setTripManger(String tripManger) {
-        this.tripManger = tripManger;
-    }
-
     public List<Note> getNotes() {
         return notes;
     }
