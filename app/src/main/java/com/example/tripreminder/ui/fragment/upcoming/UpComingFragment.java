@@ -85,7 +85,6 @@ upComingViewModel = new ViewModelProvider(this,
         upComingViewModel.insert(trips);
        // upComingViewModel.insertNote(n,2);
 
-        Log.e("value", String.valueOf(upComingViewModel.getTripId()+1));
         upComingViewModel.insert(trips);
 
 
