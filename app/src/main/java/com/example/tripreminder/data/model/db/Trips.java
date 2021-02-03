@@ -54,7 +54,7 @@ public class Trips {
     }
 
     @ColumnInfo(name = "status")
-    public String status;
+    private String status;
 
 
 //    @ColumnInfo(name = "note_id")

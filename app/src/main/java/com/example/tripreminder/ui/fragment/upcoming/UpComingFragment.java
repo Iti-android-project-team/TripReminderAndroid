@@ -36,6 +36,10 @@ import com.example.tripreminder.ui.activities.FloatingViewService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class UpComingFragment extends Fragment {
         //implements Dialog.DialogListener{
@@ -45,13 +49,13 @@ public class UpComingFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private UpComingViewModel upComingViewModel;
+
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
-    public UpComingFragment(){
 
-    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,20 +80,20 @@ public class UpComingFragment extends Fragment {
 
         upComingViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
+                upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
+                    if (it.size() != 0) {
+                        if(it != null){
+                            List<Trips> t= it;
+                            tripList = t;
+                            adapter = new UPComingAdapter(getContext(),tripList);
+                            recyclerView.setAdapter(adapter);
 
-        upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
-            if (it.size() != 0) {
-                if(it != null){
-                    List<Trips> t= it;
-                    tripList = t;
-                    adapter = new UPComingAdapter(getContext(),tripList);
-                    recyclerView.setAdapter(adapter);
-                }
+                        }
 
+                    }
+
+                });
             }
-
-        });
-    }
 
 //    public void openDialog(){
 //        Dialog dialog = new Dialog(this);
