@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.IBinder;
 import android.provider.Settings;
@@ -24,10 +27,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.helper.Dialog;
 import com.example.tripreminder.model.db.Note;
 import com.example.tripreminder.model.db.Trips;
 import com.example.tripreminder.ui.activities.FloatingViewService;
+import com.example.tripreminder.viewmodel.TripListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +40,25 @@ import java.util.Objects;
 
 public class UpComingFragment extends Fragment implements Dialog.DialogListener{
 
+    private UPComingAdapter adapter;
+    private TripListViewModel listViewModel;
+    private List<Trips> tripList ;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private UpComingViewModel upComingViewModel;
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
+    public UpComingFragment(){
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         openDialog();
+
     }
 
     @Override
@@ -51,11 +66,20 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_up_coming,container,false);
+        tripList =new ArrayList<>();
+       recyclerView = view.findViewById(R.id.upComing_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+      // listViewModel.insert(tripList);
+     //   adapter.setTrips(tripList);
+
 
         //upComingViewModel = new ViewModelProvider(this).get(UpComingViewModel.class);
-upComingViewModel = new ViewModelProvider(this,
+         upComingViewModel = new ViewModelProvider(this,
         new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
-        Trips trips = new Trips();
+
+
+         Trips trips = new Trips();
         trips.setTripName("test");
         trips.setDate("hi");
         trips.setStatus("upComing");
@@ -84,17 +108,12 @@ upComingViewModel = new ViewModelProvider(this,
             if (it.size() != 0) {
                 if(it != null){
                     List<Trips> t= it;
-                    for(int i = 0 ; i< t.size(); i++){
-                 Log.i("Data",t.get(i).getTime());
-                 Log.i("Data",t.get(i).getTid()+"");
-                        Log.i("Data",t.get(i).getNotes()+"");
-                        if(t.get(i).getNotes() != null){
-                            for (Note note:t.get(i).getNotes()) {
-                                Log.i("Data",note.getNote());
-                            }
-                        }
+                    tripList = t;
 
-                    }
+                    adapter = new UPComingAdapter(getContext(),tripList);
+                    recyclerView.setAdapter(adapter);
+
+
                 }
 
             }
@@ -102,6 +121,7 @@ upComingViewModel = new ViewModelProvider(this,
         });
         return view;
     }
+
     public void openDialog(){
         Dialog dialog = new Dialog(this);
         dialog.show(getFragmentManager(), "dialog");

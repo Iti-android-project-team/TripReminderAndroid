@@ -2,10 +2,7 @@ package com.example.tripreminder.model.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
 
 import java.util.List;
 
@@ -62,6 +59,22 @@ public class Trips {
 
 //    @ColumnInfo(name = "note_id")
 //    public int noteId;
+/*
+ public Trips(){
+
+ }
+    public Trips(int tripId,String tripName, String tripStartLocation, String tripEndLocation, String time,String date, String tripStatus, boolean tripIsRound, String tripRepeat, List<Note> tripNotes) {
+        this.tripName = tripName;
+        this.startPoint = tripStartLocation;
+        this.endPoint = tripEndLocation;
+        this.date = date;
+        this.time = time;
+        this.status = tripStatus;
+        this.direction = tripIsRound;
+        this.repeated = tripRepeat;
+        this.notes = tripNotes;
+        this.tripId = tripId;
+    }*/
 
     public int getTid() {
         return tripId;
@@ -94,7 +107,6 @@ public class Trips {
     public void setEndPoint(String endPoint) {
         this.endPoint = endPoint;
     }
-
     public String getDate() {
         return date;
     }
@@ -134,4 +146,5 @@ public class Trips {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

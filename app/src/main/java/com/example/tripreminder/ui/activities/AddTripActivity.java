@@ -1,10 +1,9 @@
 package com.example.tripreminder.ui.activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
@@ -14,10 +13,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,24 +31,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.tripreminder.HasNote;
 import com.example.tripreminder.R;
+import com.example.tripreminder.model.db.Note;
+import com.example.tripreminder.model.db.Trips;
+import com.example.tripreminder.viewmodel.TripListViewModel;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.firebase.database.annotations.NotNull;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +53,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+
 public class AddTripActivity extends AppCompatActivity {
     TextView tripTitle,tripStartPoint,tripEndPoint,tripTime,tripDate;
     ImageView back;
@@ -70,6 +61,7 @@ public class AddTripActivity extends AppCompatActivity {
     Spinner spinner;
     EditText tripName;
     CheckBox rounded;
+    TripListViewModel listViewModel;
 
     private AlarmManager alarmManager;
     private String amPm;
@@ -93,6 +85,12 @@ public class AddTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_trip);
         initialize();
         alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+      /*  back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddTripActivity.this,MainActivity.class));
+            }
+        });*/
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,19 +201,25 @@ public class AddTripActivity extends AppCompatActivity {
                     tripDate.setBackgroundResource(R.drawable.background_input_empty);
                     tripTime.setBackgroundResource(R.drawable.background_input_empty);
                     tripTime.setError(getString(R.string.time_expired));
-                     Toast.makeText(AddTripActivity.this, "Time Expired OR Date Expired)", Toast.LENGTH_LONG).show();
+                     Toast.makeText(AddTripActivity.this, "Time Expired )", Toast.LENGTH_LONG).show();
                     tripDate.setError(getString(R.string.date_expired));
                     return;
                 }
+
                 tName = tripName.getText().toString();
-               // Location startLocation = new Location(startAddress, startLatitude, startLongitude);
-                //Location endLocation = new Location(endAddress, endLatitude, endLongitude);
-                List<HasNote> list = new ArrayList<>();
+                List<Note> list = new ArrayList<>();
                 final int idAlarm = (int) System.currentTimeMillis();
                 //turnOnAlarmManager(time, idAlarm);
-              //  Trip trip = new Trip(idAlarm, tripN, startLocation, endLocation, time, tripStatus, tripIsRound, tripRepeat, list);
-                //insertTrip(trip);
-                //Navigation.findNavController(view).popBackStack();
+                Trips trips= new Trips();
+                trips.setTripName(tripName.getText().toString());
+                trips.setDate(tripDate.getText().toString());
+                trips.setStatus("upComing");
+                trips.setDirection(false);
+                trips.setEndPoint(tripEndPoint.getText().toString());
+                trips.setRepeated(tripRepeat);
+                trips.setTime(tripTime.getText().toString());
+                trips.setStartPoint(tripStartPoint.getText().toString());
+                insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
             }
         });
@@ -242,19 +246,17 @@ public class AddTripActivity extends AppCompatActivity {
              Toast.makeText(getApplicationContext(),status.getStatusMessage(), Toast.LENGTH_SHORT).show();
          }
         String address = Autocomplete.getPlaceFromIntent(data).getName();
-        //LatLng latLng = new LatLng(((Point) Objects.requireNonNull(Autocomplete.getPlaceFromIntent(data).getAddress()).latitude(),
-         //       ((Point) Objects.requireNonNull(Autocomplete.getPlaceFromIntent(data).getAddress()).longitude());
 
 
         if (isStart) {
             startAddress = address;
-          //  startLatitude = latLng.getLatitude();
-            //startLongitude = latLng.getLongitude();
+         //   startLatitude = latLng.getLatitude();
+           // startLongitude = latLng.getLongitude();
             tripStartPoint.setText(startAddress);
             isStart = false;
         } else {
             endAddress = address;
-          //  endLatitude = latLng.getLatitude();
+           // endLatitude = latLng.getLatitude();
             //endLongitude = latLng.getLongitude();
             tripEndPoint.setText(endAddress);
         }
@@ -285,7 +287,7 @@ public class AddTripActivity extends AppCompatActivity {
             timePickerDialog.show();
     }
 
-    private String covertTimeTo12Hours(String time) {
+    public String covertTimeTo12Hours(String time) {
         String[] splitTime = time.split(":");
         String time12 = splitTime[1];
 
@@ -351,16 +353,18 @@ public class AddTripActivity extends AppCompatActivity {
         datePickerDialog.setTitle("Please select date.");
         datePickerDialog.show();
     }
-   /* private void insertTrip(Trip trip) {
-        // call observe
-        TripListViewModel listViewModel = ViewModelProviders.of(this).get(TripListViewModel.class);
-//         listViewModel.insert(trip);
+    private void insertTrip(Trips trip) {
+
+
+        //TripListViewModel listViewModel = ViewModelProviders.of(AddTripActivity.this).get(TripListViewModel.class);
         listViewModel.insert(trip);
-        mProgress.dismiss();
+//        mProgress.dismiss();
 //         listViewModel.getId();
-    }*/
+    }
 
     public void initialize(){
+      listViewModel =  new ViewModelProvider(this,
+                new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(AddTripActivity.this).getApplication())).get(TripListViewModel.class);
         tripTitle = findViewById(R.id.txt_title);
         tripStartPoint = findViewById(R.id.edit_tripStartPoint);
         tripEndPoint = findViewById(R.id.edit_tripEndPoint);
