@@ -1,11 +1,11 @@
-package com.example.tripreminder.ui.activities;
+package com.example.tripreminder.ui.activities.addTrip;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,11 +33,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
-import com.example.tripreminder.model.User;
-import com.example.tripreminder.model.db.Note;
-import com.example.tripreminder.model.db.Trips;
-import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
-import com.example.tripreminder.viewmodel.TripListViewModel;
+
+import com.example.tripreminder.data.model.db.Trips;
+import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 import com.google.android.gms.common.api.Status;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,6 +54,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -62,6 +64,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class AddTripActivity extends AppCompatActivity {
@@ -71,7 +74,7 @@ public class AddTripActivity extends AppCompatActivity {
     Spinner spinner;
     EditText tripName;
     CheckBox rounded;
-    TripListViewModel listViewModel;
+
 
     FirebaseAuth fAuth;
     FirebaseDatabase fDatabase;
@@ -93,6 +96,16 @@ public class AddTripActivity extends AppCompatActivity {
     private double startLatitude, startLongitude;
     private double endLatitude, endLongitude;
     private static int AUTOCOMPLETE_REQUEST_CODE = 100;
+    private AddTripViewModel viewModel;
+    private Date date = null;
+    private String time12;
+    private int selectDateYear;
+    private int selectDateMonth;
+    private int selectDateDay;
+    private int selectDateTimeHou;
+    private int selectDateTimeMin;
+    private long selectedTimeInMilliSecond;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +121,7 @@ public class AddTripActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AddTripActivity.this,MainActivity.class));
+                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
             }
         });
         tripStartPoint.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +163,7 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tripRepeat = repeats[position];
+
             }
 
             @Override
@@ -160,6 +174,7 @@ public class AddTripActivity extends AppCompatActivity {
         ArrayAdapter sp = new ArrayAdapter(AddTripActivity.this, android.R.layout.simple_spinner_item, repeats);
         sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp);
+        sp.notifyDataSetChanged();
 
         create.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
@@ -174,6 +189,8 @@ public class AddTripActivity extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE, currentMin);
                 calendar.set(Calendar.SECOND, 0);
                 time = calendar.getTimeInMillis();
+                Log.i("currentTime", String.valueOf(time));
+
 
                 if (tripName.getText().toString().isEmpty()) {
                   //  mProgress.cancel();
@@ -223,6 +240,9 @@ public class AddTripActivity extends AppCompatActivity {
 
                 tName = tripName.getText().toString();
 
+                final int idAlarm = (int) System.currentTimeMillis();
+                //turnOnAlarmManager(time, idAlarm);
+
                 Trips trips= new Trips();
                 trips.setTripName(tripName.getText().toString());
                 trips.setDate(tripDate.getText().toString());
@@ -236,6 +256,9 @@ public class AddTripActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+
+                CalTimeInMilliSecond();
+
             }
         });
 
@@ -286,13 +309,22 @@ public class AddTripActivity extends AppCompatActivity {
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                selectDateTimeHou = hourOfDay;
+                selectDateTimeMin = minute;
                 if (hourOfDay >= 12) {
                     amPm = "PM";
                 } else {
                     amPm = "AM";
                 }
-                String time12 = String.format("%02d:%02d ", hourOfDay, minute);
+                 time12 = String.format("%02d:%02d ", hourOfDay, minute);
                 tripTime.setText(covertTimeTo12Hours(time12) + amPm);
+                Log.e("currentTime",time12);
+//                String d =getDateSelected();
+//                long t =calTimeInMillisecond(d);
+//                Log.i("currentTime13", String.valueOf(t));
+//                tripTime.setText(covertTimeTo12Hours(time12) + amPm);
+
+
 
                 currentHour = hourOfDay;
                 currentMin = minute;
@@ -346,9 +378,13 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                 int months = month + 1;
-                Date date = null;
+                selectDateMonth = month;
+                selectDateYear = year;
+                selectDateDay = dayOfMonth;
                 try {
                     date = new SimpleDateFormat("dd/MM/yyyy").parse(dayOfMonth + "/" + months + "/" + year);
+
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -372,13 +408,14 @@ public class AddTripActivity extends AppCompatActivity {
 
 
         //TripListViewModel listViewModel = ViewModelProviders.of(AddTripActivity.this).get(TripListViewModel.class);
-        listViewModel.insert(trip);
+        viewModel.insert(trip);
 //        mProgress.dismiss();
 //         listViewModel.getId();
     }
 
     public void initialize(){
-      listViewModel =  new ViewModelProvider(this,
+
+      viewModel =  new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(AddTripActivity.this).getApplication())).get(TripListViewModel.class);
         fAuth=FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
@@ -393,6 +430,32 @@ public class AddTripActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spin_choose);
         tripName = findViewById(R.id.edit_tripName);
         rounded = findViewById(R.id.chBox_rounded);
+        viewModel =  new ViewModelProvider(this,new ViewModelProvider.AndroidViewModelFactory(
+                getApplication())).get(AddTripViewModel.class);
+        //spinnerSelected();
+    }
+
+    private void CalTimeInMilliSecond(){
+        Calendar calendar1 =  Calendar.getInstance();
+        calendar1.set(selectDateYear,selectDateMonth,selectDateDay,selectDateTimeHou,selectDateTimeMin,00);
+        Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
+        selectedTimeInMilliSecond = calendar1.getTimeInMillis();
+        createWorkManager(selectedTimeInMilliSecond);
+    }
+    private  void createWorkManager(long timeInMilliSecond ){
+        Calendar calendar =  Calendar.getInstance();
+        int durationTime = (int) ((int)timeInMilliSecond - calendar.getTimeInMillis());
+
+            if(tripRepeat.equals("Repeat Daily")){
+                viewModel.addTripWorkRepeated(durationTime,1, TimeUnit.DAYS);
+            }else if(tripRepeat.equals("Repeat Weekly")){
+                viewModel.addTripWorkRepeated(durationTime,7, TimeUnit.DAYS);
+            }else if(tripRepeat.equals("Repeat Monthly")){
+                viewModel.addTripWorkRepeated(durationTime,30, TimeUnit.DAYS);
+            }else{
+                //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
+                viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS);
+            }
     }
     public void insertIntoFirebase()
     {

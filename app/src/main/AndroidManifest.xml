@@ -3,41 +3,41 @@
     package="com.example.tripreminder">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="androidx.multidex.MultiDexApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TripReminder">
+        <activity android:name=".ui.activities.MainActivity2"></activity>
+        <activity android:name=".ui.activities.SplashActivity" />
+        <activity android:name=".ui.activities.AddNoteActivity" />
+        <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
 
         <service
             android:name=".ui.activities.FloatingViewService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" />
 
-        </service>
-
-        <activity android:name=".ui.activities.AddNoteActivity"></activity>
-        <activity android:name=".ui.activities.AddTripActivity">
-
-        </activity>
-        <activity android:name=".ui.activities.MainActivity" >
-
-        </activity>
         <activity android:name=".ui.activities.LoginActivity" ></activity>
-        <activity android:name=".ui.activities.Register">
+        <activity android:name=".ui.activities.Register"/>
+
+        <activity android:name=".ui.activities.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity android:name=".helper.Dialog" />
 
     </application>
 

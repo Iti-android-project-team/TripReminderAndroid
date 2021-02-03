@@ -4,12 +4,10 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.tripreminder.model.db.Note;
-import com.example.tripreminder.model.db.Notes;
-import com.example.tripreminder.model.db.TripRepository;
-import com.example.tripreminder.model.db.Trips;
+import com.example.tripreminder.data.model.db.Note;
+import com.example.tripreminder.data.model.db.TripRepository;
+import com.example.tripreminder.data.model.db.Trips;
 
 import java.util.List;
 

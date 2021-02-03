@@ -16,9 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripreminder.R;
-import com.example.tripreminder.model.db.Trips;
+
+import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.AddNoteActivity;
-import com.example.tripreminder.ui.activities.AddTripActivity;
+
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 

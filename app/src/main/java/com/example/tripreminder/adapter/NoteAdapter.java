@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripreminder.R;
-import com.example.tripreminder.model.db.Note;
+import com.example.tripreminder.data.model.db.Note;
+
 
 import java.util.ArrayList;
 import java.util.List;

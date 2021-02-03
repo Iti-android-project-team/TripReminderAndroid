@@ -6,6 +6,7 @@ plugins {
 ext{
     roomVersion = '2.2.6'
     lifecycleVersion = '2.2.0'
+    work_version = '2.5.0'
 }
 
 android {
@@ -61,7 +62,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
 
+
+    //Work Manage
+    implementation "androidx.work:work-runtime:$work_version"
+
+
+
     implementation 'com.google.android.libraries.places:places:2.4.0'
+
 
     testImplementation 'junit:junit:4.+'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
