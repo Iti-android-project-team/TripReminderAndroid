@@ -59,7 +59,9 @@ upComingViewModel = new ViewModelProvider(this,
 //        notes.add(n);
 
         upComingViewModel.insert(trips);
-        upComingViewModel.insertNote(n,2);
+        //Log.e("insert", String.valueOf(insertBack));
+
+        //upComingViewModel.insertNote(n,1);
 
         //upComingViewModel.updateTrip("upComing",1);
 

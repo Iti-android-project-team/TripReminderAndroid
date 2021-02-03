@@ -1,6 +1,7 @@
 package com.example.tripreminder.model.db;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -51,10 +52,13 @@ public class TripRepository {
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insertTrips(Trips trip) {
+    public long insertTrips(Trips trip) {
+        final long[] value = new long[1];
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertTrip(trip);
+             value[0]= tripDao.insertTrip(trip);
+             Log.e("value", String.valueOf(value[0]));
         });
+        return value[0];
     }
 
     public void insertNote(List<Notes>notes) {

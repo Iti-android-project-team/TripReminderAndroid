@@ -12,7 +12,7 @@ import java.util.List;
 public interface TripDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertTrip(Trips trips);
+    long insertTrip(Trips trips);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNote(List<Notes> notes);
