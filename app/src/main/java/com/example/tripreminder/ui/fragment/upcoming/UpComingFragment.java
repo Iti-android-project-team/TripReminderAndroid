@@ -75,8 +75,8 @@ upComingViewModel = new ViewModelProvider(this,
 //        List<Notes> notes = new ArrayList<>();
 //        notes.add(n);
 
-        //upComingViewModel.insert(trips);
-       // upComingViewModel.insertNote(n,2);
+        upComingViewModel.insert(trips);
+        upComingViewModel.insertNote(n,2);
 
         //upComingViewModel.updateTrip("upComing",1);
 
