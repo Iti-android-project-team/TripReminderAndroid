@@ -38,7 +38,7 @@ public class UpComingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_trips,container,false);
+        View view = inflater.inflate(R.layout.fragment_up_coming,container,false);
 
         //upComingViewModel = new ViewModelProvider(this).get(UpComingViewModel.class);
 upComingViewModel = new ViewModelProvider(this,
@@ -63,9 +63,12 @@ upComingViewModel = new ViewModelProvider(this,
 //        List<Notes> notes = new ArrayList<>();
 //        notes.add(n);
 
+        Log.e("value", String.valueOf(upComingViewModel.getTripId()+1));
         upComingViewModel.insert(trips);
 
 
+
+        //upComingViewModel.updateManagerStatus("canceld",1);
 
         //upComingViewModel.insertNote(n,1);
 
