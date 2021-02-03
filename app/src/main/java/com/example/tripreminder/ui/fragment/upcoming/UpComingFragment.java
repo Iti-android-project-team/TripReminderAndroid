@@ -18,10 +18,15 @@ import com.example.tripreminder.model.db.Trips;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class UpComingFragment extends Fragment {
 
     private UpComingViewModel upComingViewModel;
+    private ExecutorService executorService;;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,8 @@ upComingViewModel = new ViewModelProvider(this,
 //        notes.add(n);
 
         upComingViewModel.insert(trips);
-        //Log.e("insert", String.valueOf(insertBack));
+
+
 
         //upComingViewModel.insertNote(n,1);
 

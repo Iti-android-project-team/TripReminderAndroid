@@ -41,7 +41,7 @@ public class UpComingViewModel extends AndroidViewModel {
         return allNotes;
     }
 
-    public void insert(Trips trip) {  mRepository.insertTrips(trip);}
+    public long insert(Trips trip) { return mRepository.insertTrips(trip);}
 
     public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
     public void insertNote(List<Note> notes,int tripId) { mRepository.setNote(notes,tripId); }
