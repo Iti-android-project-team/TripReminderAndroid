@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.tripreminder.R;
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.activities.addTrip.AddTripActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -44,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,Register.class));
+                startActivity(new Intent(LoginActivity.this, Register.class));
+                finish();
             }
         });
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         progressDialog.dismiss();
                                         SharedPref.setLogin(true);
+                                        SharedPref.setUserEmail(sEmail);
+                                        Log.e("le",sEmail);
                                         finish();
                                     } else {
                                         Toast.makeText(LoginActivity.this,

@@ -4,12 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import com.example.tripreminder.helper.Dialog;
 
 public class UpWorkManager extends Worker {
 

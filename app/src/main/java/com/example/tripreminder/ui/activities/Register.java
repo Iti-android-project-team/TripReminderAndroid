@@ -40,10 +40,10 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
       initialize();
-      if (fAuth.getCurrentUser()!= null){
-          startActivity(new Intent(getApplicationContext(),MainActivity.class));
-          finish();
-      }
+//      if (fAuth.getCurrentUser()!= null){
+//          startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//          finish();
+//      }
       signup.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -93,6 +93,7 @@ public class Register extends AppCompatActivity {
                           });*/
                           startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                           progressDialog.dismiss();
+                          finish();
                       }else {
                           Toast.makeText(Register.this, "Error!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
                           progressDialog.dismiss();
@@ -120,6 +121,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Register.this,LoginActivity.class));
+                finish();
             }
         });
     }
