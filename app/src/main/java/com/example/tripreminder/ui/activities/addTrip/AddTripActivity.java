@@ -249,7 +249,7 @@ public class AddTripActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
                 Log.e("lastId", String.valueOf(getTripId()));
 
-                CalTimeInMilliSecond(tag,getTripId());
+                CalTimeInMilliSecond(tag,getTripId(),tripEndPoint.getText().toString());
                 //viewModel.cancelWorkManager(getTripId());
             }
         });
@@ -423,27 +423,27 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
-    private void CalTimeInMilliSecond(String tag,int tripId) {
+    private void CalTimeInMilliSecond(String tag,int tripId,String endPoint) {
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(selectDateYear, selectDateMonth, selectDateDay, selectDateTimeHou, selectDateTimeMin, 00);
         Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
         selectedTimeInMilliSecond = calendar1.getTimeInMillis();
-        createWorkManager(selectedTimeInMilliSecond, tag, tripId);
+        createWorkManager(selectedTimeInMilliSecond, tag, tripId,endPoint);
     }
 
-    private void createWorkManager(long timeInMilliSecond, String tag, int tripId) {
+    private void createWorkManager(long timeInMilliSecond, String tag, int tripId,String endPoint) {
         Calendar calendar = Calendar.getInstance();
         int durationTime = (int) ((int) timeInMilliSecond - calendar.getTimeInMillis());
 
         if (tripRepeat.equals("Repeat Daily")) {
-            viewModel.addTripWorkRepeated(durationTime, 1, TimeUnit.DAYS, tag);
+            viewModel.addTripWorkRepeated(durationTime, 1, TimeUnit.DAYS, tag,tripId,endPoint);
         } else if (tripRepeat.equals("Repeat Weekly")) {
-            viewModel.addTripWorkRepeated(durationTime, 7, TimeUnit.DAYS, tag);
+            viewModel.addTripWorkRepeated(durationTime, 7, TimeUnit.DAYS, tag,tripId,endPoint);
         } else if (tripRepeat.equals("Repeat Monthly")) {
-            viewModel.addTripWorkRepeated(durationTime, 30, TimeUnit.DAYS, tag);
+            viewModel.addTripWorkRepeated(durationTime, 30, TimeUnit.DAYS, tag,tripId,endPoint);
         } else {
             //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
-            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS, tag,tripId);
+            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS, tag,tripId,endPoint);
         }
     }
 

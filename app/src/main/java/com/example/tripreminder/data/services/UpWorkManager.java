@@ -31,9 +31,10 @@ public class UpWorkManager extends Worker {
 
     private void openDialog(){
         int tripId = getInputData().getInt("tripId",0);
+        String endPoint = getInputData().getString("endPoint");
         Log.i("UpWorkManager", String.valueOf(tripId));
         IntentFilter intentFilter = new IntentFilter("com.wesam.services.service.ImageReceiver");
-        myBroadcast =  new DialogReceiver(tripId);
+        myBroadcast =  new DialogReceiver(tripId,endPoint);
         mcontext.registerReceiver(myBroadcast,intentFilter);
         Intent outIntent = new Intent();
        // outIntent.putExtra("tripId",tripId);

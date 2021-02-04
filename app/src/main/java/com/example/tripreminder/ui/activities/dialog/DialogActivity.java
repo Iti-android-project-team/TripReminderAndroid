@@ -39,6 +39,7 @@ public class DialogActivity extends AppCompatActivity {
     private String userEmail;
     private DialogViewModel viewModel;
     private int tripId;
+    private String endPoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,7 +187,9 @@ public class DialogActivity extends AppCompatActivity {
     }
     private void init(){
         tripId = getIntent().getIntExtra("tripId",0);
+        endPoint = getIntent().getStringExtra("endPoint");
         Log.i("UpWorkManager", String.valueOf(tripId));
+        Log.i("UpWorkManager", endPoint);
         SharedPref.createPrefObject(DialogActivity.this);
         userEmail = SharedPref.getUserEmail();
         if (!userEmail.equals(" ")) {

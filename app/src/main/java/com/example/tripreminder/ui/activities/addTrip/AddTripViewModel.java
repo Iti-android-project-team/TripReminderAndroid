@@ -27,8 +27,9 @@ public class AddTripViewModel extends AndroidViewModel {
     }
 
 
-    public void addTripWorkOneTime(int duration, TimeUnit timeUnit,String tag,int tripId){
+    public void addTripWorkOneTime(int duration, TimeUnit timeUnit,String tag,int tripId,String endPoint){
         data.putInt("tripId",tripId);
+        data.putString("endPoint",endPoint);
         WorkRequest uploadWorkRequest =
                 new OneTimeWorkRequest.Builder(UpWorkManager.class)
                         .setInitialDelay(duration,timeUnit)
@@ -38,11 +39,15 @@ public class AddTripViewModel extends AndroidViewModel {
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
 
-    public void addTripWorkRepeated(int duration, int repeated,TimeUnit timeUnit,String tag){
+    public void addTripWorkRepeated(int duration, int repeated,TimeUnit timeUnit,
+                                    String tag,int tripId,String endPoint){
+        data.putInt("tripId",tripId);
+        data.putString("endPoint",endPoint);
         WorkRequest uploadWorkRequest =
                 new PeriodicWorkRequest.Builder(UpWorkManager.class,repeated,timeUnit)
                         .setInitialDelay(duration,timeUnit)
                         .addTag(tag)
+                        .setInputData(data.build())
                         .build();
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
