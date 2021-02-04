@@ -24,6 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+
+import com.example.tripreminder.ui.activities.addTrip.AddTripActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -57,7 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,Register.class));
+                startActivity(new Intent(LoginActivity.this, Register.class));
+                finish();
             }
         });
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         progressDialog.dismiss();
                                         SharedPref.setLogin(true);
+                                        SharedPref.setUserEmail(sEmail);
+                                        Log.e("le",sEmail);
                                         finish();
                                     } else {
                                         Toast.makeText(LoginActivity.this,

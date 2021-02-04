@@ -19,10 +19,10 @@ public class AddTripViewModel extends AndroidViewModel {
     private TripRepository mRepository;
     private WorkManager tripsWorkManager;
 
-    public AddTripViewModel(@NonNull Application application) {
+    public AddTripViewModel(@NonNull Application application,String userEmail) {
         super(application);
         tripsWorkManager = WorkManager.getInstance(application);
-        mRepository = new TripRepository(application);
+        mRepository = new TripRepository(application,userEmail);
     }
 
 
@@ -47,9 +47,6 @@ public class AddTripViewModel extends AndroidViewModel {
         mRepository.insertTrips(trip);
     }
 
-    public int getTripId(){
-        return mRepository.getTripId();
-    }
     public void cancelWorkManager(String tag){
         tripsWorkManager.cancelAllWorkByTag(tag);
     }

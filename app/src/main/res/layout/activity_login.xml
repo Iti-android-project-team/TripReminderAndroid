@@ -261,7 +261,6 @@
                     android:text="@string/donot_hava_account"
                     android:textColor="#60778B"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card" />
 
             </LinearLayout>

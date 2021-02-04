@@ -239,7 +239,7 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setStartPoint(tripStartPoint.getText().toString());
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                CalTimeInMilliSecond(getTripId());
+                //CalTimeInMilliSecond(getTripId());
                 //viewModel.cancelWorkManager(getTripId());
             }
         });
@@ -433,10 +433,5 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
-    private String getTripId() {
-        int tripId;
-        tripId = viewModel.getTripId() + 1;
-        return ("Trip" + tripId);
-    }
 
 }

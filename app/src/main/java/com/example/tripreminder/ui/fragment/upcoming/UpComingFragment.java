@@ -7,31 +7,37 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tripreminder.R;
+
 import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.data.model.db.Trips;
 
+import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.db.Note;
+import com.example.tripreminder.data.model.db.Trips;
+
+import com.example.tripreminder.helper.MyViewModelFactory;
+
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class UpComingFragment extends Fragment {
     //implements Dialog.DialogListener{
+
 
     private UPComingAdapter adapter;
     private List<Trips> tripList;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private UpComingViewModel upComingViewModel;
-//9cb60fdb631b241bd7da47637c0ffa43bf18ff0a
+
 
 
     @Override
@@ -53,8 +59,13 @@ public class UpComingFragment extends Fragment {
         recyclerView = view.findViewById(R.id.upComing_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        upComingViewModel = new ViewModelProvider(this,
-                new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
+        SharedPref.createPrefObject(getContext());
+        String userEmail = SharedPref.getUserEmail();
+        Log.e("len", userEmail);
+        //if (!userEmail.equals(" ")) {
+            upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
+                    "test@gmail.com")).get(UpComingViewModel.class);
+        //}
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
                 if (it != null) {
@@ -69,4 +80,5 @@ public class UpComingFragment extends Fragment {
 
         });
     }
+
 }

@@ -21,24 +21,37 @@ public class UpComingViewModel extends AndroidViewModel {
     private TripRepository mRepository;
     private ExecutorService executorService;
 
-    private final LiveData<List<Trips>> allTrips;
+    private  LiveData<List<Trips>> allTrips;
+    private  LiveData<List<Trips>> allHistory;
     private  LiveData<Integer> tripId;
     private  LiveData<List<String>> allNotes = null;
 
 
-    public UpComingViewModel ( Application application) {
+    public UpComingViewModel ( Application application,String userEmail) {
         super(application);
-        mRepository = new TripRepository(application);
+        mRepository = new TripRepository(application,userEmail);
         allTrips = mRepository.getAllTrips();
+        allHistory = mRepository.getAllHistoryTrips();
+
     }
 
-    LiveData<List<Trips>> getAllTrips() { return allTrips; }
+    LiveData<List<Trips>> getAllTrips() {
+        return allTrips;
+    }
+
+    LiveData<List<Trips>> getAllHistory() {
+        return allHistory;
+    }
 
     LiveData<List<String>> getAllNotes(int id){
         if(allNotes == null) {
             allNotes = mRepository.getAllNotes(id);
         }
         return allNotes;
+    }
+
+    public void deleteTrip(int tripId){
+        mRepository.deleteTrip(tripId);
     }
 
       public void insert(Trips trip) {
