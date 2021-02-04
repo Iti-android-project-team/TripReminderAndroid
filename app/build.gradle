@@ -61,12 +61,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
-
-
     //Work Manage
     implementation "androidx.work:work-runtime:$work_version"
 
-
+    // Login with google
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
