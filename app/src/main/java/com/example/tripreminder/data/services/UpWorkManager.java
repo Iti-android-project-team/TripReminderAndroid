@@ -30,11 +30,13 @@ public class UpWorkManager extends Worker {
     }
 
     private void openDialog(){
-        Log.i("UpWorkManager","hi from work manager");
+        int tripId = getInputData().getInt("tripId",0);
+        Log.i("UpWorkManager", String.valueOf(tripId));
         IntentFilter intentFilter = new IntentFilter("com.wesam.services.service.ImageReceiver");
-        myBroadcast =  new DialogReceiver();
+        myBroadcast =  new DialogReceiver(tripId);
         mcontext.registerReceiver(myBroadcast,intentFilter);
         Intent outIntent = new Intent();
+       // outIntent.putExtra("tripId",tripId);
         outIntent.setAction("com.wesam.services.service.ImageReceiver");
         outIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         mcontext.sendBroadcast(outIntent);

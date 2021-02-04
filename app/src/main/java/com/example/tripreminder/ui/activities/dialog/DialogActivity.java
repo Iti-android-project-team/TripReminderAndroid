@@ -1,12 +1,10 @@
-package com.example.tripreminder.ui.activities;
+package com.example.tripreminder.ui.activities.dialog;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.app.ActivityManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,12 +20,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
-
-import java.util.List;
+import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.ui.activities.FloatingViewService;
+import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
 
 public class DialogActivity extends AppCompatActivity {
     private static final int RESULT_OK = -1;
@@ -35,11 +36,18 @@ public class DialogActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     Ringtone ringtone;
     String address;
+    private String userEmail;
+    private DialogViewModel viewModel;
+    private int tripId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main2);
         address = "Suez Canal University";
+
+
+
+        init();
 
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,6 +119,7 @@ public class DialogActivity extends AppCompatActivity {
             startActivity(startMain);
             initializeView();
         }
+        viewModel.updateTrip("Done",tripId);
         navigateToMain();
         Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -120,6 +129,7 @@ public class DialogActivity extends AppCompatActivity {
 
     public void onCancelClicked() {
         Toast.makeText(this, "Trip is cancelled", Toast.LENGTH_LONG).show();
+        viewModel.updateTrip("Cancel",tripId);
         navigateToMain();
     }
 
@@ -142,7 +152,7 @@ public class DialogActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.stopService(new Intent(this,FloatingViewService.class));
+        this.stopService(new Intent(this, FloatingViewService.class));
     }
 
     private void play() {
@@ -173,5 +183,15 @@ public class DialogActivity extends AppCompatActivity {
     private void navigateToMain(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+    private void init(){
+        tripId = getIntent().getIntExtra("tripId",0);
+        Log.i("UpWorkManager", String.valueOf(tripId));
+        SharedPref.createPrefObject(DialogActivity.this);
+        userEmail = SharedPref.getUserEmail();
+        if (!userEmail.equals(" ")) {
+            viewModel = new ViewModelProvider(this, new DialogViewModelFactory(getApplication(),
+                    userEmail)).get(DialogViewModel.class);
+        }
     }
 }

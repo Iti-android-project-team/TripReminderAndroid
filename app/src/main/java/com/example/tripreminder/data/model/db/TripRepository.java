@@ -73,4 +73,8 @@ public class TripRepository {
         });
     }
 
+    public int getTripId(){
+        return tripDao.getTripId();
+    }
+
 }

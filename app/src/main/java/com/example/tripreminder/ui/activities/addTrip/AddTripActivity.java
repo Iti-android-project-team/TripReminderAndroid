@@ -247,7 +247,9 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setWorkManagerTag(tag);
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                CalTimeInMilliSecond(tag);
+                Log.e("lastId", String.valueOf(getTripId()));
+
+                CalTimeInMilliSecond(tag,getTripId());
                 //viewModel.cancelWorkManager(getTripId());
             }
         });
@@ -421,15 +423,15 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
-    private void CalTimeInMilliSecond(String tag) {
+    private void CalTimeInMilliSecond(String tag,int tripId) {
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(selectDateYear, selectDateMonth, selectDateDay, selectDateTimeHou, selectDateTimeMin, 00);
         Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
         selectedTimeInMilliSecond = calendar1.getTimeInMillis();
-        createWorkManager(selectedTimeInMilliSecond, tag);
+        createWorkManager(selectedTimeInMilliSecond, tag, tripId);
     }
 
-    private void createWorkManager(long timeInMilliSecond, String tag) {
+    private void createWorkManager(long timeInMilliSecond, String tag, int tripId) {
         Calendar calendar = Calendar.getInstance();
         int durationTime = (int) ((int) timeInMilliSecond - calendar.getTimeInMillis());
 
@@ -441,13 +443,17 @@ public class AddTripActivity extends AppCompatActivity {
             viewModel.addTripWorkRepeated(durationTime, 30, TimeUnit.DAYS, tag);
         } else {
             //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
-            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS, tag);
+            viewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS, tag,tripId);
         }
     }
 
     private String generateTag(){
         return  userEmail+"-"+selectDateYear+"-"+
                 selectDateMonth+"-"+selectDateDay+"-"+selectDateTimeHou+"-"+selectDateTimeMin+"-"+00;
+    }
+    private int getTripId(){
+        int lastTripID =viewModel.getTripId();
+        return (lastTripID+1);
     }
 
 }

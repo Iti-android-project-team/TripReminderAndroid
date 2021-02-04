@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class AddTripViewModel extends AndroidViewModel {
     private TripRepository mRepository;
     private WorkManager tripsWorkManager;
-
+    private Data.Builder data = new Data.Builder();
     public AddTripViewModel(@NonNull Application application,String userEmail) {
         super(application);
         tripsWorkManager = WorkManager.getInstance(application);
@@ -26,11 +27,13 @@ public class AddTripViewModel extends AndroidViewModel {
     }
 
 
-    public void addTripWorkOneTime(int duration, TimeUnit timeUnit,String tag){
+    public void addTripWorkOneTime(int duration, TimeUnit timeUnit,String tag,int tripId){
+        data.putInt("tripId",tripId);
         WorkRequest uploadWorkRequest =
                 new OneTimeWorkRequest.Builder(UpWorkManager.class)
                         .setInitialDelay(duration,timeUnit)
                         .addTag(tag)
+                        .setInputData(data.build())
                         .build();
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
@@ -49,6 +52,10 @@ public class AddTripViewModel extends AndroidViewModel {
 
     public void cancelWorkManager(String tag){
         tripsWorkManager.cancelAllWorkByTag(tag);
+    }
+
+    public int getTripId(){
+        return mRepository.getTripId();
     }
 
 }

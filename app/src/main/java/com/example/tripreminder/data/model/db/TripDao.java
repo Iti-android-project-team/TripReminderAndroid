@@ -43,4 +43,7 @@ public interface TripDao {
     @Query("DELETE FROM trip_table WHERE tripe_id = :tripTd")
     void deleteTrip(int tripTd);
 
+    @Query("SELECT tripe_id FROM trip_table ORDER BY tripe_id DESC LIMIT 1")
+    int getTripId();
+
 }
