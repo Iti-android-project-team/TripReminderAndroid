@@ -45,6 +45,31 @@ public class Trips {
     @ColumnInfo(name = "notes")
     private List<Note> notes;
 
+    @ColumnInfo(name = "status")
+    private String status;
+
+    @ColumnInfo(name = "user-email")
+    private String userEmail;
+
+    @ColumnInfo(name = "work-manager-tag")
+    private String workManagerTag;
+
+    public String getWorkManagerTag() {
+        return workManagerTag;
+    }
+
+    public void setWorkManagerTag(String workManagerTag) {
+        this.workManagerTag = workManagerTag;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     public List<Note> getNotes() {
         return notes;
     }
@@ -53,12 +78,6 @@ public class Trips {
         this.notes = notes;
     }
 
-    @ColumnInfo(name = "status")
-    public String status;
-
-
-//    @ColumnInfo(name = "note_id")
-//    public int noteId;
 
     public int getTid() {
         return tripId;

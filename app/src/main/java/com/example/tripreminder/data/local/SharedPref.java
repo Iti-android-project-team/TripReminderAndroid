@@ -25,4 +25,14 @@ public class SharedPref {
         return  pref.getBoolean("login",false);
     }
 
+    public static void setUserEmail(String email){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("user-email",email);
+        editor.apply();
+    }
+    public static String getUserEmail(){
+        return  pref.getString("user-email"," ");
+    }
+
+
 }

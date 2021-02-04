@@ -8,45 +8,47 @@ import java.util.List;
 
 public class TripRepository {
 
-    private TripDao tripDao;
-    private LiveData<List<Trips>> allTrips;
-    private LiveData<List<Trips>> allHistoryTrips;
+    private final TripDao tripDao;
+    private final LiveData<List<Trips>> allTrips;
+    private final LiveData<List<Trips>> allHistoryTrip;
     private LiveData<List<String>> allNotes = null;
-    private String status;
 
-    // Note that in order to unit test the WordRepository, you have to remove the Application
-    // dependency. This adds complexity and much more code, and this sample is not about testing.
-    // See the BasicSample in the android-architecture-components repository at
-    // https://github.com/googlesamples
-    public TripRepository(Application application) {
+
+    public TripRepository(Application application, String userEmail) {
         TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        allTrips = tripDao.getUpComingTrips();
-        allHistoryTrips= tripDao.getHistoryTrips();
+        allTrips = tripDao.getUpComingTrips(userEmail);
+        allHistoryTrip = tripDao.getHistoryTrips(userEmail);
     }
-
-
-    public TripRepository(Application application,int id) {
-        TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
-        tripDao = db.tripDao();
-
-    }
-
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<Trips>> getAllTrips() {
         return allTrips;
     }
+
     public LiveData<List<Trips>> getAllHistoryTrips() {
-        return allHistoryTrips;
+
+        return allHistoryTrip;
     }
 
     public LiveData<List<String>> getAllNotes(int id) {
-        if(allNotes == null){
+        if (allNotes == null) {
             allNotes = tripDao.getNotes(id);
         }
         return allNotes;
+    }
+
+
+    public String getWorkManagerTag(String userEmail, int tripId) {
+        String workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+        return workTag;
+    }
+
+    public void deleteTrip(int tripId) {
+        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.deleteTrip(tripId);
+        });
     }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
@@ -57,20 +59,9 @@ public class TripRepository {
         });
     }
 
-    public void insertNote(List<Notes>notes) {
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertNote(notes);
-        });
-    }
-
     public void updateTrip(String status, int tripId) {
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.updateTripStatus(status, tripId);
-        });
-    }
-    public void updateNote(String status, int noteId) {
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.updateNoteStatus(status, noteId);
         });
     }
 

@@ -29,16 +29,20 @@ import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.FloatingViewService;
 
+import com.example.tripreminder.helper.MyViewModelFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 
 public class UpComingFragment extends Fragment implements Dialog.DialogListener{
 
     private UpComingViewModel upComingViewModel;
+
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,11 +56,12 @@ public class UpComingFragment extends Fragment implements Dialog.DialogListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_up_coming,container,false);
 
+
         //upComingViewModel = new ViewModelProvider(this).get(UpComingViewModel.class);
-upComingViewModel = new ViewModelProvider(this,
-        new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
+upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
+        "test2@gmail.com")).get(UpComingViewModel.class);
         Trips trips = new Trips();
-        trips.setTripName("test");
+        trips.setTripName("test2");
         trips.setDate("hi");
         trips.setStatus("upComing");
         trips.setDirection(false);
@@ -64,6 +69,7 @@ upComingViewModel = new ViewModelProvider(this,
         trips.setRepeated("hi");
         trips.setTime("hi");
         trips.setStartPoint("hi");
+        trips.setUserEmail("test2@gmail.com");
 
         List<Note> n = new ArrayList<>();
         Note nn = new Note();
@@ -72,16 +78,15 @@ upComingViewModel = new ViewModelProvider(this,
         n.add(nn);
         n.add(nn);
         n.add(nn);
-//        List<Notes> notes = new ArrayList<>();
-//        notes.add(n);
 
-        //upComingViewModel.insert(trips);
-       // upComingViewModel.insertNote(n,2);
 
-        //upComingViewModel.updateTrip("upComing",1);
+
+        upComingViewModel.updateTrip("done",3);
+        upComingViewModel.deleteTrip(1);
 
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
+                Log.i("length", String.valueOf(it.size()));
                 if(it != null){
                     List<Trips> t= it;
                     for(int i = 0 ; i< t.size(); i++){
@@ -96,9 +101,27 @@ upComingViewModel = new ViewModelProvider(this,
 
                     }
                 }
-
             }
+        });
 
+        upComingViewModel.getAllHistory().observe(getViewLifecycleOwner(), it -> {
+            if (it.size() != 0) {
+                Log.i("lengthHistory", String.valueOf(it.size()));
+                if(it != null){
+                    List<Trips> t= it;
+                    for(int i = 0 ; i< t.size(); i++){
+                        Log.i("Data",t.get(i).getTime());
+                        Log.i("Data",t.get(i).getTid()+"");
+                        Log.i("Data",t.get(i).getNotes()+"");
+                        if(t.get(i).getNotes() != null){
+                            for (Note note:t.get(i).getNotes()) {
+                                Log.i("Data",note.getNote());
+                            }
+                        }
+
+                    }
+                }
+            }
         });
         return view;
     }
