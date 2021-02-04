@@ -33,7 +33,9 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 
+import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Trips;
+import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 import com.google.android.gms.common.api.Status;
@@ -93,6 +95,7 @@ public class AddTripActivity extends AppCompatActivity {
     private int selectDateTimeHou;
     private int selectDateTimeMin;
     private long selectedTimeInMilliSecond;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +240,7 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setRepeated(tripRepeat);
                 trips.setTime(tripTime.getText().toString());
                 trips.setStartPoint(tripStartPoint.getText().toString());
+                trips.setUserEmail(userEmail);
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
                 //CalTimeInMilliSecond(getTripId());
@@ -405,8 +409,12 @@ public class AddTripActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spin_choose);
         tripName = findViewById(R.id.edit_tripName);
         rounded = findViewById(R.id.chBox_rounded);
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(
-                getApplication())).get(AddTripViewModel.class);
+        SharedPref.createPrefObject(AddTripActivity.this);
+         userEmail = SharedPref.getUserEmail();
+        if (!userEmail.equals(" ")) {
+            viewModel = new ViewModelProvider(this, new AddTripViewModelFactory(getApplication(),
+                    userEmail)).get(AddTripViewModel.class);
+        }
     }
 
     private void CalTimeInMilliSecond(String tag) {

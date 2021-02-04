@@ -62,12 +62,13 @@ public class UpComingFragment extends Fragment {
         SharedPref.createPrefObject(getContext());
         String userEmail = SharedPref.getUserEmail();
         Log.e("len", userEmail);
-        //if (!userEmail.equals(" ")) {
+        if (!userEmail.equals(" ")) {
             upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
-                    "test@gmail.com")).get(UpComingViewModel.class);
-        //}
+                    userEmail)).get(UpComingViewModel.class);
+        }
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
+                Log.i("data", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
                     tripList = t;
