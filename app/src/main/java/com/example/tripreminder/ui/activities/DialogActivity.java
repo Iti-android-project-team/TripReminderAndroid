@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -79,12 +81,16 @@ public class DialogActivity extends AppCompatActivity {
             NotificationChannel channel = new NotificationChannel("channel2", "myChannel", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel2")
+            NotificationCompat.Action action;
+            Intent intent = new Intent(this, DialogActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+            action = new NotificationCompat.Action(R.drawable.logo, "end snooze", pendingIntent);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel2")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Trip reminder")
                 .setContentText("Time is here!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .addAction(action)
                 .setOngoing(true);
         notificationManager.notify(15, builder.build());
 
