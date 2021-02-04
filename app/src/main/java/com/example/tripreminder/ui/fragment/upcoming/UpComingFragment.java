@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.model.db.Note;
 import com.example.tripreminder.model.db.Notes;
 import com.example.tripreminder.model.db.Trips;
@@ -40,11 +41,12 @@ public class UpComingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_up_coming,container,false);
 
+
         //upComingViewModel = new ViewModelProvider(this).get(UpComingViewModel.class);
-upComingViewModel = new ViewModelProvider(this,
-        new ViewModelProvider.AndroidViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(UpComingViewModel.class);
+upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
+        "test@gmail.com")).get(UpComingViewModel.class);
         Trips trips = new Trips();
-        trips.setTripName("test");
+        trips.setTripName("test2");
         trips.setDate("hi");
         trips.setStatus("upComing");
         trips.setDirection(false);
@@ -52,6 +54,7 @@ upComingViewModel = new ViewModelProvider(this,
         trips.setRepeated("hi");
         trips.setTime("hi");
         trips.setStartPoint("hi");
+        trips.setUserEmail("test2@gmail.com");
 
         List<Note> n = new ArrayList<>();
         Note nn = new Note();
@@ -60,22 +63,14 @@ upComingViewModel = new ViewModelProvider(this,
         n.add(nn);
         n.add(nn);
         n.add(nn);
-//        List<Notes> notes = new ArrayList<>();
-//        notes.add(n);
-
-        Log.e("value", String.valueOf(upComingViewModel.getTripId()+1));
-        upComingViewModel.insert(trips);
 
 
-
-        //upComingViewModel.updateManagerStatus("canceld",1);
-
-        //upComingViewModel.insertNote(n,1);
-
-        //upComingViewModel.updateTrip("upComing",1);
+        upComingViewModel.updateTrip("done",3);
+        upComingViewModel.deleteTrip(1);
 
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
+                Log.i("length", String.valueOf(it.size()));
                 if(it != null){
                     List<Trips> t= it;
                     for(int i = 0 ; i< t.size(); i++){
@@ -90,9 +85,27 @@ upComingViewModel = new ViewModelProvider(this,
 
                     }
                 }
-
             }
+        });
 
+        upComingViewModel.getAllHistory().observe(getViewLifecycleOwner(), it -> {
+            if (it.size() != 0) {
+                Log.i("lengthHistory", String.valueOf(it.size()));
+                if(it != null){
+                    List<Trips> t= it;
+                    for(int i = 0 ; i< t.size(); i++){
+                        Log.i("Data",t.get(i).getTime());
+                        Log.i("Data",t.get(i).getTid()+"");
+                        Log.i("Data",t.get(i).getNotes()+"");
+                        if(t.get(i).getNotes() != null){
+                            for (Note note:t.get(i).getNotes()) {
+                                Log.i("Data",note.getNote());
+                            }
+                        }
+
+                    }
+                }
+            }
         });
         return view;
     }
