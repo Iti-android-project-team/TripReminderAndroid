@@ -66,6 +66,9 @@ public class UpComingFragment extends Fragment {
             upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
                     userEmail)).get(UpComingViewModel.class);
         }
+        if(!tripList.isEmpty()){
+
+        }
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             if (it.size() != 0) {
                 Log.i("data", String.valueOf(it.size()));

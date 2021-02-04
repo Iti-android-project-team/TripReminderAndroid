@@ -19,10 +19,8 @@ import java.util.concurrent.Future;
 public class UpComingViewModel extends AndroidViewModel {
 
     private TripRepository mRepository;
-    private ExecutorService executorService;
 
     private  LiveData<List<Trips>> allTrips;
-    private  LiveData<List<Trips>> allHistory;
     private  LiveData<Integer> tripId;
     private  LiveData<List<String>> allNotes = null;
 
@@ -31,7 +29,6 @@ public class UpComingViewModel extends AndroidViewModel {
         super(application);
         mRepository = new TripRepository(application,userEmail);
         allTrips = mRepository.getAllTrips();
-        allHistory = mRepository.getAllHistoryTrips();
 
     }
 
@@ -39,9 +36,7 @@ public class UpComingViewModel extends AndroidViewModel {
         return allTrips;
     }
 
-    LiveData<List<Trips>> getAllHistory() {
-        return allHistory;
-    }
+
 
     LiveData<List<String>> getAllNotes(int id){
         if(allNotes == null) {
