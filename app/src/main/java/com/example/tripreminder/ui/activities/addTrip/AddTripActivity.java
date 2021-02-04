@@ -60,6 +60,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import javax.sql.StatementEvent;
+
 
 public class AddTripActivity extends AppCompatActivity {
     TextView tripTitle, tripStartPoint, tripEndPoint, tripTime, tripDate;
@@ -231,6 +233,7 @@ public class AddTripActivity extends AppCompatActivity {
                 tName = tripName.getText().toString();
                 final int idAlarm = (int) System.currentTimeMillis();
                 //turnOnAlarmManager(time, idAlarm);
+                String tag = generateTag();
                 Trips trips = new Trips();
                 trips.setTripName(tripName.getText().toString());
                 trips.setDate(tripDate.getText().toString());
@@ -241,9 +244,10 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setTime(tripTime.getText().toString());
                 trips.setStartPoint(tripStartPoint.getText().toString());
                 trips.setUserEmail(userEmail);
+                trips.setWorkManagerTag(tag);
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                //CalTimeInMilliSecond(getTripId());
+                CalTimeInMilliSecond(tag);
                 //viewModel.cancelWorkManager(getTripId());
             }
         });
@@ -441,5 +445,9 @@ public class AddTripActivity extends AppCompatActivity {
         }
     }
 
+    private String generateTag(){
+        return  userEmail+"-"+selectDateYear+"-"+
+                selectDateMonth+"-"+selectDateDay+"-"+selectDateTimeHou+"-"+selectDateTimeMin+"-"+00;
+    }
 
 }
