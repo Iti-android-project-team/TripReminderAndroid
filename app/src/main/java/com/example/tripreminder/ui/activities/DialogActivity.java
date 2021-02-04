@@ -111,19 +111,16 @@ public class DialogActivity extends AppCompatActivity {
             startActivity(startMain);
             initializeView();
         }
+        navigateToMain();
         Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
-        clearAppFromBackground();
     }
 
     public void onCancelClicked() {
-        Toast.makeText(this,
-                "Trip is cancelled",
-                Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(this, "Trip is cancelled", Toast.LENGTH_LONG).show();
+        navigateToMain();
     }
 
     public void onSnoozeClicked()  {
@@ -173,17 +170,8 @@ public class DialogActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    private void clearAppFromBackground(){
-        ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        if(am != null) {
-            List<ActivityManager.AppTask> tasks = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                tasks = am.getAppTasks();
-                if (tasks != null && tasks.size() > 0) {
-                    tasks.get(0).setExcludeFromRecents(true);
-                }
-            }
-
-        }
+    private void navigateToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
