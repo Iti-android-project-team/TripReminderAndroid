@@ -34,13 +34,13 @@ public class DialogActivity extends AppCompatActivity {
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     Ringtone ringtone;
-    String latitude, longitude;
+    String address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main2);
-        latitude = "30.614471";
-        longitude = "32.292208";
+        address = "Suez Canal University";
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Bundle bundle = getIntent().getExtras();
@@ -111,7 +111,7 @@ public class DialogActivity extends AppCompatActivity {
             startActivity(startMain);
             initializeView();
         }
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=Suez+Canal+University");
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
