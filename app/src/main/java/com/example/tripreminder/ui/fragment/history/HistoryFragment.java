@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
@@ -37,9 +38,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         // Required empty public constructor
     }
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +57,8 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     private void  init(View view){
         historyRV = view.findViewById(R.id.historyRecyclerView);
         historyRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new HistoryAdapter(this,getContext());
+        historyRV.setAdapter(adapter);
 
         SharedPref.createPrefObject(getContext());
         String userEmail = SharedPref.getUserEmail();
@@ -70,14 +70,17 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         }
 
         historyViewModel.getAllHistory().observe(getViewLifecycleOwner(), it -> {
-            if (it.size() != 0) {
+            Log.i("size", String.valueOf(it.size()));
+            if (it.size() > 0) {
                 Log.i("data", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
+                    historyRV.setVisibility(View.VISIBLE);
                     historyList = t;
-                    adapter = new HistoryAdapter(this,getContext(), historyList);
-                    historyRV.setAdapter(adapter);
+                    adapter.loadData(historyList);
                 }
+            }else {
+                historyRV.setVisibility(View.INVISIBLE);
             }
 
         });
@@ -85,11 +88,17 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     @Override
     public void showNotesButtonClicked(int position) {
+      Log.i("position", String.valueOf(position));
 
     }
 
     @Override
     public void deleteTripButtonClicked(int position) {
+
+       int tripId = historyList.get(position).getTripId();
+       Log.i("id", String.valueOf(tripId));
+       //historyList.remove(position);
+       historyViewModel.deleteTrip("delete",tripId);
 
     }
 }

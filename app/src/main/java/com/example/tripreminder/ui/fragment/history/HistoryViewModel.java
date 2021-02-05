@@ -27,4 +27,8 @@ public class HistoryViewModel  extends AndroidViewModel {
     LiveData<List<Trips>> getAllHistory() {
         return allHistory;
     }
+
+    public void deleteTrip(String status ,int tripId){
+        mRepository.updateTrip(status,tripId);
+    }
 }

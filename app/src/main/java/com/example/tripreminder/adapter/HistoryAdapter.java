@@ -21,7 +21,7 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
-    private List<Trips> trips;
+    private List<Trips> trips = new ArrayList<>();
     private OnItemClickListener listener;
     private Fragment parent;
     private Context context;
@@ -32,10 +32,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         void deleteTripButtonClicked(int position);
     }
 
-    public HistoryAdapter(Fragment parent, Context context, List<Trips> trips) {
+    public HistoryAdapter(Fragment parent, Context context) {
         this.parent = parent;
         this.context = context;
-        this.trips = trips;
     }
 
     @NonNull
@@ -84,7 +83,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             startPoint = itemView.findViewById(R.id.startPointText);
             endPoint = itemView.findViewById(R.id.endPointText);
             status = itemView.findViewById(R.id.statusText);
-            imageView = itemView.findViewById(R.id.historyImageView);
+            imageView = itemView.findViewById(R.id.imgDeleteTrip);
             viewDetails = itemView.findViewById(R.id.viewDetailsBtn);
 
             viewDetails.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +94,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                     listener.showNotesButtonClicked(position);
                 }
             });
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    listener = (HistoryFragment) parent;
+                    listener.deleteTripButtonClicked(position);
+                }
+            });
         }
+    }
+    public void loadData( List<Trips> trips) {
+            this.trips = new  ArrayList(trips);
+            notifyDataSetChanged();
     }
 }
