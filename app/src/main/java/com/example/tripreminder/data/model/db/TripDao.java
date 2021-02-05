@@ -32,7 +32,8 @@ public interface TripDao {
     @Query("UPDATE trip_table SET status = :status WHERE tripe_id = :tripId")
     void updateTripStatus(String status, int tripId);
 
-   
+    @Query("UPDATE trip_table SET tripe_name= :tripName,start_point= :startPoint, end_point= :endPoint, date= :date,time= :time,repeated= :repeated,direction= :direction WHERE tripe_id = :tripId")
+    void updateTrip(String tripName, String startPoint,String endPoint, String date,String time,String repeated,boolean direction ,int tripId);
 
 
     @Query("UPDATE trip_table SET notes = :note WHERE tripe_id = :tripId")
