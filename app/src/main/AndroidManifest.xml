@@ -16,7 +16,11 @@
         android:theme="@style/Theme.TripReminder">
         <activity android:name=".ui.activities.dialog.DialogActivity"></activity>
         <activity android:name=".ui.activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.activities.AddNoteActivity" />
         <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
@@ -27,11 +31,7 @@
             android:exported="true" />
 
         <activity android:name=".ui.activities.MainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
         </activity>

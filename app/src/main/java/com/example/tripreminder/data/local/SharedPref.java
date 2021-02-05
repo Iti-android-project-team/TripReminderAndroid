@@ -3,6 +3,8 @@ package com.example.tripreminder.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class SharedPref {
@@ -32,6 +34,10 @@ public class SharedPref {
     }
     public static String getUserEmail(){
         return  pref.getString("user-email"," ");
+    }
+
+    public static void setLogoutSocial(GoogleSignInAccount account){
+        account = null;
     }
 
 
