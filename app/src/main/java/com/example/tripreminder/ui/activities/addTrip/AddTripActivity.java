@@ -58,9 +58,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.StatementEvent;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
 
 
 public class AddTripActivity extends AppCompatActivity {
@@ -98,6 +103,7 @@ public class AddTripActivity extends AppCompatActivity {
     private int selectDateTimeMin;
     private long selectedTimeInMilliSecond;
     private String userEmail;
+    private int tripId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,9 +253,10 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setWorkManagerTag(tag);
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                Log.e("lastId", String.valueOf(getTripId()));
+                //Log.e("lastId", String.valueOf(getTripId()));
+                //Log.i("TripId", String.valueOf());
 
-                CalTimeInMilliSecond(tag,getTripId(),tripEndPoint.getText().toString());
+                CalTimeInMilliSecond(tag,tripId+1,tripEndPoint.getText().toString());
                 //viewModel.cancelWorkManager(getTripId());
             }
         });
@@ -398,9 +405,8 @@ public class AddTripActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void insertTrip(Trips trip) {
+     private void insertTrip(Trips trip) {
         viewModel.insert(trip);
-
     }
 
     public void initialize() {
@@ -421,6 +427,12 @@ public class AddTripActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this, new AddTripViewModelFactory(getApplication(),
                     userEmail)).get(AddTripViewModel.class);
         }
+        viewModel.getTripId().observe(this, it -> {
+            if(it!=null){
+                tripId = it;
+            }
+
+        });
     }
 
     private void CalTimeInMilliSecond(String tag,int tripId,String endPoint) {
@@ -452,8 +464,9 @@ public class AddTripActivity extends AppCompatActivity {
                 selectDateMonth+"-"+selectDateDay+"-"+selectDateTimeHou+"-"+selectDateTimeMin+"-"+00;
     }
     private int getTripId(){
-        int lastTripID =viewModel.getTripId();
-        return (lastTripID+1);
+        //int lastTripID =viewModel.getTripId();
+        //return (lastTripID);
+        return 1;
     }
 
 }

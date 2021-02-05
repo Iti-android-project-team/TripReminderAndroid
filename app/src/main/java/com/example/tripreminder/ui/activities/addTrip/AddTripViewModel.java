@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
@@ -14,7 +15,10 @@ import com.example.tripreminder.data.model.db.TripRepository;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.data.services.UpWorkManager;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class AddTripViewModel extends AndroidViewModel {
     private TripRepository mRepository;
@@ -51,15 +55,18 @@ public class AddTripViewModel extends AndroidViewModel {
                         .build();
         tripsWorkManager.enqueue(uploadWorkRequest);
     }
-    public void insert(Trips trip) {
+    public @io.reactivex.rxjava3.annotations.NonNull Single<Long> insert(Trips trip) {
         mRepository.insertTrips(trip);
+        return Single.fromCallable(() -> mRepository.insertTrips(trip));
     }
+
+
 
     public void cancelWorkManager(String tag){
         tripsWorkManager.cancelAllWorkByTag(tag);
     }
 
-    public int getTripId(){
+    public LiveData<Integer> getTripId(){
         return mRepository.getTripId();
     }
 

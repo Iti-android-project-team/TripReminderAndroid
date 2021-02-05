@@ -32,6 +32,8 @@ public interface TripDao {
     @Query("UPDATE trip_table SET status = :status WHERE tripe_id = :tripId")
     void updateTripStatus(String status, int tripId);
 
+   
+
 
     @Query("UPDATE trip_table SET notes = :note WHERE tripe_id = :tripId")
     void setNote(List<Note> note, int tripId);
@@ -44,6 +46,6 @@ public interface TripDao {
     void deleteTrip(int tripTd);
 
     @Query("SELECT tripe_id FROM trip_table ORDER BY tripe_id DESC LIMIT 1")
-    int getTripId();
+    LiveData<Integer> getTripId();
 
 }

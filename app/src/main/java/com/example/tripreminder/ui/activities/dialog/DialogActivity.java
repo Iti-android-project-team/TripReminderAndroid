@@ -188,8 +188,8 @@ public class DialogActivity extends AppCompatActivity {
     private void init(){
         tripId = getIntent().getIntExtra("tripId",0);
         endPoint = getIntent().getStringExtra("endPoint");
-        Log.i("UpWorkManager", String.valueOf(tripId));
-        Log.i("UpWorkManager", endPoint);
+        Log.i("UpWorkManagerId", String.valueOf(tripId));
+        Log.i("UpWorkManagerEndPoint", endPoint);
         SharedPref.createPrefObject(DialogActivity.this);
         userEmail = SharedPref.getUserEmail();
         if (!userEmail.equals(" ")) {

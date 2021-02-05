@@ -6,12 +6,15 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
+
 public class TripRepository {
 
     private TripDao tripDao;
     private static TripRepository mInstance;
     private final LiveData<List<Trips>> allTrips;
     private final LiveData<List<Trips>> allHistoryTrip;
+    private final LiveData<Integer> tripId;
 
     private LiveData<List<String>> allNotes = null;
 
@@ -21,6 +24,7 @@ public class TripRepository {
         tripDao = db.tripDao();
         allTrips = tripDao.getUpComingTrips(userEmail);
         allHistoryTrip = tripDao.getHistoryTrips(userEmail);
+        tripId = tripDao.getTripId();
     }
 
     // Room executes all queries on a separate thread.
@@ -55,10 +59,12 @@ public class TripRepository {
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insertTrips(Trips trip) {
+    public long insertTrips(Trips trip) {
+        final long[] tripId = new long[1];
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertTrip(trip);
+            tripId[0] = tripDao.insertTrip(trip);
         });
+        return tripId[0];
     }
 
     public void updateTrip(String status, int tripId) {
@@ -73,8 +79,8 @@ public class TripRepository {
         });
     }
 
-    public int getTripId(){
-        return tripDao.getTripId();
+    public LiveData<Integer> getTripId(){
+        return tripId;
     }
 
 }
