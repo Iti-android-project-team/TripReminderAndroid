@@ -272,7 +272,7 @@ public class AddTripActivity extends AppCompatActivity {
 
     public void placeOuto() {
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyAGI7YfmrD1yC5-khaLeqLr3-r6FMVQzjw");
+            Places.initialize(getApplicationContext(), "AIzaSyBL_za9z0eWrk_VFVN1TCuP32mQW19P52o");
         }
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
