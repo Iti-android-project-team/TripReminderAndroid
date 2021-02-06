@@ -39,7 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView register;
     ProgressDialog progressDialog;
     FirebaseAuth fAuth;
-    GoogleSignInClient mGoogleSignInClient;
+    public static GoogleSignInClient mGoogleSignInClient;
+    public  static GoogleSignInAccount account;
    int RC_SIGN_IN = 10;
 
     @Override
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
     }
 
@@ -131,8 +132,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     public void updateUI(GoogleSignInAccount account){
+
         if (account != null){
             Intent intent = new Intent(this, MainActivity.class);
+            SharedPref.setUserEmail(account.getEmail());
             startActivity(intent);
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
