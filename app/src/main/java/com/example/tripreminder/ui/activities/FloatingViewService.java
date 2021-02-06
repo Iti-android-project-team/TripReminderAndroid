@@ -12,17 +12,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.example.tripreminder.R;
 import com.example.tripreminder.ui.activities.dialog.DialogViewModel;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+
+import java.util.List;
 
 public class FloatingViewService extends Service {
     private WindowManager mWindowManager;
     private View mFloatingView;
     View collapsedView;
     View expandedView;
-    public static int id;
-    private DialogViewModel dialogViewModel;
+    public  int id;
     public FloatingViewService() {
     }
 
@@ -32,10 +35,20 @@ public class FloatingViewService extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        id = intent.getIntExtra("tripId",id);
+        Log.i("IBinder", String.valueOf(id));
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
-        Log.i("notes", "these are the Notes"+dialogViewModel.getNote(id));
+
+
+
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,

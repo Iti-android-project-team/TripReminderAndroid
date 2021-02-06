@@ -1,7 +1,6 @@
 package com.example.tripreminder.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -11,7 +10,7 @@ import android.view.View;
 import com.example.tripreminder.R;
 import com.example.tripreminder.helper.ViewPagerAdapter;
 import com.example.tripreminder.ui.activities.addTrip.AddTripActivity;
-import com.example.tripreminder.ui.fragment.ProfileFragment;
+import com.example.tripreminder.ui.fragment.profile.ProfileFragment;
 import com.example.tripreminder.ui.fragment.TripsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

@@ -3,6 +3,8 @@ package com.example.tripreminder.ui.activities.dialog;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.NotificationChannel;
@@ -30,16 +32,21 @@ import com.example.tripreminder.ui.activities.FloatingViewService;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DialogActivity extends AppCompatActivity {
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     Ringtone ringtone;
-   public static String address;
+    public static String address;
     private String userEmail;
     private DialogViewModel viewModel;
     private int tripId;
     private String endPoint;
+    private List<String> note = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +65,12 @@ public class DialogActivity extends AppCompatActivity {
         alert.setMessage("your trip time has come");
         alert.setCancelable(false);
         alert.setPositiveButton("Go", new DialogInterface.OnClickListener() {
-                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                         onGoClicked();
-                         ringtone.stop();
-                    }
-                 })
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onGoClicked();
+                ringtone.stop();
+            }
+        })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -78,25 +85,25 @@ public class DialogActivity extends AppCompatActivity {
                         ringtone.stop();
                     }
                 });
-                     alert.create();
-                     alert.show();
-                     play();
+        alert.create();
+        alert.show();
+        play();
     }
 
 
-        private void createNotificationChannel(Context context) {
+    private void createNotificationChannel(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("channel2", "myChannel", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-            NotificationCompat.Action action;
-            Intent intent = new Intent(this, DialogActivity.class);
-            intent.putExtra("tripId",tripId);
-            intent.putExtra("endPoint",endPoint);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
-            action = new NotificationCompat.Action(R.drawable.logo, "end snooze", pendingIntent);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel2")
+        NotificationCompat.Action action;
+        Intent intent = new Intent(this, DialogActivity.class);
+        intent.putExtra("tripId", tripId);
+        intent.putExtra("endPoint", endPoint);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+        action = new NotificationCompat.Action(R.drawable.logo, "end snooze", pendingIntent);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel2")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Trip reminder")
                 .setContentText("Time is here!")
@@ -119,9 +126,9 @@ public class DialogActivity extends AppCompatActivity {
             startActivity(startMain);
             initializeView();
         }
-        viewModel.updateTrip("Done",tripId);
+        viewModel.updateTrip("Done", tripId);
         navigateToMain();
-        Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
@@ -129,14 +136,15 @@ public class DialogActivity extends AppCompatActivity {
 
     public void onCancelClicked() {
         Toast.makeText(this, "Trip is cancelled", Toast.LENGTH_LONG).show();
-        viewModel.updateTrip("Cancel",tripId);
+        viewModel.updateTrip("Cancel", tripId);
         navigateToMain();
     }
 
-    public void onSnoozeClicked()  {
+    public void onSnoozeClicked() {
         createNotificationChannel(this);
         finish();
     }
+
     private ServiceConnection myConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -162,7 +170,9 @@ public class DialogActivity extends AppCompatActivity {
     }
 
     private void initializeView() {
-                startService(new Intent(DialogActivity.this, FloatingViewService.class));
+        Intent intent = new Intent(DialogActivity.this, FloatingViewService.class);
+        intent.putExtra("tripId", tripId);
+        startService(intent);
     }
 
     @Override
@@ -180,12 +190,14 @@ public class DialogActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    private void navigateToMain(){
+
+    private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    private void init(){
-        tripId = getIntent().getIntExtra("tripId",0);
+
+    private void init() {
+        tripId = getIntent().getIntExtra("tripId", 0);
         endPoint = getIntent().getStringExtra("endPoint");
         Log.i("UpWorkManagerId", String.valueOf(tripId));
         Log.i("UpWorkManagerEndPoint", endPoint);
@@ -195,7 +207,18 @@ public class DialogActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this, new DialogViewModelFactory(getApplication(),
                     userEmail)).get(DialogViewModel.class);
         }
-        FloatingViewService.id = tripId;
+        getNotes();
 
+    }
+
+    private void getNotes() {
+
+        viewModel.getNote(tripId).observe((LifecycleOwner) this, it -> {
+            note = it;
+            for (String notes : note) {
+                Log.i("notes", notes);
+            }
+
+        });
     }
 }
