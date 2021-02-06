@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
@@ -28,6 +29,7 @@ import java.util.List;
 public class NoteFragment extends DialogFragment {
     private RecyclerView recyclerNote;
     private HistoryNoteAdapter adapter;
+    private Button btnClose;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,10 @@ public class NoteFragment extends DialogFragment {
     }
 
     private void init(View view) {
+        btnClose = view.findViewById(R.id.btnClose);
         recyclerNote = view.findViewById(R.id.recyclerNote);
         recyclerNote.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         SharedPref.createPrefObject(getContext());
         String notesString = SharedPref.getNotes();
@@ -62,5 +66,15 @@ public class NoteFragment extends DialogFragment {
             recyclerNote.setAdapter(adapter);
 
         }
+        buttonClickedCall();
     }
+
+    private void buttonClickedCall(){
+        btnClose.setOnClickListener(v->{
+            dismiss();
+        });
+    }
+
+
 }
+

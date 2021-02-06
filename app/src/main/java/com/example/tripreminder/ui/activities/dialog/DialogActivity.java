@@ -43,15 +43,12 @@ public class DialogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main2);
         address = "Suez Canal University";
-
-
 
         init();
 
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         Bundle bundle = getIntent().getExtras();
 //        id = bundle.getString("TripID");
 //        Log.i("", "onCreate: " + id);
@@ -95,6 +92,8 @@ public class DialogActivity extends AppCompatActivity {
         }
             NotificationCompat.Action action;
             Intent intent = new Intent(this, DialogActivity.class);
+            intent.putExtra("tripId",tripId);
+            intent.putExtra("endPoint",endPoint);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
             action = new NotificationCompat.Action(R.drawable.logo, "end snooze", pendingIntent);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel2")
