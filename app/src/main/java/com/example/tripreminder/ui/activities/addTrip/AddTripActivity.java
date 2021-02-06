@@ -127,17 +127,17 @@ public class AddTripActivity extends AppCompatActivity {
         tripStartPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  placeOuto();
-                //  isStart = true;
-                tripStartPoint.setText("start");
+                  placeOuto();
+                  isStart = true;
+//                tripStartPoint.setText("start");
 
             }
         });
         tripEndPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // placeOuto();
-                tripEndPoint.setText("end");
+                 placeOuto();
+//                tripEndPoint.setText("end");
             }
         });
         tripDate.setOnClickListener(new View.OnClickListener() {
@@ -267,12 +267,12 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
-        //"AIzaSyDnbtBwgXmFh-e3jDYu3ffqDpOEOb8vU3Y"   run
+//        "AIzaSyDnbtBwgXmFh-e3jDYu3ffqDpOEOb8vU3Y"   run
     }
 
     public void placeOuto() {
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyAGI7YfmrD1yC5-khaLeqLr3-r6FMVQzjw", Locale.US);
+            Places.initialize(getApplicationContext(), "AIzaSyAGI7YfmrD1yC5-khaLeqLr3-r6FMVQzjw");
         }
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
@@ -283,14 +283,17 @@ public class AddTripActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        String address = "";
         if (resultCode == Activity.RESULT_OK && requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             Log.i("TAG", "place:" + place.getName() + "," + place.getId());
+            address = Autocomplete.getPlaceFromIntent(data).getName();
         } else if (requestCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+             address = Autocomplete.getPlaceFromIntent(data).getName();
         }
-        String address = Autocomplete.getPlaceFromIntent(data).getName();
+
 
 
         if (isStart) {
