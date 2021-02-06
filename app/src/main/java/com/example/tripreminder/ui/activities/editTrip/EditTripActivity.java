@@ -29,6 +29,7 @@ import com.example.tripreminder.R;
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.activities.addTrip.AddTripActivity;
 import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
 
 
@@ -172,6 +173,13 @@ public class EditTripActivity extends AppCompatActivity {
                 editTrip(eN,eS,eE,eD,eT,tripRepeat,eDir,editId);
                 Toast.makeText(v.getContext(), "Trip Edit", Toast.LENGTH_SHORT).show();
 
+                startActivity(new Intent(EditTripActivity.this, MainActivity.class));
+
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 startActivity(new Intent(EditTripActivity.this, MainActivity.class));
 
             }
