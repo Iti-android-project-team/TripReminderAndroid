@@ -160,16 +160,15 @@ public class EditTripActivity extends AppCompatActivity {
 
                 tName = editTripName.getText().toString();
 
-                Trips trips= new Trips();
-                trips.setTripName(editTripName.getText().toString());
-                trips.setDate(editTripDate.getText().toString());
-                trips.setStatus("upComing");
-                trips.setDirection(false);
-                trips.setEndPoint(editTripEndPoint.getText().toString());
-                trips.setRepeated(tripRepeat);
-                trips.setTime(editTripTime.getText().toString());
-                trips.setStartPoint(editTripStartPoint.getText().toString());
-                editTrip(trips);
+                String tripName =editTripName.getText().toString();
+//                trips.setDate(editTripDate.getText().toString());
+//                trips.setStatus("upComing");
+//                trips.setDirection(false);
+//                trips.setEndPoint(editTripEndPoint.getText().toString());
+//                trips.setRepeated(tripRepeat);
+//                trips.setTime(editTripTime.getText().toString());
+//                trips.setStartPoint(editTripStartPoint.getText().toString());
+                //editTrip(tripName,);
                 Toast.makeText(v.getContext(), "Trip Edit", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(EditTripActivity.this, MainActivity.class));
