@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Trips.class,Notes.class}, version = 1,exportSchema = false)
-@TypeConverters({Converters.class })
+@TypeConverters({Converters.class})
 public abstract class TripRoomDatabase extends RoomDatabase {
 
     public abstract TripDao tripDao();

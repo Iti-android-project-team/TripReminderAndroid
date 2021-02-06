@@ -21,8 +21,16 @@ public class SharedPref {
         editor.putBoolean("login",login);
         editor.apply();
     }
+
     public static Boolean checkLogin(){
         return  pref.getBoolean("login",false);
     }
-
+    public static void setNotes(String notes){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("notes",notes);
+        editor.apply();
+    }
+    public static String getNotes(){
+        return  pref.getString("notes"," ");
+    }
 }

@@ -1,39 +1,29 @@
 package com.example.tripreminder.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripreminder.R;
 
 import com.example.tripreminder.data.model.db.Trips;
-import com.example.tripreminder.ui.activities.AddNoteActivity;
-
-import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComingViewHolder> {
+public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPComingViewHolder> {
     Context context;
-    private static final String TAG = "TripListAdapter";
     private List<Trips> trips ;
-
+    private Fragment parent;
     private OnItemClickListener mListener;
-    private View view;
 
     public interface OnItemClickListener {
         void onItemNoteClick(int position);
@@ -46,9 +36,10 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
     }
 
 
-    public UPComingAdapter(Context context, List<Trips> trips) {
+    public UPComingAdapter(Context context, List<Trips> trips, Fragment parent) {
         this.context=context;
         this.trips= trips;
+        this.parent = parent;
     }
 
     @NonNull
@@ -108,21 +99,27 @@ public class UPComingAdapter extends RecyclerView.Adapter<UPComingAdapter.UPComi
             tripNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener!= null){
-                        int position = getAdapterPosition();
-                        if (position!= RecyclerView.NO_POSITION);
-                        listener.onItemNoteClick(position);
-                    }
+                  //  if (listener!= null){
+                    //    int position = getAdapterPosition();
+                      //  if (position!= RecyclerView.NO_POSITION);
+                       // listener.onItemNoteClick(position);
+                    //}
+                    int position = getAdapterPosition();
+                    mListener = (UpComingFragment)parent;
+                    mListener.onItemNoteClick(position);
                 }
             });
             tripEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener!= null){
+                /*    if (listener!= null){
                         int position = getAdapterPosition();
                         if (position!= RecyclerView.NO_POSITION);
                         listener.onItemEditClick(position);
-                    }
+                    }*/
+                    int position = getAdapterPosition();
+                    mListener = (UpComingFragment)parent;
+                    mListener.onItemEditClick(position);
                 }
             });
             start.setOnClickListener(new View.OnClickListener() {

@@ -45,6 +45,7 @@ public class Notes {
         return notes;
     }
 
+
     public void setNotes(String notes) {
         this.notes = notes;
     }

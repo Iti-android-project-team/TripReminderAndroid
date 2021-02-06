@@ -81,6 +81,13 @@ public class TripRepository {
         });
     }
 
+    public void updateTrip(String tripName, String startPoint, String endPoint,
+                           String date ,String time, String repeated,boolean direction,int tripId){
+        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
+            tripDao.updateTrip(tripName,startPoint,endPoint,date,time,repeated,direction,tripId);
+        });
+    }
+
 
 
 }
