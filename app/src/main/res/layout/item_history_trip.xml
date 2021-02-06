@@ -11,8 +11,7 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@drawable/background"
-        android:backgroundTint="@android:color/white"
-        android:elevation="8dp"
+        app:backgroundTint="@android:color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         tools:layout_editor_absoluteX="8dp">
