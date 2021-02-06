@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.services.DialogReceiver;
+import com.example.tripreminder.ui.activities.dialog.DialogActivity;
 import com.example.tripreminder.ui.activities.editTrip.EditTripActivity;
 import com.example.tripreminder.R;
 
@@ -217,14 +218,10 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
 
     @Override
     public void onItemNoteClick(int position) {
-        Log.i("Data", "onItemClickListener");
 
         SharedPref.setNotes(new Gson().toJson(tripList.get(position).getNotes()));
-
         Intent intent = new Intent(getContext(), AddNoteActivity.class);
-        Log.i("id from upcoming", "iddddd");
         int tripId = tripList.get(position).getTripId();
-        Log.i("id from upcoming", String.valueOf(tripId));
         intent.putExtra("ID", tripId);
         startActivity(intent);
 
@@ -253,11 +250,37 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(intent);
 
     }
+    private void initializeView() {
+        Log.i("len", "initialize");
+        Intent intent = new Intent(getContext(), FloatingViewService.class);
+        intent.putExtra("tripId",new Trips().getTripId());
+        getActivity().startService(intent);
+    }
 
     @Override
     public void onItemStartClick(int position) {
+        Log.i("Data", "onItemClickListener");
+        int tripId = tripList.get(position).getTripId();
+        String editTripEnd = tripList.get(position).getEndPoint();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getContext().getPackageName()));
+            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        } else {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            initializeView();
+        }
+        upComingViewModel.updateTrip("Done",tripId);
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+    public void onGoClicked() {
 
     }
-
 }
 

@@ -130,11 +130,14 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener!= null){
+                 /*   if (listener!= null){
                         int position = getAdapterPosition();
                         if (position!= RecyclerView.NO_POSITION);
                         listener.onItemStartClick(position);
-                    }
+                    }*/
+                    int position = getAdapterPosition();
+                    mListener = (UpComingFragment)parent;
+                    mListener.onItemStartClick(position);
                 }
             });
 
