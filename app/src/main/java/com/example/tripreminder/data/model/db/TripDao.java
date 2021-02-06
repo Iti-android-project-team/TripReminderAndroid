@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -48,5 +49,6 @@ public interface TripDao {
 
     @Query("SELECT tripe_id FROM trip_table ORDER BY tripe_id DESC LIMIT 1")
     LiveData<Integer> getTripId();
+
 
 }

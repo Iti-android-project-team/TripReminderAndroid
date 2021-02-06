@@ -38,7 +38,7 @@ public class HistoryNoteAdapter extends RecyclerView.Adapter<HistoryNoteAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull HistoryNoteAdapter.NoteViewHolder holder, int position) {
-        holder.addNote.setText(notes.get(position).getNote());
+        holder.addNote.setText(notes.get(position).getNotes());
 
     }
 

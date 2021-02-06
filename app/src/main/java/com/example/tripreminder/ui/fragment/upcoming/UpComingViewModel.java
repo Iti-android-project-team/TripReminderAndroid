@@ -20,9 +20,11 @@ public class UpComingViewModel extends AndroidViewModel {
 
     private TripRepository mRepository;
 
-    private  LiveData<List<Trips>> allTrips;
+    private final LiveData<List<Trips>> allTrips;
+
     private  LiveData<Integer> tripId;
     private  LiveData<List<String>> allNotes = null;
+
 
 
     public UpComingViewModel ( Application application,String userEmail) {
@@ -38,12 +40,6 @@ public class UpComingViewModel extends AndroidViewModel {
 
 
 
-    LiveData<List<String>> getAllNotes(int id){
-        if(allNotes == null) {
-            allNotes = mRepository.getAllNotes(id);
-        }
-        return allNotes;
-    }
 
     public void deleteTrip(int tripId){
         mRepository.deleteTrip(tripId);
@@ -55,6 +51,6 @@ public class UpComingViewModel extends AndroidViewModel {
 
 
     public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
-    public void insertNote(List<Note> notes,int tripId) { mRepository.setNote(notes,tripId); }
+
 
 }

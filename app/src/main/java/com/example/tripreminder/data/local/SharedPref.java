@@ -23,9 +23,11 @@ public class SharedPref {
         editor.putBoolean("login",login);
         editor.apply();
     }
+
     public static Boolean checkLogin(){
         return  pref.getBoolean("login",false);
     }
+
 
     public static void setUserEmail(String email){
         SharedPreferences.Editor editor = pref.edit();
@@ -36,14 +38,14 @@ public class SharedPref {
         return  pref.getString("user-email"," ");
     }
 
-
     public static void setNotes(String notes){
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("notes",notes);
         editor.apply();
     }
-    public static String getNotes() {
-        return pref.getString("notes", " ");
+
+    public static String getNotes(){
+        return  pref.getString("notes"," ");
     }
 
     public static void setLogoutSocial(GoogleSignInAccount account){

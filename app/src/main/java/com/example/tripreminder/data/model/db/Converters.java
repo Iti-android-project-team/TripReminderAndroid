@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Converters {
+
     @TypeConverter
     public static List<Note> storedStringToMyObjects(String data) {
         Gson gson = new Gson();

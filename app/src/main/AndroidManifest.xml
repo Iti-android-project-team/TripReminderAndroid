@@ -14,6 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TripReminder">
+
+        <activity android:name=".ui.activities.editTrip.EditTripActivity">
+        </activity>
+        <activity android:name=".ui.activities.addNote.AddNoteActivity" />
+        <activity android:name=".ui.activities.addTrip.AddTripActivity" />
+
         <activity android:name=".ui.activities.dialog.DialogActivity"></activity>
         <activity android:name=".ui.activities.SplashActivity">
             <intent-filter>
@@ -22,21 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.AddNoteActivity" />
-        <activity android:name=".ui.activities.addTrip.AddTripActivity"></activity>
 
         <service
             android:name=".ui.activities.FloatingViewService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.activities.MainActivity" >
-
-
+        <activity android:name=".ui.activities.LoginActivity">
 
         </activity>
-        <activity android:name=".ui.activities.LoginActivity"></activity>
         <activity android:name=".ui.activities.Register" />
+        <activity android:name=".ui.activities.MainActivity"/>
 
     </application>
 

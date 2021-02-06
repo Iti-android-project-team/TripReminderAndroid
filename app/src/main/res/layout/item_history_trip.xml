@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_marginBottom="16dp"
+    app:layout_constraintBottom_toBottomOf="parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ItemLinearLayout"
@@ -14,7 +16,8 @@
         app:backgroundTint="@android:color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="8dp"
+        android:layout_marginBottom="8dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/background"
-            android:orientation="horizontal">
+            android:layout_marginBottom="8dp">
 
             <ImageView
                 android:id="@+id/imgDeleteTrip"

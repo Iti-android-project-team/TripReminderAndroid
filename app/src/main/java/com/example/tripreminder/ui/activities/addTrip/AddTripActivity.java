@@ -38,7 +38,6 @@ import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.activities.MainActivity;
-import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 import com.google.android.gms.common.api.Status;
 
 import com.google.android.libraries.places.api.Places;
@@ -47,26 +46,22 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Observable;
+
 import java.util.concurrent.TimeUnit;
 
-import javax.sql.StatementEvent;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleObserver;
 
 
 public class AddTripActivity extends AppCompatActivity {
@@ -76,6 +71,11 @@ public class AddTripActivity extends AppCompatActivity {
     Spinner spinner;
     EditText tripName;
     CheckBox rounded;
+
+
+    FirebaseAuth fAuth;
+    FirebaseDatabase fDatabase;
+    DatabaseReference reference;
 
 
     private AlarmManager alarmManager;
@@ -236,12 +236,15 @@ public class AddTripActivity extends AppCompatActivity {
                     tripDate.setError(getString(R.string.date_expired));
                     return;
                 }
+                       // insertIntoFirebase();
 
                 tName = tripName.getText().toString();
+
                 final int idAlarm = (int) System.currentTimeMillis();
                 //turnOnAlarmManager(time, idAlarm);
                 String tag = generateTag();
                 Trips trips = new Trips();
+
                 trips.setTripName(tripName.getText().toString());
                 trips.setDate(tripDate.getText().toString());
                 trips.setStatus("upComing");
@@ -254,11 +257,13 @@ public class AddTripActivity extends AppCompatActivity {
                 trips.setWorkManagerTag(tag);
                 insertTrip(trips);
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
-                //Log.e("lastId", String.valueOf(getTripId()));
-                //Log.i("TripId", String.valueOf());
-
                 CalTimeInMilliSecond(tag,tripId+1,tripEndPoint.getText().toString());
+
+                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+
                 //viewModel.cancelWorkManager(getTripId());
+
+
             }
         });
 
@@ -406,11 +411,17 @@ public class AddTripActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+
      private void insertTrip(Trips trip) {
         viewModel.insert(trip);
     }
 
-    public void initialize() {
+
+    public void initialize(){
+
+        fAuth=FirebaseAuth.getInstance();
+        fDatabase = FirebaseDatabase.getInstance();
+
         tripTitle = findViewById(R.id.txt_title);
         tripStartPoint = findViewById(R.id.edit_tripStartPoint);
         tripEndPoint = findViewById(R.id.edit_tripEndPoint);
@@ -469,5 +480,20 @@ public class AddTripActivity extends AppCompatActivity {
         //return (lastTripID);
         return 1;
     }
+  /*  public void insertIntoFirebase()
+    {
+        String NameTrip = tripName.getText().toString();
+        String startPointTrip = tripStartPoint.getText().toString();
+        String endPointTrip = tripEndPoint.getText().toString();
+        String dateTrip = tripDate.getText().toString();
+        String timeTrip = tripTime.getText().toString();
+        Boolean roundTrip = false;
+        String repeatTrip = tripRepeat;
+        String statusTrip = "UpComing";
+        String userID = fAuth.getCurrentUser().getUid();
+        reference =fDatabase.getReference("users").child(userID).child("Trips");
+        Trips tripData= new Trips(NameTrip,startPointTrip,endPointTrip,timeTrip,dateTrip,statusTrip,roundTrip,repeatTrip);
+        reference.push().setValue(tripData);
+    }*/
 
 }

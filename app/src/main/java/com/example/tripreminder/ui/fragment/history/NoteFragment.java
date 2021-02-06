@@ -61,7 +61,7 @@ public class NoteFragment extends DialogFragment {
             }.getType();
             List<Note> noteList = new Gson()
                     .fromJson(notesString, collectionType);
-            Log.i("notes",noteList.get(0).getNote());
+            Log.i("notes",noteList.get(0).getNotes());
             adapter = new HistoryNoteAdapter(getContext(),noteList);
             recyclerNote.setAdapter(adapter);
 

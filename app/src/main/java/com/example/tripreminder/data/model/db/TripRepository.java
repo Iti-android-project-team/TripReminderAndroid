@@ -79,9 +79,11 @@ public class TripRepository {
         });
     }
 
+
     public LiveData<Integer> getTripId(){
         return tripId;
     }
+
 
     public void updateTrip(String tripName, String startPoint, String endPoint,
                            String date ,String time, String repeated,boolean direction,int tripId){
