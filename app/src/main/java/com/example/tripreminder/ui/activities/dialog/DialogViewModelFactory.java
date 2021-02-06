@@ -13,6 +13,7 @@ public class DialogViewModelFactory implements ViewModelProvider.Factory {
     public DialogViewModelFactory(Application application, String param) {
         mApplication = application;
         mParam = param;
+
     }
 
 

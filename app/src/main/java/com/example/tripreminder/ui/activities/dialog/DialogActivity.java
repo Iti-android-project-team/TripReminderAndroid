@@ -35,7 +35,7 @@ public class DialogActivity extends AppCompatActivity {
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     Ringtone ringtone;
-    String address;
+   public static String address;
     private String userEmail;
     private DialogViewModel viewModel;
     private int tripId;
@@ -195,5 +195,7 @@ public class DialogActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this, new DialogViewModelFactory(getApplication(),
                     userEmail)).get(DialogViewModel.class);
         }
+        FloatingViewService.id = tripId;
+
     }
 }

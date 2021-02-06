@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,12 +13,16 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.ui.activities.dialog.DialogViewModel;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 
 public class FloatingViewService extends Service {
     private WindowManager mWindowManager;
     private View mFloatingView;
     View collapsedView;
     View expandedView;
+    public static int id;
+    private DialogViewModel dialogViewModel;
     public FloatingViewService() {
     }
 
@@ -30,6 +35,7 @@ public class FloatingViewService extends Service {
     public void onCreate() {
         super.onCreate();
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
+        Log.i("notes", "these are the Notes"+dialogViewModel.getNote(id));
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,

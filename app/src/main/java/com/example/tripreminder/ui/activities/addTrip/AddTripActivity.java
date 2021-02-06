@@ -38,6 +38,7 @@ import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.activities.MainActivity;
+import com.example.tripreminder.ui.activities.dialog.DialogActivity;
 import com.google.android.gms.common.api.Status;
 
 import com.google.android.libraries.places.api.Places;
