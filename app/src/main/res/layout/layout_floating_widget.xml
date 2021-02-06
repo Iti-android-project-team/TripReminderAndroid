@@ -47,21 +47,15 @@
             android:visibility="gone"
             android:orientation="horizontal"
             android:padding="8dp">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
+           <androidx.recyclerview.widget.RecyclerView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+           </androidx.recyclerview.widget.RecyclerView>
                 <ImageView
                     android:id="@+id/close_button"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-
-
                     android:src="@drawable/ic_close"/>
-
-
-            </RelativeLayout>
         </LinearLayout>
-    </RelativeLayout>
+            </RelativeLayout>
 </FrameLayout>
