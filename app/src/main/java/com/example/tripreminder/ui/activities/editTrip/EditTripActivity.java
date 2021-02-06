@@ -67,9 +67,9 @@ public class EditTripActivity extends AppCompatActivity {
     private boolean isStart;
     private String userEmail;
 
-    String s1,s2,s3,s4,s5,s6;
-    int i;
-    Boolean b;
+    String eN,eS,eE,eT,eD,eSp;
+    int eId;
+    Boolean eDir;
 
     private EditTripViewModel editViewModel;
 
@@ -160,17 +160,16 @@ public class EditTripActivity extends AppCompatActivity {
                     return;
                 }
 
-                tName = editTripName.getText().toString();
-
-                String tripName =editTripName.getText().toString();
-//                trips.setDate(editTripDate.getText().toString());
-//                trips.setStatus("upComing");
-//                trips.setDirection(false);
-//                trips.setEndPoint(editTripEndPoint.getText().toString());
-//                trips.setRepeated(tripRepeat);
-//                trips.setTime(editTripTime.getText().toString());
-//                trips.setStartPoint(editTripStartPoint.getText().toString());
-                //editTrip(tripName,);
+                Trips trips = new Trips();
+                eN =editTripName.getText().toString();
+                eD = editTripDate.getText().toString();
+                trips.setStatus("upComing");
+                eDir = false;
+                eE = editTripEndPoint.getText().toString();
+                trips.setRepeated(tripRepeat);
+                eT = editTripTime.getText().toString();
+                eS = editTripStartPoint.getText().toString();
+                editTrip(eN,eS,eE,eD,eT,tripRepeat,eDir,editId);
                 Toast.makeText(v.getContext(), "Trip Edit", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(EditTripActivity.this, MainActivity.class));
@@ -339,7 +338,7 @@ public class EditTripActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(EditTripActivity.this, onDateSetListener, year, month, day);
         datePickerDialog.show();
     }
-    private void editTrip(Trips trips ){
+    private void editTrip(String s1, String s2,String s3,String s4,String s5,String s6, Boolean b,int i  ){
         //TripListViewModel listViewModel = ViewModelProviders.of(AddTripActivity.this).get(TripListViewModel.class);
         editViewModel.updateTrip(s1,s2,s3,s4,s5,s6,b,i);
 //        mProgress.dismiss();

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Single;
+//import io.reactivex.rxjava3.core.Single;
 
 public class TripRepository {
 
