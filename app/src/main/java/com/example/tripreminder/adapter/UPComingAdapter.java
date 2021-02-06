@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,10 +65,10 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
 
 
     }
-   /* public void setTrips(List<Trips> trips) {
+    public void setTrips(List<Trips> trips) {
         this.trips = trips;
         notifyDataSetChanged();
-    }*/
+    }
 
     @Override
     public int getItemCount() {
@@ -77,6 +78,10 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             return 0;
 
 
+    }
+    @Nullable
+    public Trips getItem(int position) {
+        return trips.get(position);
     }
 
     public class UPComingViewHolder extends RecyclerView.ViewHolder {
@@ -125,11 +130,14 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener!= null){
+                 /*   if (listener!= null){
                         int position = getAdapterPosition();
                         if (position!= RecyclerView.NO_POSITION);
                         listener.onItemStartClick(position);
-                    }
+                    }*/
+                    int position = getAdapterPosition();
+                    mListener = (UpComingFragment)parent;
+                    mListener.onItemStartClick(position);
                 }
             });
 

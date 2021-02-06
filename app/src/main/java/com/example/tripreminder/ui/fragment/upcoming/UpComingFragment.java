@@ -1,21 +1,37 @@
 package com.example.tripreminder.ui.fragment.upcoming;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.Settings;
 import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.services.DialogReceiver;
+import com.example.tripreminder.ui.activities.dialog.DialogActivity;
 import com.example.tripreminder.ui.activities.editTrip.EditTripActivity;
 import com.example.tripreminder.R;
 
@@ -40,6 +56,9 @@ import com.example.tripreminder.helper.MyViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class UpComingFragment extends Fragment implements UPComingAdapter.OnItemClickListener {
     //implements Dialog.DialogListener{
@@ -67,8 +86,97 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_up_coming, container, false);
         init(view);
+        deleteItemBySwabbing();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(getContext())) {
+                getPermission();
+            }
+        }
         return view;
     }
+
+    private void deleteItemBySwabbing() {
+        // Delete subject by swabbing item left and right
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(90, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @SuppressLint("NewApi")
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                final Trips trip = adapter.getItem(position);
+                assert trip != null;
+                openDialog(getContext(),trip);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+    private void cancelAlarm(int id) {
+        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(requireActivity(), DialogReceiver.class);
+        final PendingIntent pendingIntent = PendingIntent
+                .getBroadcast(requireContext(), id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    public void openDialog(Context context, Trips trip) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Are you sure delete trip " + trip.getTripName() + " ? ");
+        builder1.setCancelable(false);
+        builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cancelAlarm(trip.getTripId());
+                upComingViewModel.updateTrip("delete",trip.getTripId());
+            }
+        });
+
+        builder1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.setTrips(tripList);
+                dialog.cancel();
+            }
+        });
+
+
+        AlertDialog dialog = builder1.create();
+        if (dialog.getWindow() != null) {
+            int type;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                type = WindowManager.LayoutParams.TYPE_TOAST;
+            } else {
+                type = WindowManager.LayoutParams.TYPE_PHONE;
+            }
+            dialog.getWindow().setType(type);
+            Objects.requireNonNull(dialog.getWindow()).setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            dialog.show();
+        }
+    }
+    public void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireActivity().getPackageName()));
+            startActivityForResult(intent, 1);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(getContext())) {
+                    Toast.makeText(getContext(), "permission denied by user.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
 
 
     private void init(View view) {
@@ -110,14 +218,10 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
 
     @Override
     public void onItemNoteClick(int position) {
-        Log.i("Data", "onItemClickListener");
 
         SharedPref.setNotes(new Gson().toJson(tripList.get(position).getNotes()));
-
         Intent intent = new Intent(getContext(), AddNoteActivity.class);
-        Log.i("id from upcoming", "iddddd");
         int tripId = tripList.get(position).getTripId();
-        Log.i("id from upcoming", String.valueOf(tripId));
         intent.putExtra("ID", tripId);
         startActivity(intent);
 
@@ -146,9 +250,36 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(intent);
 
     }
+    private void initializeView() {
+        Log.i("len", "initialize");
+        Intent intent = new Intent(getContext(), FloatingViewService.class);
+        intent.putExtra("tripId",new Trips().getTripId());
+        getActivity().startService(intent);
+    }
 
     @Override
     public void onItemStartClick(int position) {
+        Log.i("Data", "onItemClickListener");
+        int tripId = tripList.get(position).getTripId();
+        String editTripEnd = tripList.get(position).getEndPoint();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getContext().getPackageName()));
+            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        } else {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            initializeView();
+        }
+        upComingViewModel.updateTrip("Done",tripId);
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+    public void onGoClicked() {
 
     }
 }
