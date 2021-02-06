@@ -34,5 +34,14 @@ public class SharedPref {
         return  pref.getString("user-email"," ");
     }
 
+    public static void setNotes(String notes){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("notes",notes);
+        editor.apply();
+    }
+    public static String getNotes(){
+        return  pref.getString("notes"," ");
+    }
+
 
 }

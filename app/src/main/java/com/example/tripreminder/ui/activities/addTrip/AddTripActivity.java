@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.example.tripreminder.R;
 
 import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.activities.MainActivity;

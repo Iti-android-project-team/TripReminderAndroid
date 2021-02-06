@@ -1,9 +1,12 @@
 package com.example.tripreminder.ui.fragment.history;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +21,16 @@ import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
 import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -89,6 +98,17 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     @Override
     public void showNotesButtonClicked(int position) {
       Log.i("position", String.valueOf(position));
+      if(historyList.get(position).getNotes() != null){
+//          Log.i("position", String.valueOf(historyList.get(position).getNotes()));
+//          for(Note i : historyList.get(position).getNotes()){
+//              Log.i("position", i.getNote());
+//          }
+          SharedPref.setNotes(new Gson().toJson(historyList.get(position).getNotes()));
+          NoteFragment noteFragment = new NoteFragment();
+          noteFragment.show(getParentFragmentManager(), "note-dialog");
+      }else{
+          Toast.makeText(getContext(),"This item hasn't any notes",Toast.LENGTH_LONG).show();
+      }
 
     }
 
