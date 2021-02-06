@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 
+import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -76,6 +77,7 @@ public class Register extends AppCompatActivity {
                           reference =fDatabase.getReference().child("users").child(userID);
                           User userData = new User(email,passward);
                            reference.setValue(userData);
+                          SharedPref.setLoginWithFirebase(true);
                          /* DocumentReference documentReference =fStore.collection("users").document(userID);
                           Map<String,Object> user = new HashMap<>();
                           user.put("Email",email);
