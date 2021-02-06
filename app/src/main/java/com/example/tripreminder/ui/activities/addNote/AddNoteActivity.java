@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddNoteActivity extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity  {
     ImageView close;
     EditText body;
     Button addIt, reset;
@@ -102,6 +102,17 @@ public class AddNoteActivity extends AppCompatActivity {
                     body.setText("");
                 }
             });
+            adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+                @Override
+                public void onItemDeleteClick(int position) {
+                    newNoteList.remove(position);
+                    deleteNote();
+                    adapter = new NoteAdapter(AddNoteActivity.this, newNoteList);
+                    recyclerView.setAdapter(adapter);
+                    Toast.makeText(AddNoteActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
+
+                }
+            });
     }
 
         private void insertNotesInDB (){
@@ -114,6 +125,13 @@ public class AddNoteActivity extends AppCompatActivity {
             notesViewModel.insertNote(newNoteList, id);
 
       }
+    private void deleteNote (){
+        notesViewModel.insertNote(newNoteList, id);
+
+    }
+
+
+
 
         public void initializ() {
 
