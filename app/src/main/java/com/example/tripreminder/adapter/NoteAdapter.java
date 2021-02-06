@@ -15,6 +15,8 @@ import com.example.tripreminder.R;
 import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Notes;
 import com.example.tripreminder.data.model.db.Trips;
+import com.example.tripreminder.ui.activities.addNote.AddNoteActivity;
+import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 
 
 import java.util.ArrayList;
@@ -57,10 +59,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     }
 
- /*   public void setNotes(List<Note> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
-    }*/
+    }
 
     @Override
     public int getItemCount() {
