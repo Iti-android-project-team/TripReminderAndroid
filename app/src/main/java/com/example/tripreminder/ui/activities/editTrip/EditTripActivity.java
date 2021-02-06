@@ -26,10 +26,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
-import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class EditTripActivity extends AppCompatActivity {
     private long time;
     Calendar currentCalendar = Calendar.getInstance();
     private boolean isStart;
+    private String userEmail;
 
     String s1,s2,s3,s4,s5,s6;
     int i;
@@ -87,8 +89,8 @@ public class EditTripActivity extends AppCompatActivity {
         editEnd =intent.getStringExtra("EDITEND");
         editTime =intent.getStringExtra("EDITTIME");
         editDate =intent.getStringExtra("EDITDATE");
-        editSpinn =intent.getStringExtra("EDITROUND");
-        direction =intent.getBooleanExtra("EDITSPINNER",false);
+        editSpinn =intent.getStringExtra("EDITSPINNER");
+        direction =intent.getBooleanExtra("EDITROUND",false);
 
         editTripName.setText(editName);
         editTripStartPoint.setText(editStart);
@@ -356,7 +358,12 @@ public class EditTripActivity extends AppCompatActivity {
         editSpinner = findViewById(R.id.spin_choose);
         editTripName = findViewById(R.id.edit_tripName);
         rounded = findViewById(R.id.chBox_rounded);
-        editViewModel =  new ViewModelProvider(this,new ViewModelProvider.AndroidViewModelFactory(
-                getApplication())).get(EditTripViewModel.class);
+
+        SharedPref.createPrefObject(EditTripActivity.this);
+        userEmail = SharedPref.getUserEmail();
+        if (!userEmail.equals(" ")) {
+            editViewModel = new ViewModelProvider(this, new EditTripViewModelFactory(getApplication(),
+                    userEmail)).get(EditTripViewModel.class);
+        }
     }
 }

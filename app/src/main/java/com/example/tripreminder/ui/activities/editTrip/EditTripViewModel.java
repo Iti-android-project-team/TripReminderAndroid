@@ -14,9 +14,9 @@ import java.util.List;
 public class EditTripViewModel extends AndroidViewModel {
     private TripRepository mRepository;
 
-    public EditTripViewModel(@NonNull Application application) {
+    public EditTripViewModel(@NonNull Application application,String userEmail) {
         super(application);
-        mRepository = new TripRepository(application);
+        mRepository = new TripRepository(application,userEmail);
     }
     public void updateTrip(String tripName, String startPoint, String endPoint,
                            String date ,String time, String repeated,boolean direction,int tripId)

@@ -22,15 +22,13 @@ import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.activities.MainActivity;
-import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 
 public class AddNoteActivity extends AppCompatActivity {
@@ -44,7 +42,8 @@ public class AddNoteActivity extends AppCompatActivity {
     private AddNoteViewModel notesViewModel;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    List<Note> newNoteList = new ArrayList<>();
+    private List<Note> newNoteList = new ArrayList<>();
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +116,13 @@ public class AddNoteActivity extends AppCompatActivity {
       }
 
         public void initializ() {
-            notesViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(
-                    getApplication())).get(AddNoteViewModel.class);
+
+            SharedPref.createPrefObject(AddNoteActivity.this);
+            userEmail = SharedPref.getUserEmail();
+            if (!userEmail.equals(" ")) {
+                notesViewModel = new ViewModelProvider(this, new AddNoteViewModelFactory(getApplication(),
+                        userEmail)).get(AddNoteViewModel.class);
+            }
             close = findViewById(R.id.note_img_close);
             body = findViewById(R.id.note_body);
             addIt = findViewById(R.id.note_btn_add);

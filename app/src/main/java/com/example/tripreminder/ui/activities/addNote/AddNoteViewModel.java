@@ -13,21 +13,16 @@ import com.example.tripreminder.data.model.db.Trips;
 import java.util.List;
 
 public class AddNoteViewModel extends AndroidViewModel {
-    private  LiveData<List<String>> allNotes = null;
+
 
 
     private TripRepository mRepository;
-    public AddNoteViewModel(@NonNull Application application) {
+    public AddNoteViewModel(@NonNull Application application,String userEmail) {
         super(application);
-        mRepository = new TripRepository(application);
+        mRepository = new TripRepository(application,userEmail);
     }
 
-    LiveData<List<String>> getAllNotes(int id){
-        if(allNotes == null) {
-            allNotes = mRepository.getAllNotes(id);
-        }
-        return allNotes;
-    }
+
 
     public void insertNote(List<Note> notes, int tripId) { mRepository.setNote(notes,tripId); }
 }

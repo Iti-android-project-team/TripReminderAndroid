@@ -171,7 +171,7 @@
                         android:layout_width="50dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_account" />
+                        app:srcCompat="@drawable/ic_account" />
 
 
                     <EditText
@@ -202,7 +202,7 @@
                         android:layout_width="50dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_lock" />
+                        app:srcCompat="@drawable/ic_lock" />
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -242,6 +242,15 @@
                     android:textColor="#FFF"
                     android:textSize="22sp"
                     app:backgroundTint="@color/blue" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp" />
+
                 <TextView
                     android:id="@+id/text_register"
                     android:layout_width="match_parent"
@@ -252,7 +261,6 @@
                     android:text="@string/donot_hava_account"
                     android:textColor="#60778B"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card" />
 
             </LinearLayout>

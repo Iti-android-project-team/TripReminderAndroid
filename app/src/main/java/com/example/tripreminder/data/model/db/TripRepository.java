@@ -6,72 +6,70 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
+
 public class TripRepository {
 
     private TripDao tripDao;
     private static TripRepository mInstance;
-    private LiveData<List<Trips>> allTrips;
-    private LiveData<List<Trips>> allHistoryTrips;
+    private final LiveData<List<Trips>> allTrips;
+    private final LiveData<List<Trips>> allHistoryTrip;
+    private final LiveData<Integer> tripId;
+
     private LiveData<List<String>> allNotes = null;
-    private String status;
 
-    // Note that in order to unit test the WordRepository, you have to remove the Application
-    // dependency. This adds complexity and much more code, and this sample is not about testing.
-    // See the BasicSample in the android-architecture-components repository at
-    // https://github.com/googlesamples
-    public TripRepository(Application application) {
+
+    public TripRepository(Application application, String userEmail) {
         TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
         tripDao = db.tripDao();
-        allTrips = tripDao.getUpComingTrips();
-        allHistoryTrips= tripDao.getHistoryTrips();
+        allTrips = tripDao.getUpComingTrips(userEmail);
+        allHistoryTrip = tripDao.getHistoryTrips(userEmail);
+        tripId = tripDao.getTripId();
     }
-
-
-    public TripRepository(Application application,int id) {
-        TripRoomDatabase db = TripRoomDatabase.getDatabase(application);
-        tripDao = db.tripDao();
-
-    }
-
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<Trips>> getAllTrips() {
         return allTrips;
     }
+
     public LiveData<List<Trips>> getAllHistoryTrips() {
-        return allHistoryTrips;
+
+        return allHistoryTrip;
     }
 
     public LiveData<List<String>> getAllNotes(int id) {
-        if(allNotes == null){
+        if (allNotes == null) {
             allNotes = tripDao.getNotes(id);
         }
         return allNotes;
     }
 
-    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
-    // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insertTrips(Trips trip) {
+
+    public String getWorkManagerTag(String userEmail, int tripId) {
+        String workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+        return workTag;
+    }
+
+    public void deleteTrip(int tripId) {
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertTrip(trip);
+            tripDao.deleteTrip(tripId);
         });
     }
 
-    public void insertNote(List<Notes>notes) {
+    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
+    // that you're not doing any long running operations on the main thread, blocking the UI.
+    public long insertTrips(Trips trip) {
+        final long[] tripId = new long[1];
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.insertNote(notes);
+            tripId[0] = tripDao.insertTrip(trip);
         });
+        return tripId[0];
     }
 
     public void updateTrip(String status, int tripId) {
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.updateTripStatus(status, tripId);
-        });
-    }
-    public void updateNote(String status, int noteId) {
-        TripRoomDatabase.databaseWriteExecutor.execute(() -> {
-            tripDao.updateNoteStatus(status, noteId);
         });
     }
 
@@ -81,13 +79,17 @@ public class TripRepository {
         });
     }
 
+
+    public LiveData<Integer> getTripId(){
+        return tripId;
+    }
+
+
     public void updateTrip(String tripName, String startPoint, String endPoint,
                            String date ,String time, String repeated,boolean direction,int tripId){
         TripRoomDatabase.databaseWriteExecutor.execute(() -> {
             tripDao.updateTrip(tripName,startPoint,endPoint,date,time,repeated,direction,tripId);
         });
     }
-
-
 
 }

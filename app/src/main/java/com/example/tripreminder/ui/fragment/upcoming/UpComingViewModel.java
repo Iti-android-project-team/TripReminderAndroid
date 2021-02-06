@@ -1,6 +1,7 @@
 package com.example.tripreminder.ui.fragment.upcoming;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -10,6 +11,10 @@ import com.example.tripreminder.data.model.db.TripRepository;
 import com.example.tripreminder.data.model.db.Trips;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class UpComingViewModel extends AndroidViewModel {
 
@@ -17,17 +22,34 @@ public class UpComingViewModel extends AndroidViewModel {
 
     private final LiveData<List<Trips>> allTrips;
 
+    private  LiveData<Integer> tripId;
+    private  LiveData<List<String>> allNotes = null;
 
-    public UpComingViewModel ( Application application) {
+
+
+    public UpComingViewModel ( Application application,String userEmail) {
         super(application);
-        mRepository = new TripRepository(application);
+        mRepository = new TripRepository(application,userEmail);
         allTrips = mRepository.getAllTrips();
+
     }
 
-    LiveData<List<Trips>> getAllTrips() { return allTrips; }
+    LiveData<List<Trips>> getAllTrips() {
+        return allTrips;
+    }
 
 
-    public void insert(Trips trip) { mRepository.insertTrips(trip); }
+
+
+    public void deleteTrip(int tripId){
+        mRepository.deleteTrip(tripId);
+    }
+
+      public void insert(Trips trip) {
+            mRepository.insertTrips(trip);
+    }
+
+
     public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
 
 
