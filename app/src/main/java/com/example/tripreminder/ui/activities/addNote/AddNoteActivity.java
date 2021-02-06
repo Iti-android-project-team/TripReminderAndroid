@@ -44,6 +44,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private AddNoteViewModel notesViewModel;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    List<Note> newNoteList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +57,24 @@ public class AddNoteActivity extends AppCompatActivity {
         String notesString = SharedPref.getNotes();
         id=getIntent().getIntExtra("ID",0);
         Log.i("id from note", String.valueOf(id));
-        if(!notesString.equals("")){
+        Log.i("string from note", notesString);
+        if(notesString != null){
             Type collectionType = new TypeToken<List<Note>>(){}.getType();
-             notesList =new Gson().fromJson( notesString , collectionType);
-           /* for(int i =0; i<notesList.size(); i++){
-                Log.i("note",notesList.get(i).getNote());
-            }*/
+             notesList = new Gson().fromJson( notesString , collectionType);
+             //Log.i("list", String.valueOf(notesList.size()));
+             if(notesList != null){
+                 for(int i =0; i<notesList.size(); i++){
+                     newNoteList.add(notesList.get(i));
+                 }
+             }
+
         }
             recyclerView.setLayoutManager(new LinearLayoutManager(AddNoteActivity.this));
 
-        if (notesList!=null) {
-            adapter = new NoteAdapter(this, notesList);
+        if (newNoteList!=null) {
+            adapter = new NoteAdapter(this, newNoteList);
             recyclerView.setAdapter(adapter);
         }
-         Toast.makeText(this, "Did not have note ", Toast.LENGTH_SHORT).show();
             reset.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,9 +97,10 @@ public class AddNoteActivity extends AppCompatActivity {
 */                  Note no = new Note();
                     no.setNotes(body.getText().toString());
                     Log.i("note","adddNote"+body.getText().toString() );
-                    notesList.add(no);
+                    newNoteList.add(no);
                     insertNotesInDB();
                     Toast.makeText(AddNoteActivity.this, "Note Add", Toast.LENGTH_SHORT).show();
+                    body.setText("");
                 }
             });
     }
@@ -106,7 +112,7 @@ public class AddNoteActivity extends AppCompatActivity {
                     return;
                 }
             }
-            notesViewModel.insertNote(notesList, id);
+            notesViewModel.insertNote(newNoteList, id);
 
       }
 
