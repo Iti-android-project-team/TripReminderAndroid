@@ -13,10 +13,12 @@ public class TripRepository {
     private TripDao tripDao;
     private static TripRepository mInstance;
     private final LiveData<List<Trips>> allTrips;
+    private final LiveData<List<Trips>> getTrips;
     private final LiveData<List<Trips>> allHistoryTrip;
     private final LiveData<Integer> tripId;
 
     private LiveData<List<String>> allNotes = null;
+    private LiveData<String> workTag = null;
 
 
     public TripRepository(Application application, String userEmail) {
@@ -24,6 +26,7 @@ public class TripRepository {
         tripDao = db.tripDao();
         allTrips = tripDao.getUpComingTrips(userEmail);
         allHistoryTrip = tripDao.getHistoryTrips(userEmail);
+        getTrips = tripDao.getTrips(userEmail);
         tripId = tripDao.getTripId();
     }
 
@@ -37,6 +40,7 @@ public class TripRepository {
 
         return allHistoryTrip;
     }
+    public LiveData<List<Trips>> getAllTripsForFirebase() { return getTrips; }
 
     public LiveData<List<String>> getAllNotes(int id) {
         if (allNotes == null) {
@@ -46,8 +50,11 @@ public class TripRepository {
     }
 
 
-    public String getWorkManagerTag(String userEmail, int tripId) {
-        String workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+    public LiveData<String> getWorkManagerTag(String userEmail, int tripId) {
+
+        if(workTag == null){
+            workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+        }
         return workTag;
     }
 

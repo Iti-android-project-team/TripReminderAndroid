@@ -48,9 +48,30 @@ public class SharedPref {
         return  pref.getString("notes"," ");
     }
 
+    public static void setFloatingNotes(String notes){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("floatingNotes",notes);
+        editor.apply();
+    }
+
+    public static String getFloatingNotes(){
+        return  pref.getString("floatingNotes"," ");
+    }
+
+
     public static void setLogoutSocial(GoogleSignInAccount account){
         account = null;
 
+    }
+
+    public static void setRegisterWithFirebase(boolean login){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("login-firebase",login);
+        editor.apply();
+    }
+
+    public static Boolean checkRegisterWithFirebase(){
+        return  pref.getBoolean("login-firebase",false);
     }
 
     public static void setLoginWithFirebase(boolean login){

@@ -24,6 +24,7 @@ public class AddTripViewModel extends AndroidViewModel {
     private TripRepository mRepository;
     private WorkManager tripsWorkManager;
     private Data.Builder data = new Data.Builder();
+
     public AddTripViewModel(@NonNull Application application,String userEmail) {
         super(application);
         tripsWorkManager = WorkManager.getInstance(application);
@@ -61,10 +62,6 @@ public class AddTripViewModel extends AndroidViewModel {
     }
 
 
-
-    public void cancelWorkManager(String tag){
-        tripsWorkManager.cancelAllWorkByTag(tag);
-    }
 
     public LiveData<Integer> getTripId(){
         return mRepository.getTripId();

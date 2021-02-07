@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,7 @@ import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 
 import com.example.tripreminder.helper.MyViewModelFactory;
+import com.google.protobuf.StringValue;
 
 
 import java.util.ArrayList;
@@ -72,6 +74,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
     private static final int RESULT_OK = -1;
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    private String userEmail;
 
 
     @Override
@@ -132,6 +135,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             public void onClick(DialogInterface dialog, int which) {
                 cancelAlarm(trip.getTripId());
                 upComingViewModel.updateTrip("delete",trip.getTripId());
+                cancelWorkManager(userEmail,trip.getTripId());
             }
         });
 
@@ -180,33 +184,20 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
 
 
     private void init(View view) {
+
         tripList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.upComing_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         SharedPref.createPrefObject(getContext());
-        String userEmail = SharedPref.getUserEmail();
+        userEmail = SharedPref.getUserEmail();
+
         Log.e("len", userEmail);
         if (!userEmail.equals(" ")) {
             upComingViewModel = new ViewModelProvider(this, new MyViewModelFactory(getActivity().getApplication(),
                     userEmail)).get(UpComingViewModel.class);
+            getAllTrips();
         }
-
-
-        upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
-
-            if (it.size() != 0) {
-                Log.i("data", String.valueOf(it.size()));
-                if (it != null) {
-                    List<Trips> t = it;
-                    tripList = t;
-                    adapter = new UPComingAdapter(getContext(), tripList, this);
-                    recyclerView.setAdapter(adapter);
-
-                }
-            }
-
-        });
 
     }
 
@@ -250,10 +241,14 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(intent);
 
     }
-    private void initializeView() {
+    private void initializeView(int position) {
         Log.i("len", "initialize");
         Intent intent = new Intent(getContext(), FloatingViewService.class);
-        intent.putExtra("tripId",new Trips().getTripId());
+//        intent.putExtra("tripId",new Trips().getTripId());
+        if (tripList.get(position).getNotes()!= null){
+            SharedPref.setFloatingNotes(new Gson().toJson(tripList.get(position).getNotes()));
+            Log.i("tripList notes", (tripList.get(position).getNotes()).toString() );
+        }
         getActivity().startService(intent);
     }
 
@@ -271,9 +266,10 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
-            initializeView();
+            initializeView(position);
         }
         upComingViewModel.updateTrip("Done",tripId);
+        cancelWorkManager(userEmail,tripList.get(position).getTripId());
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
@@ -281,6 +277,32 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
     }
     public void onGoClicked() {
 
+    }
+
+    private void cancelWorkManager( String userEmail ,int tripId){
+        upComingViewModel.getWorkManageTag(userEmail,tripId).observe(getViewLifecycleOwner(),it->{
+            Log.i("workManagerTag",it);
+            if(it != null){
+                upComingViewModel.cancelWorkManager(it);
+            }
+        });
+    }
+
+    private void getAllTrips(){
+        upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
+
+            if (it.size() != 0) {
+                Log.i("data", String.valueOf(it.size()));
+                if (it != null) {
+                    List<Trips> t = it;
+                    tripList = t;
+                    adapter = new UPComingAdapter(getContext(), tripList, this);
+                    recyclerView.setAdapter(adapter);
+
+                }
+            }
+
+        });
     }
 }
 

@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null){
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
+            SharedPref.setLoginWithFirebase(false);
             registerToFirebase();
             startActivity(intent);
         }  else {
@@ -153,6 +154,8 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 progressDialog.dismiss();
                                 SharedPref.setLogin(true);
+                                SharedPref.setLoginWithFirebase(true);
+                                SharedPref.setRegisterWithFirebase(true);
                                 SharedPref.setUserEmail(sEmail);
                                 Log.e("le",sEmail);
                                 finish();
@@ -179,9 +182,9 @@ public class LoginActivity extends AppCompatActivity {
                     reference =fDatabase.getReference().child("users").child(userID);
                     User userData = new User(account.getEmail(),account.getEmail());
                     reference.setValue(userData);
-                    SharedPref.setLoginWithFirebase(true);
+                    SharedPref.setRegisterWithFirebase(true);
                 }else{
-                    SharedPref.setLoginWithFirebase(false);
+                    SharedPref.setRegisterWithFirebase(false);
                 }
             }
         });
