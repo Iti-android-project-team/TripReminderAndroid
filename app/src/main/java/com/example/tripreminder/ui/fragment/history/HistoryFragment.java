@@ -73,10 +73,10 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         return view;
     }
 
-    private void  init(View view){
+    private void init(View view) {
         historyRV = view.findViewById(R.id.historyRecyclerView);
         historyRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new HistoryAdapter(this,getContext());
+        adapter = new HistoryAdapter(this, getContext());
         historyRV.setAdapter(adapter);
 
         SharedPref.createPrefObject(getContext());
@@ -98,7 +98,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                     historyList = t;
                     adapter.loadData(historyList);
                 }
-            }else {
+            } else {
                 historyRV.setVisibility(View.INVISIBLE);
             }
 
@@ -107,18 +107,18 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     @Override
     public void showNotesButtonClicked(int position) {
-      Log.i("position", String.valueOf(position));
-      if(historyList.get(position).getNotes() != null){
+        Log.i("position", String.valueOf(position));
+        if (historyList.get(position).getNotes() != null) {
 //          Log.i("position", String.valueOf(historyList.get(position).getNotes()));
 //          for(Note i : historyList.get(position).getNotes()){
 //              Log.i("position", i.getNote());
 //          }
-          SharedPref.setNotes(new Gson().toJson(historyList.get(position).getNotes()));
-          NoteFragment noteFragment = new NoteFragment();
-          noteFragment.show(getParentFragmentManager(), "note-dialog");
-      }else{
-          Toast.makeText(getContext(),"This item doesn't have any notes",Toast.LENGTH_LONG).show();
-      }
+            SharedPref.setNotes(new Gson().toJson(historyList.get(position).getNotes()));
+            NoteFragment noteFragment = new NoteFragment();
+            noteFragment.show(getParentFragmentManager(), "note-dialog");
+        } else {
+            Toast.makeText(getContext(), "This item doesn't have any notes", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -126,11 +126,11 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     public void deleteTripButtonClicked(int position) {
         final Trips trip = adapter.getItem(position);
         assert trip != null;
-       openDialog(getContext(),trip,position);
+        openDialog(getContext(), trip, position);
     }
 
 
-    public void openDialog(Context context, Trips trip,int position) {
+    public void openDialog(Context context, Trips trip, int position) {
         int tripId = historyList.get(position).getTripId();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setTitle("Are you sure delete trip " + trip.getTripName() + " ? ");
@@ -138,7 +138,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                historyViewModel.deleteTrip("delete",tripId);
+                historyViewModel.deleteTrip("delete", tripId);
             }
         });
 
@@ -150,17 +150,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
             }
         });
 
-
-        AlertDialog dialog = builder1.create();
-        if (dialog.getWindow() != null) {
-            int type;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                type = WindowManager.LayoutParams.TYPE_TOAST;
-            } else {
-                type = WindowManager.LayoutParams.TYPE_PHONE;
-            }
-            dialog.getWindow().setType(type);
-            dialog.show();
-        }
+        builder1.create();
+        builder1.show();
     }
 }

@@ -83,7 +83,7 @@ public class AddNoteActivity extends AppCompatActivity  {
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(AddNoteActivity.this, MainActivity.class));
+                    finish();
                 }
             });
             addIt.setOnClickListener(new View.OnClickListener() {

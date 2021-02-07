@@ -267,7 +267,7 @@ public class AddTripActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "Trip Saved", Toast.LENGTH_SHORT).show();
                 CalTimeInMilliSecond(tag,tripId+1,tripEndPoint.getText().toString());
 
-                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+                finish();
 
                 //viewModel.cancelWorkManager(getTripId());
 

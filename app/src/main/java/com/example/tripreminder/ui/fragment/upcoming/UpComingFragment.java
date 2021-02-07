@@ -113,7 +113,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
                 int position = viewHolder.getAdapterPosition();
                 final Trips trip = adapter.getItem(position);
                 assert trip != null;
-                openDialog(getContext(),trip);
+                openDialog(getContext(), trip);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -127,8 +127,8 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                upComingViewModel.updateTrip("delete",trip.getTripId());
-                cancelWorkManager(userEmail,trip.getTripId());
+                upComingViewModel.updateTrip("delete", trip.getTripId());
+                cancelWorkManager(userEmail, trip.getTripId());
             }
         });
 
@@ -141,20 +141,11 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             }
         });
 
+        builder1.create();
+        builder1.show();
 
-        AlertDialog dialog = builder1.create();
-        if (dialog.getWindow() != null) {
-            int type;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                type = WindowManager.LayoutParams.TYPE_TOAST;
-            } else {
-                type = WindowManager.LayoutParams.TYPE_PHONE;
-            }
-            dialog.getWindow().setType(type);
-            Objects.requireNonNull(dialog.getWindow()).setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            dialog.show();
-        }
     }
+
     public void getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + requireActivity().getPackageName()));
@@ -173,7 +164,6 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             }
         }
     }
-
 
 
     private void init(View view) {
@@ -234,13 +224,14 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(intent);
 
     }
+
     private void initializeView(int position) {
         Log.i("len", "initialize");
         Intent intent = new Intent(getContext(), FloatingViewService.class);
 //        intent.putExtra("tripId",new Trips().getTripId());
-        if (tripList.get(position).getNotes()!= null){
+        if (tripList.get(position).getNotes() != null) {
             SharedPref.setFloatingNotes(new Gson().toJson(tripList.get(position).getNotes()));
-            Log.i("tripList notes", (tripList.get(position).getNotes()).toString() );
+            Log.i("tripList notes", (tripList.get(position).getNotes()).toString());
         }
         getActivity().startService(intent);
     }
@@ -250,38 +241,39 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         Log.i("Data", "onItemClickListener");
         int tripId = tripList.get(position).getTripId();
         String editTripEnd = tripList.get(position).getEndPoint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getContext().getPackageName()));
-            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+            if(!Settings.canDrawOverlays(getContext())) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getContext().getPackageName()));
+                startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            }else{
+                initializeView(position);
+            }
         } else {
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
-            initializeView(position);
+            Toast.makeText(getContext(), "Your android version does not support this service", Toast.LENGTH_LONG).show();
         }
-        upComingViewModel.updateTrip("Done",tripId);
-        cancelWorkManager(userEmail,tripList.get(position).getTripId());
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );
+        upComingViewModel.updateTrip("Done", tripId);
+        cancelWorkManager(userEmail, tripList.get(position).getTripId());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
+
     public void onGoClicked() {
 
     }
 
-    private void cancelWorkManager( String userEmail ,int tripId){
-        upComingViewModel.getWorkManageTag(userEmail,tripId).observe(getViewLifecycleOwner(),it->{
-            Log.i("workManagerTag",it);
-            if(it != null){
+    private void cancelWorkManager(String userEmail, int tripId) {
+        upComingViewModel.getWorkManageTag(userEmail, tripId).observe(getViewLifecycleOwner(), it -> {
+            Log.i("workManagerTag", it);
+            if (it != null) {
                 upComingViewModel.cancelWorkManager(it);
             }
         });
     }
 
-    private void getAllTrips(){
+    private void getAllTrips() {
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
 
             if (it.size() != 0) {
