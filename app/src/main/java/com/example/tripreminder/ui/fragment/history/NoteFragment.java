@@ -1,10 +1,8 @@
 package com.example.tripreminder.ui.fragment.history;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tripreminder.R;
-import com.example.tripreminder.adapter.HistoryAdapter;
 import com.example.tripreminder.adapter.HistoryNoteAdapter;
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Note;

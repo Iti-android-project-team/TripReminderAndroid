@@ -118,13 +118,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-    private void cancelAlarm(int id) {
-        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(requireActivity(), DialogReceiver.class);
-        final PendingIntent pendingIntent = PendingIntent
-                .getBroadcast(requireContext(), id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(pendingIntent);
-    }
+
 
     public void openDialog(Context context, Trips trip) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
@@ -133,7 +127,6 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cancelAlarm(trip.getTripId());
                 upComingViewModel.updateTrip("delete",trip.getTripId());
                 cancelWorkManager(userEmail,trip.getTripId());
             }
@@ -144,7 +137,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 adapter.setTrips(tripList);
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
 

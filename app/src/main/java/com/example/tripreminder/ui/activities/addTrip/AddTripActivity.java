@@ -135,17 +135,17 @@ public class AddTripActivity extends AppCompatActivity {
         tripStartPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  placeOuto();
+                  //placeOuto();
                   isStart = true;
-//                tripStartPoint.setText("start");
+                tripStartPoint.setText("start");
 
             }
         });
         tripEndPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 placeOuto();
-//                tripEndPoint.setText("end");
+                 //placeOuto();
+                tripEndPoint.setText("end");
             }
         });
         tripDate.setOnClickListener(new View.OnClickListener() {

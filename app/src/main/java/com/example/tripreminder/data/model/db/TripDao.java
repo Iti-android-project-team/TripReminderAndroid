@@ -31,7 +31,7 @@ public interface TripDao {
 
 
     @Query("SELECT notes FROM trip_table WHERE tripe_id = :triId")
-    LiveData<List<String>> getNotes(int triId);
+    LiveData<List<Note>> getNotes(int triId);
 
     @Query("UPDATE trip_table SET status = :status WHERE tripe_id = :tripId")
     void updateTripStatus(String status, int tripId);

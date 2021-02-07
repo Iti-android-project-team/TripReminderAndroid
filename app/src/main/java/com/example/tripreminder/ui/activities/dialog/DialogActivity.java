@@ -47,9 +47,8 @@ public class DialogActivity extends AppCompatActivity {
     private DialogViewModel viewModel;
     private int tripId;
     private String endPoint;
-    private List<String> note = new ArrayList<>();
     List<Note> floatingNote = new ArrayList<>();
-    List<Note> myNewNote = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +119,11 @@ public class DialogActivity extends AppCompatActivity {
 
     public void onGoClicked() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(!Settings.canDrawOverlays(this)){
+            if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getPackageName()));
                 startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-            }else{
+            } else {
                 initializeView();
             }
         } else {
@@ -132,11 +131,12 @@ public class DialogActivity extends AppCompatActivity {
 //            startMain.addCategory(Intent.CATEGORY_HOME);
 //            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            startActivity(startMain);
-            Toast.makeText(this,"Your android version does not support this service",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
         }
         viewModel.updateTrip("Done", tripId);
         navigateToMain();
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
+        //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + "Cairo");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
@@ -180,8 +180,8 @@ public class DialogActivity extends AppCompatActivity {
     private void initializeView() {
         Intent intent = new Intent(DialogActivity.this, FloatingViewService.class);
         intent.putExtra("tripId", tripId);
-        if (myNewNote != null){
-            SharedPref.setFloatingNotes(new Gson().toJson(myNewNote));
+        if (floatingNote != null) {
+            SharedPref.setFloatingNotes(floatingNote.get(0).getNotes());
         }
         startService(intent);
     }
@@ -223,13 +223,9 @@ public class DialogActivity extends AppCompatActivity {
 
     private void getNotes() {
         viewModel.getNote(tripId).observe((LifecycleOwner) this, it -> {
-            note = it;
-            for (String notes : note) {
-                Note floatingNotes = new Note();
-                floatingNotes.setNotes(notes);
-                floatingNote.add(floatingNotes);
-                Log.i("notes", notes);
-            }
+            floatingNote = it;
+            Log.i("notes dialog", floatingNote.get(0).getNotes());
+
         });
     }
 }

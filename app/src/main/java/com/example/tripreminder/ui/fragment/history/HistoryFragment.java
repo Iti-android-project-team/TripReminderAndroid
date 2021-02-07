@@ -128,13 +128,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         assert trip != null;
        openDialog(getContext(),trip,position);
     }
-    private void cancelAlarm(int id) {
-        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(requireActivity(), DialogReceiver.class);
-        final PendingIntent pendingIntent = PendingIntent
-                .getBroadcast(requireContext(), id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(pendingIntent);
-    }
+
 
     public void openDialog(Context context, Trips trip,int position) {
         int tripId = historyList.get(position).getTripId();
@@ -144,7 +138,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cancelAlarm(trip.getTripId());
                 historyViewModel.deleteTrip("delete",tripId);
             }
         });
@@ -153,7 +146,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
 
@@ -167,7 +160,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                 type = WindowManager.LayoutParams.TYPE_PHONE;
             }
             dialog.getWindow().setType(type);
-            Objects.requireNonNull(dialog.getWindow()).setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             dialog.show();
         }
     }

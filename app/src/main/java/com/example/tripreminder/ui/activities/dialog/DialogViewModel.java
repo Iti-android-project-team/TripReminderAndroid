@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DialogViewModel extends AndroidViewModel {
     private TripRepository mRepository;
-    private LiveData<List<String>> notes;
+    private LiveData<List<Note>> notes;
 
 
 
@@ -26,7 +26,7 @@ public class DialogViewModel extends AndroidViewModel {
         mRepository.updateTrip(status,id);
     }
 
-    public LiveData<List<String>> getNote(int id){
+    public LiveData<List<Note>> getNote(int id){
         notes = mRepository.getAllNotes(id);
         return notes;
     }

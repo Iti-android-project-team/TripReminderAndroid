@@ -17,7 +17,7 @@ public class TripRepository {
     private final LiveData<List<Trips>> allHistoryTrip;
     private final LiveData<Integer> tripId;
 
-    private LiveData<List<String>> allNotes = null;
+    private LiveData<List<Note>> allNotes = null;
     private LiveData<String> workTag = null;
 
 
@@ -42,7 +42,7 @@ public class TripRepository {
     }
     public LiveData<List<Trips>> getAllTripsForFirebase() { return getTrips; }
 
-    public LiveData<List<String>> getAllNotes(int id) {
+    public LiveData<List<Note>> getAllNotes(int id) {
         if (allNotes == null) {
             allNotes = tripDao.getNotes(id);
         }

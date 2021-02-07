@@ -39,11 +39,12 @@ public class FloatingViewService extends Service {
     View expandedView;
     RecyclerView mRecycler;
     FloatingNoteAdapter adapter;
-    public  int id;
+    public int id;
     private List<Note> notesList = new ArrayList<>();
 
     public FloatingViewService() {
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -51,22 +52,22 @@ public class FloatingViewService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        id = intent.getIntExtra("tripId",id);
+        id = intent.getIntExtra("tripId", id);
         Log.i("IBinder", String.valueOf(id));
         SharedPref.createPrefObject(getApplicationContext());
         String notesString = SharedPref.getFloatingNotes();
         Log.i("notes from service", notesString);
-        if (notesString!=null) {
+        if (notesString != null) {
             Type collectionType = new TypeToken<List<Note>>() {
             }.getType();
             notesList = new Gson()
                     .fromJson(notesString, collectionType);
-            Log.i("notesFromService",notesList.get(0).getNotes());
+            Log.i("notesFromService", notesList.get(0).getNotes());
 
         }
         mRecycler = mFloatingView.findViewById(R.id.notesRecyclerView);
         mRecycler.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        if (notesList!=null) {
+        if (notesList != null) {
             adapter = new FloatingNoteAdapter(this, notesList);
             mRecycler.setAdapter(adapter);
             adapter.setNotes(notesList);
@@ -94,10 +95,9 @@ public class FloatingViewService extends Service {
         mWindowManager.addView(mFloatingView, params);
 
 
-         collapsedView = mFloatingView.findViewById(R.id.collapse_view);
+        collapsedView = mFloatingView.findViewById(R.id.collapse_view);
 
-         expandedView = mFloatingView.findViewById(R.id.expanded_container);
-
+        expandedView = mFloatingView.findViewById(R.id.expanded_container);
 
 
         mFloatingView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
