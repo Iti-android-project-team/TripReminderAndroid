@@ -1,7 +1,12 @@
 package com.example.tripreminder.ui.fragment.history;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -15,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
@@ -23,6 +29,7 @@ import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
+import com.example.tripreminder.data.services.DialogReceiver;
 import com.example.tripreminder.helper.MyViewModelFactory;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
 import com.google.gson.Gson;
@@ -32,6 +39,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemClickListener {
@@ -114,11 +124,51 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     @Override
     public void deleteTripButtonClicked(int position) {
+        final Trips trip = adapter.getItem(position);
+        assert trip != null;
+       openDialog(getContext(),trip,position);
+    }
+    private void cancelAlarm(int id) {
+        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(requireActivity(), DialogReceiver.class);
+        final PendingIntent pendingIntent = PendingIntent
+                .getBroadcast(requireContext(), id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
+    }
 
-       int tripId = historyList.get(position).getTripId();
-       Log.i("id", String.valueOf(tripId));
-       //historyList.remove(position);
-       historyViewModel.deleteTrip("delete",tripId);
+    public void openDialog(Context context, Trips trip,int position) {
+        int tripId = historyList.get(position).getTripId();
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Are you sure delete trip " + trip.getTripName() + " ? ");
+        builder1.setCancelable(false);
+        builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cancelAlarm(trip.getTripId());
+                historyViewModel.deleteTrip("delete",tripId);
+            }
+        });
 
+        builder1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+
+        AlertDialog dialog = builder1.create();
+        if (dialog.getWindow() != null) {
+            int type;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                type = WindowManager.LayoutParams.TYPE_TOAST;
+            } else {
+                type = WindowManager.LayoutParams.TYPE_PHONE;
+            }
+            dialog.getWindow().setType(type);
+            Objects.requireNonNull(dialog.getWindow()).setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            dialog.show();
+        }
     }
 }
