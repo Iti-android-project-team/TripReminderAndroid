@@ -20,7 +20,7 @@ public class ProfileViewModel extends AndroidViewModel {
     public ProfileViewModel(@NonNull Application application, String userEmail) {
         super(application);
         mRepository = new TripRepository(application, userEmail);
-        allTrips = mRepository.getAllHistoryTrips();
+        allTrips = mRepository.getAllTripsForFirebase();
 
     }
 

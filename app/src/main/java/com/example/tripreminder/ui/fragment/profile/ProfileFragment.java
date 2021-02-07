@@ -137,14 +137,14 @@ public class ProfileFragment extends Fragment {
                 for (int i = 0; i < tripList.size(); i++) {
                     Log.i("trip", "loop");
                     Log.i("trip", String.valueOf(tripList.get(i).getTid()));
-                    map.put(tripList.get(i).getTripName(), tripList.get(i));
-                    reference.updateChildren(map).addOnCompleteListener(task -> {
-                        Toast.makeText(getContext(), "Data sync successfully", Toast.LENGTH_LONG).show();
-                    });
+                        map.put("Trip " + tripList.get(i).getTripId(), tripList.get(i));
+                        reference.updateChildren(map).addOnCompleteListener(task -> {
+                            Toast.makeText(getContext(), "Data sync successfully", Toast.LENGTH_LONG).show();
+                        });
                 }
 
             }
-        }else{
+        } else {
             Toast.makeText(getContext(), "Sorry your account not found in cloud", Toast.LENGTH_LONG).show();
         }
     }
