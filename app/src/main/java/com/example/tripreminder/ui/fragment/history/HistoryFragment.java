@@ -107,7 +107,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
           NoteFragment noteFragment = new NoteFragment();
           noteFragment.show(getParentFragmentManager(), "note-dialog");
       }else{
-          Toast.makeText(getContext(),"This item hasn't any notes",Toast.LENGTH_LONG).show();
+          Toast.makeText(getContext(),"This item doesn't have any notes",Toast.LENGTH_LONG).show();
       }
 
     }

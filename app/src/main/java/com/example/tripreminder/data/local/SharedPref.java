@@ -48,6 +48,17 @@ public class SharedPref {
         return  pref.getString("notes"," ");
     }
 
+    public static void setFloatingNotes(String notes){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("floatingNotes",notes);
+        editor.apply();
+    }
+
+    public static String getFloatingNotes(){
+        return  pref.getString("floatingNotes"," ");
+    }
+
+
     public static void setLogoutSocial(GoogleSignInAccount account){
         account = null;
 

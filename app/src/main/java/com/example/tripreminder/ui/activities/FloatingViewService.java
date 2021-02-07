@@ -13,11 +13,23 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripreminder.R;
+import com.example.tripreminder.adapter.FloatingNoteAdapter;
+import com.example.tripreminder.adapter.HistoryNoteAdapter;
+import com.example.tripreminder.adapter.NoteAdapter;
+import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.db.Note;
+import com.example.tripreminder.ui.activities.addNote.AddNoteActivity;
 import com.example.tripreminder.ui.activities.dialog.DialogViewModel;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FloatingViewService extends Service {
@@ -25,10 +37,13 @@ public class FloatingViewService extends Service {
     private View mFloatingView;
     View collapsedView;
     View expandedView;
+    RecyclerView mRecycler;
+    FloatingNoteAdapter adapter;
     public  int id;
+    private List<Note> notesList = new ArrayList<>();
+
     public FloatingViewService() {
     }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -38,7 +53,24 @@ public class FloatingViewService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         id = intent.getIntExtra("tripId",id);
         Log.i("IBinder", String.valueOf(id));
+        SharedPref.createPrefObject(getApplicationContext());
+        String notesString = SharedPref.getFloatingNotes();
+        Log.i("notes from service", notesString);
+        if (notesString!=null) {
+            Type collectionType = new TypeToken<List<Note>>() {
+            }.getType();
+            List<Note> noteList = new Gson()
+                    .fromJson(notesString, collectionType);
+            Log.i("notesFromService",noteList.get(0).getNotes());
 
+        }
+        mRecycler = mFloatingView.findViewById(R.id.notesRecyclerView);
+        mRecycler.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        if (notesList!=null) {
+            adapter = new FloatingNoteAdapter(this, notesList);
+            mRecycler.setAdapter(adapter);
+            adapter.setNotes(notesList);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -46,10 +78,6 @@ public class FloatingViewService extends Service {
     public void onCreate() {
         super.onCreate();
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
-
-
-
-
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -58,7 +86,7 @@ public class FloatingViewService extends Service {
                 PixelFormat.TRANSLUCENT);
 
         params.gravity = Gravity.TOP | Gravity.LEFT;
-        params.x = 0;
+        params.x = 100;
         params.y = 100;
 
 
@@ -103,8 +131,6 @@ public class FloatingViewService extends Service {
                     case MotionEvent.ACTION_MOVE:
                         params.x = initialX + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
-
-
                         mWindowManager.updateViewLayout(mFloatingView, params);
                         return true;
                 }

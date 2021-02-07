@@ -52,6 +52,7 @@ import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 
 import com.example.tripreminder.helper.MyViewModelFactory;
+import com.google.protobuf.StringValue;
 
 
 import java.util.ArrayList;
@@ -250,10 +251,14 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(intent);
 
     }
-    private void initializeView() {
+    private void initializeView(int position) {
         Log.i("len", "initialize");
         Intent intent = new Intent(getContext(), FloatingViewService.class);
-        intent.putExtra("tripId",new Trips().getTripId());
+//        intent.putExtra("tripId",new Trips().getTripId());
+        if (tripList.get(position).getNotes()!= null){
+            SharedPref.setFloatingNotes(new Gson().toJson(tripList.get(position).getNotes()));
+            Log.i("tripList notes", (tripList.get(position).getNotes()).toString() );
+        }
         getActivity().startService(intent);
     }
 
@@ -271,7 +276,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
-            initializeView();
+            initializeView(position);
         }
         upComingViewModel.updateTrip("Done",tripId);
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );

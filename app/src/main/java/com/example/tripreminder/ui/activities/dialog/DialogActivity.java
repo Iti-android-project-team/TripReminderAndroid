@@ -28,9 +28,11 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.ui.activities.FloatingViewService;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class DialogActivity extends AppCompatActivity {
     private int tripId;
     private String endPoint;
     private List<String> note = new ArrayList<>();
+    List<Note> floatingNote = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +175,9 @@ public class DialogActivity extends AppCompatActivity {
     private void initializeView() {
         Intent intent = new Intent(DialogActivity.this, FloatingViewService.class);
         intent.putExtra("tripId", tripId);
+        if (floatingNote != null){
+            SharedPref.setFloatingNotes(new Gson().toJson(floatingNote));
+        }
         startService(intent);
     }
 
@@ -213,9 +219,13 @@ public class DialogActivity extends AppCompatActivity {
 
     private void getNotes() {
 
+
         viewModel.getNote(tripId).observe((LifecycleOwner) this, it -> {
             note = it;
             for (String notes : note) {
+                Note floatingNotes = new Note();
+                floatingNotes.setNotes(notes);
+                floatingNote.add(floatingNotes);
                 Log.i("notes", notes);
             }
 
