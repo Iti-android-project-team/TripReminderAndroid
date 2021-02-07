@@ -264,6 +264,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             initializeView();
         }
         upComingViewModel.updateTrip("Done",tripId);
+        cancelWorkManager(userEmail,tripList.get(position).getTripId());
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd );
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
