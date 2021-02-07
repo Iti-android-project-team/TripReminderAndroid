@@ -36,6 +36,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         this.parent = parent;
         this.context = context;
     }
+    public Trips getItem(int position) {
+        return trips.get(position);
+    }
 
     @NonNull
     @Override
