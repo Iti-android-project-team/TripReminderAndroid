@@ -1,5 +1,6 @@
 package com.example.tripreminder.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -69,5 +70,8 @@ public class MainActivity extends AppCompatActivity {
         return  false;
     };
 
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }
