@@ -1,5 +1,6 @@
 package com.example.tripreminder.ui.fragment.history;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -9,10 +10,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,6 +106,27 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
             }
 
         });
+        deleteItemBySwabbing();
+    }
+    private void deleteItemBySwabbing() {
+        // Delete subject by swabbing item left and right
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(90,
+                ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                final Trips trip = adapter.getItem(position);
+                assert trip != null;
+                openDialog(getContext(), trip);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(historyRV);
     }
 
     @Override
@@ -126,26 +150,22 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     public void deleteTripButtonClicked(int position) {
         final Trips trip = adapter.getItem(position);
         assert trip != null;
-        openDialog(getContext(), trip, position);
+        openDialog(getContext(), trip);
     }
 
 
-    public void openDialog(Context context, Trips trip, int position) {
-        int tripId = historyList.get(position).getTripId();
+    public void openDialog(Context context, Trips trip) {
+        //int tripId = historyList.get(position).getTripId();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setTitle("Are you sure delete trip " + trip.getTripName() + " ? ");
         builder1.setCancelable(false);
-        builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                historyViewModel.deleteTrip("delete", tripId);
-            }
-        });
+        builder1.setPositiveButton("Ok", (dialog, which) -> historyViewModel.deleteTrip("delete", trip.getTripId()));
 
         builder1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                adapter.loadData(historyList);
                 dialog.dismiss();
             }
         });
@@ -153,4 +173,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         builder1.create();
         builder1.show();
     }
+
+
 }

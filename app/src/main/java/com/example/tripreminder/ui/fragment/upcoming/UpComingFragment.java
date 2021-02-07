@@ -90,12 +90,12 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         View view = inflater.inflate(R.layout.fragment_up_coming, container, false);
         init(view);
         deleteItemBySwabbing();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(getContext())) {
-                getPermission();
-            }
-        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(getContext())) {
+//                getPermission();
+//            }
+//        }
         return view;
     }
 
@@ -241,12 +241,12 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         Log.i("Data", "onItemClickListener");
         int tripId = tripList.get(position).getTripId();
         String editTripEnd = tripList.get(position).getEndPoint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
-            if(!Settings.canDrawOverlays(getContext())) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!Settings.canDrawOverlays(getContext())) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getContext().getPackageName()));
                 startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-            }else{
+            } else {
                 initializeView(position);
             }
         } else {
@@ -260,9 +260,6 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         startActivity(mapIntent);
     }
 
-    public void onGoClicked() {
-
-    }
 
     private void cancelWorkManager(String userEmail, int tripId) {
         upComingViewModel.getWorkManageTag(userEmail, tripId).observe(getViewLifecycleOwner(), it -> {
