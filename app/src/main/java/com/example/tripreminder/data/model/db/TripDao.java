@@ -22,6 +22,9 @@ public interface TripDao {
     @Query("SELECT * FROM trip_table WHERE status NOT LIKE '%upComing%' AND status NOT LIKE '%delete%' AND  `user-email` = :userEmail ")
     LiveData<List<Trips>> getHistoryTrips(String userEmail);
 
+    @Query("SELECT * FROM trip_table WHERE status NOT LIKE '%delete%' AND  `user-email` = :userEmail ")
+    LiveData<List<Trips>> getTrips(String userEmail);
+
     @Query("SELECT * FROM trip_table WHERE tripe_id = :tripId")
     LiveData<Trips> getTripById(int tripId);
 
@@ -42,7 +45,7 @@ public interface TripDao {
 
 
     @Query("SELECT `work-manager-tag` FROM trip_table  WHERE `user-email`=:userEmail AND tripe_id= :tripTd")
-    String getWorkManagerTag(String userEmail,int tripTd);
+    LiveData<String> getWorkManagerTag(String userEmail,int tripTd);
 
     @Query("DELETE FROM trip_table WHERE tripe_id = :tripTd")
     void deleteTrip(int tripTd);

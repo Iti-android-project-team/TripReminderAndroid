@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.data.local.SharedPref;
+import com.example.tripreminder.data.model.User;
 import com.example.tripreminder.ui.activities.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +32,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,7 +45,10 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     public static GoogleSignInClient mGoogleSignInClient;
     public  static GoogleSignInAccount account;
-   int RC_SIGN_IN = 10;
+    int RC_SIGN_IN = 10;
+    FirebaseDatabase fDatabase;
+    DatabaseReference reference;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,34 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                String sEmail=  editEmail.getText().toString();
-                String sPassword=   editPassword.getText().toString();
-                if (! sEmail.equals("")&& ! sPassword.equals("")) {
-                    fAuth.signInWithEmailAndPassword(sEmail, sPassword)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        progressDialog.dismiss();
-                                        SharedPref.setLogin(true);
-                                        SharedPref.setUserEmail(sEmail);
-                                        Log.e("le",sEmail);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(LoginActivity.this,
-                                                task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-                }
-                else{
-                    Toast.makeText(LoginActivity.this,"Please Enter Your Email and Password",Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-                }
+                 signInWithFirebase();
 
             }
         });
@@ -136,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null){
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
+            SharedPref.setLoginWithFirebase(false);
+            registerToFirebase();
             startActivity(intent);
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
@@ -157,5 +139,54 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             updateUI(null);
         }
+    }
+    private void signInWithFirebase(){
+        progressDialog.show();
+        String sEmail=  editEmail.getText().toString();
+        String sPassword=   editPassword.getText().toString();
+        if (! sEmail.equals("")&& ! sPassword.equals("")) {
+            fAuth.signInWithEmailAndPassword(sEmail, sPassword)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                progressDialog.dismiss();
+                                SharedPref.setLogin(true);
+                                SharedPref.setLoginWithFirebase(true);
+                                SharedPref.setRegisterWithFirebase(true);
+                                SharedPref.setUserEmail(sEmail);
+                                Log.e("le",sEmail);
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this,
+                                        task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+        }
+        else{
+            Toast.makeText(LoginActivity.this,"Please Enter Your Email and Password",Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void registerToFirebase(){
+        fAuth.createUserWithEmailAndPassword(account.getEmail(),account.getEmail()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    userID = fAuth.getCurrentUser().getUid();
+                    reference =fDatabase.getReference().child("users").child(userID);
+                    User userData = new User(account.getEmail(),account.getEmail());
+                    reference.setValue(userData);
+                    SharedPref.setRegisterWithFirebase(true);
+                }else{
+                    SharedPref.setRegisterWithFirebase(false);
+                }
+            }
+        });
     }
 }

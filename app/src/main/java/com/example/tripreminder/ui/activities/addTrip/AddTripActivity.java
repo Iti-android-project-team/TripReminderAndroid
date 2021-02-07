@@ -119,6 +119,13 @@ public class AddTripActivity extends AppCompatActivity {
                 startActivity(new Intent(AddTripActivity.this,MainActivity.class));
             }
         });*/
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+
+            }
+        });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

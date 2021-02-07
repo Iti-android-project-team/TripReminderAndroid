@@ -1,20 +1,19 @@
 package com.example.tripreminder.ui.fragment.upcoming;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.work.WorkManager;
 
-import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.TripRepository;
 import com.example.tripreminder.data.model.db.Trips;
+import com.example.tripreminder.ui.activities.addTrip.AddTripViewModel;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+
+
+
 
 public class UpComingViewModel extends AndroidViewModel {
 
@@ -24,6 +23,7 @@ public class UpComingViewModel extends AndroidViewModel {
 
     private  LiveData<Integer> tripId;
     private  LiveData<List<String>> allNotes = null;
+    private WorkManager tripsWorkManager;
 
 
 
@@ -31,6 +31,7 @@ public class UpComingViewModel extends AndroidViewModel {
         super(application);
         mRepository = new TripRepository(application,userEmail);
         allTrips = mRepository.getAllTrips();
+        tripsWorkManager = WorkManager.getInstance(application);
 
     }
 
@@ -52,5 +53,13 @@ public class UpComingViewModel extends AndroidViewModel {
 
     public void updateTrip(String status, int id) { mRepository.updateTrip(status,id); }
 
+    public LiveData<String> getWorkManageTag(String userEmail,int tripId){
+        LiveData<String> workTag = mRepository.getWorkManagerTag(userEmail,tripId);
+      return workTag;
+    }
+
+    public void cancelWorkManager(String tag){
+        tripsWorkManager.cancelAllWorkByTag(tag);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.tripreminder.ui.fragment.profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.tripreminder.R;
 import com.example.tripreminder.data.local.SharedPref;
@@ -41,8 +43,9 @@ public class ProfileFragment extends Fragment {
     private String userEmail;
     private ProfileViewModel profileViewModel;
     private List<Trips> tripList = new ArrayList<>();
-    DatabaseReference reference;
-    Map<String, Object> map = new HashMap<>();
+    private DatabaseReference reference;
+    private Map<String, Object> map = new HashMap<>();
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -65,11 +68,14 @@ public class ProfileFragment extends Fragment {
         emailButton = view.findViewById(R.id.btn_email);
         syncButton = view.findViewById(R.id.btn_sync);
 
-        fAuth=FirebaseAuth.getInstance();
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Signing In please wait...");
+
+        fAuth = FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
 
         SharedPref.createPrefObject(getContext());
-         userEmail = SharedPref.getUserEmail();
+        userEmail = SharedPref.getUserEmail();
         if (!userEmail.equals("")) {
             emailButton.setText(SharedPref.getUserEmail());
         }
@@ -96,9 +102,10 @@ public class ProfileFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 //getActivity().getFragmentManager().popBackStack();
-                signOut();
-                LoginActivity.account = null;
-
+                if(!SharedPref.checkLoginWithFirebase()){
+                    signOut();
+                    LoginActivity.account = null;
+                }
             }
         });
 
@@ -112,7 +119,7 @@ public class ProfileFragment extends Fragment {
         insertIntoFirebase();
     }
 
-    private void getTrips(){
+    private void getTrips() {
 
         profileViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
             Log.i("size", String.valueOf(it.size()));
@@ -127,30 +134,37 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void insertIntoFirebase(){
-        if(tripList != null){
-            String userID = fAuth.getCurrentUser().getUid();
-            reference =fDatabase.getReference("users").child(userID).child("Trips");
-            Log.i("userId",userID);
-            for (int i =0 ; i<tripList.size(); i++) {
-                Log.i("trip", "loop");
-                Log.i("trip", String.valueOf(tripList.get(i).getTid()));
-                map.put(tripList.get(i).getTripName(),tripList.get(i));
-                reference.updateChildren(map);
-            }
+    private void insertIntoFirebase() {
+        progressDialog.show();
+        if (SharedPref.checkRegisterWithFirebase()) {
+            if (tripList != null && tripList.size() > 0) {
+                String userID = fAuth.getCurrentUser().getUid();
+                reference = fDatabase.getReference("users").child(userID).child("Trips");
+                Log.i("userId", userID);
+                for (int i = 0; i < tripList.size(); i++) {
+                    Log.i("trip", "loop");
+                    Log.i("trip", String.valueOf(tripList.get(i).getTid()));
+                        map.put("Trip " + tripList.get(i).getTripId(), tripList.get(i));
+                        reference.updateChildren(map).addOnCompleteListener(task -> {
+                            if(task.isCanceled()){
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "There is issue in sync data please try again later", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Data sync successfully", Toast.LENGTH_SHORT).show();
+                }
 
+            }else{
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "There is no trips to added", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(getContext(), "Sorry your account not found in cloud", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void firebaseListener(){
-           new DatabaseReference.CompletionListener() {
-               @Override
-               public void onComplete(DatabaseError error, DatabaseReference ref) {
-                   System.err.println("Value was set. Error = "+error);
-                   // Or: throw error.toException();
-               }
-           };
-    }
 
     private void signOut() {
         LoginActivity.mGoogleSignInClient.signOut();
