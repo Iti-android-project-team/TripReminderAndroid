@@ -45,7 +45,7 @@ public interface TripDao {
 
 
     @Query("SELECT `work-manager-tag` FROM trip_table  WHERE `user-email`=:userEmail AND tripe_id= :tripTd")
-    String getWorkManagerTag(String userEmail,int tripTd);
+    LiveData<String> getWorkManagerTag(String userEmail,int tripTd);
 
     @Query("DELETE FROM trip_table WHERE tripe_id = :tripTd")
     void deleteTrip(int tripTd);

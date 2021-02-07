@@ -18,6 +18,7 @@ public class TripRepository {
     private final LiveData<Integer> tripId;
 
     private LiveData<List<String>> allNotes = null;
+    private LiveData<String> workTag = null;
 
 
     public TripRepository(Application application, String userEmail) {
@@ -49,8 +50,11 @@ public class TripRepository {
     }
 
 
-    public String getWorkManagerTag(String userEmail, int tripId) {
-        String workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+    public LiveData<String> getWorkManagerTag(String userEmail, int tripId) {
+
+        if(workTag == null){
+            workTag = tripDao.getWorkManagerTag(userEmail, tripId);
+        }
         return workTag;
     }
 
