@@ -49,6 +49,7 @@ public class DialogActivity extends AppCompatActivity {
     private String endPoint;
     private List<String> note = new ArrayList<>();
     List<Note> floatingNote = new ArrayList<>();
+    List<Note> myNewNote = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +176,8 @@ public class DialogActivity extends AppCompatActivity {
     private void initializeView() {
         Intent intent = new Intent(DialogActivity.this, FloatingViewService.class);
         intent.putExtra("tripId", tripId);
-        if (floatingNote != null){
-            SharedPref.setFloatingNotes(new Gson().toJson(floatingNote));
+        if (myNewNote != null){
+            SharedPref.setFloatingNotes(new Gson().toJson(myNewNote));
         }
         startService(intent);
     }
@@ -214,12 +215,9 @@ public class DialogActivity extends AppCompatActivity {
                     userEmail)).get(DialogViewModel.class);
         }
         getNotes();
-
     }
 
     private void getNotes() {
-
-
         viewModel.getNote(tripId).observe((LifecycleOwner) this, it -> {
             note = it;
             for (String notes : note) {
@@ -228,7 +226,6 @@ public class DialogActivity extends AppCompatActivity {
                 floatingNote.add(floatingNotes);
                 Log.i("notes", notes);
             }
-
         });
     }
 }
