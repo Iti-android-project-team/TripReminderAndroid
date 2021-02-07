@@ -77,7 +77,7 @@ public class Register extends AppCompatActivity {
                           reference =fDatabase.getReference().child("users").child(userID);
                           User userData = new User(email,passward);
                            reference.setValue(userData);
-                          SharedPref.setLoginWithFirebase(true);
+                          SharedPref.setRegisterWithFirebase(true);
                          /* DocumentReference documentReference =fStore.collection("users").document(userID);
                           Map<String,Object> user = new HashMap<>();
                           user.put("Email",email);

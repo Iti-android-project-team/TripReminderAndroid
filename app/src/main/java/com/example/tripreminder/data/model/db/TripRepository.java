@@ -39,7 +39,7 @@ public class TripRepository {
 
         return allHistoryTrip;
     }
-    public LiveData<List<Trips>> getAllTripsForFirebase() { return allTrips; }
+    public LiveData<List<Trips>> getAllTripsForFirebase() { return getTrips; }
 
     public LiveData<List<String>> getAllNotes(int id) {
         if (allNotes == null) {

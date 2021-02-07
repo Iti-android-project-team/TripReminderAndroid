@@ -53,6 +53,16 @@ public class SharedPref {
 
     }
 
+    public static void setRegisterWithFirebase(boolean login){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("login-firebase",login);
+        editor.apply();
+    }
+
+    public static Boolean checkRegisterWithFirebase(){
+        return  pref.getBoolean("login-firebase",false);
+    }
+
     public static void setLoginWithFirebase(boolean login){
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("login-firebase",login);
