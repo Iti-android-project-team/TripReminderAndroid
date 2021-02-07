@@ -39,8 +39,8 @@
 
         <LinearLayout
             android:id="@+id/expanded_container"
-            android:layout_width="250dp"
-            android:layout_height="350dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="#fffdea"
             android:visibility="gone"
             android:orientation="horizontal"
