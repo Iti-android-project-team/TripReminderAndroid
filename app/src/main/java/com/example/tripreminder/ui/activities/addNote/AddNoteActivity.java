@@ -100,14 +100,19 @@ public class AddNoteActivity extends AppCompatActivity {
                     Log.i("iadd Note","adddNote"+addNote.getText().toString() );
                     notesList.add(n);
 */
-                Note no = new Note();
-                no.setNotes(body.getText().toString());
-                Log.i("note", "adddNote" + body.getText().toString());
-                newNoteList.add(no);
-                insertNotesInDB();
-                Toast.makeText(AddNoteActivity.this, "Note Add", Toast.LENGTH_SHORT).show();
-                dismissKeyboard(AddNoteActivity.this);
-                body.setText("");
+                if(!body.getText().toString().trim().isEmpty()){
+                    Note no = new Note();
+                    no.setNotes(body.getText().toString());
+                    Log.i("note", "adddNote" + body.getText().toString());
+                    newNoteList.add(no);
+                    insertNotesInDB();
+                    Toast.makeText(AddNoteActivity.this, "Note Add", Toast.LENGTH_SHORT).show();
+                    dismissKeyboard(AddNoteActivity.this);
+                    body.setText("");
+                }else{
+                    Toast.makeText(AddNoteActivity.this,"Please write your note first",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
@@ -115,10 +120,10 @@ public class AddNoteActivity extends AppCompatActivity {
             public void onItemDeleteClick(int position) {
                 newNoteList.remove(position);
                 deleteNote();
-                adapter = new NoteAdapter(AddNoteActivity.this, newNoteList);
-                recyclerView.setAdapter(adapter);
+//                adapter = new NoteAdapter(AddNoteActivity.this, newNoteList);
+//                recyclerView.setAdapter(adapter);
+                adapter.setNotes(newNoteList);
                 Toast.makeText(AddNoteActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
-
             }
         });
     }

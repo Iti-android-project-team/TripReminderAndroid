@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tripreminder.R;
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void init(View view) {
+        ImageView imgUser = view.findViewById(R.id.imgUser);
         logoutButton = view.findViewById(R.id.btn_logout);
         emailButton = view.findViewById(R.id.btn_email);
         syncButton = view.findViewById(R.id.btn_sync);
