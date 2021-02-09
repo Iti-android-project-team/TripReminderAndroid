@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.tripreminder.R;
@@ -28,14 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
-        mainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddTripActivity.class));
-            }
-        });
     }
 
     private void init(){
@@ -50,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(new TripsFragment());
         viewPagerAdapter.addFragment(new ProfileFragment());
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        buttonClicked();
 
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        if (oldItemId != item.getItemId()){
+        Log.i("BottomNavigationView", String.valueOf(item.getItemId()));
+        Log.i("BottomNavigationView", String.valueOf(oldItemId));
             oldItemId = item.getItemId();
 
             switch (item.getItemId()) {
@@ -65,13 +61,12 @@ public class MainActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(1);
                     return true;
             }
-        }
 
         return  false;
     };
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+
+    private void buttonClicked(){
+        mainButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AddTripActivity.class)));
     }
 }
