@@ -222,6 +222,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         intent.putExtra("EDITDATE", editTripDate);
         intent.putExtra("EDITROUND", editTripRound);
         intent.putExtra("EDITSPINNER", editTripSpinner);
+        intent.putExtra("WORK_MANGER_TAG",tripList.get(position).getWorkManagerTag());
 
         startActivity(intent);
 

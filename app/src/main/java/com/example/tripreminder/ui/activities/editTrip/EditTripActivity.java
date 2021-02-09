@@ -2,6 +2,7 @@ package com.example.tripreminder.ui.activities.editTrip;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -37,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class EditTripActivity extends AppCompatActivity {
     TextView editTripTitle, editTripStartPoint, editTripEndPoint, editTripTime, editTripDate;
@@ -71,6 +73,7 @@ public class EditTripActivity extends AppCompatActivity {
     Calendar currentCalendar = Calendar.getInstance();
     private boolean isStart;
     private String userEmail;
+    private String workManagerTag;
 
     String eN, eS, eE, eT, eD, eSp;
     int eId;
@@ -193,9 +196,9 @@ public class EditTripActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void editTrip(String s1, String s2, String s3, String s4, String s5, String s6, Boolean b, int i) {
+    private void editTrip(String s1, String s2, String s3, String s4, String s5, String s6, Boolean b, String workTAg,int i) {
         //TripListViewModel listViewModel = ViewModelProviders.of(AddTripActivity.this).get(TripListViewModel.class);
-        editViewModel.updateTrip(s1, s2, s3, s4, s5, s6, b, i);
+        editViewModel.updateTrip(s1, s2, s3, s4, s5, s6, b, workTAg,i);
 //        mProgress.dismiss();
 //         listViewModel.getId();
     }
@@ -230,6 +233,7 @@ public class EditTripActivity extends AppCompatActivity {
         editDate = intent.getStringExtra("EDITDATE");
         editSpinn = intent.getStringExtra("EDITSPINNER");
         direction = intent.getBooleanExtra("EDITROUND", false);
+        workManagerTag = intent.getStringExtra("WORK_MANGER_TAG");
         splitDateAndTime();
 
         editTripName.setText(editName);
@@ -320,6 +324,7 @@ public class EditTripActivity extends AppCompatActivity {
                 return;
             }
 
+            String tag = generateTag();
             Trips trips = new Trips();
             eN = editTripName.getText().toString();
             eD = editTripDate.getText().toString();
@@ -329,10 +334,11 @@ public class EditTripActivity extends AppCompatActivity {
             trips.setRepeated(tripRepeat);
             eT = editTripTime.getText().toString();
             eS = editTripStartPoint.getText().toString();
-            editTrip(eN, eS, eE, eD, eT, tripRepeat, eDir, editId);
+            editTrip(eN, eS, eE, eD, eT, tripRepeat, eDir, tag,editId);
             Toast.makeText(v.getContext(), "Trip Edit", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(EditTripActivity.this, MainActivity.class));
+            editViewModel.cancelWorkManager(workManagerTag);
+            CalTimeInMilliSecond(tag,editId,eE);
+            finish();
 
         });
         back.setOnClickListener(v -> finish());
@@ -369,6 +375,33 @@ public class EditTripActivity extends AppCompatActivity {
         sp.notifyDataSetChanged();
 
     }
+    private void CalTimeInMilliSecond(String tag,int tripId,String endPoint) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(selectDateYear, selectDateMonth, selectDateDay, selectDateTimeHou, selectDateTimeMin, 00);
+        Log.e("current", String.valueOf(calendar1.getTimeInMillis()));
+        selectedTimeInMilliSecond = calendar1.getTimeInMillis();
+        createWorkManager(selectedTimeInMilliSecond, tag, tripId,endPoint);
+    }
 
+    private void createWorkManager(long timeInMilliSecond, String tag, int tripId,String endPoint) {
+        Calendar calendar = Calendar.getInstance();
+        int durationTime = (int) ((int) timeInMilliSecond - calendar.getTimeInMillis());
+
+        if (tripRepeat.equals("Repeat Daily")) {
+            editViewModel.addTripWorkRepeated(durationTime, 1, TimeUnit.DAYS, tag,tripId,endPoint);
+        } else if (tripRepeat.equals("Repeat Weekly")) {
+            editViewModel.addTripWorkRepeated(durationTime, 7, TimeUnit.DAYS, tag,tripId,endPoint);
+        } else if (tripRepeat.equals("Repeat Monthly")) {
+            editViewModel.addTripWorkRepeated(durationTime, 30, TimeUnit.DAYS, tag,tripId,endPoint);
+        } else {
+            //viewModel.addTripWorkRepeated(durationTime,15, TimeUnit.MINUTES);
+            editViewModel.addTripWorkOneTime(durationTime, TimeUnit.MILLISECONDS, tag,tripId,endPoint);
+        }
+    }
+
+    private String generateTag(){
+        return  userEmail+"-"+selectDateYear+"-"+
+                selectDateMonth+"-"+selectDateDay+"-"+selectDateTimeHou+"-"+selectDateTimeMin+"-"+00;
+    }
 
 }
