@@ -2,11 +2,13 @@ package com.example.tripreminder.ui.activities.dialog;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +17,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -136,10 +141,20 @@ public class DialogActivity extends AppCompatActivity {
         viewModel.updateTrip("Done", tripId);
         navigateToMain();
         //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + "Cairo");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        startActivity(mapIntent);
+        if (checkPermession()) {
+            if (isLocationEnabled()) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + "Cairo");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            } else {
+                Toast.makeText(DialogActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            requestPermession();
+        }
     }
 
     public void onCancelClicked() {
@@ -227,5 +242,24 @@ public class DialogActivity extends AppCompatActivity {
             Log.i("notes dialog", floatingNote.get(0).getNotes());
 
         });
+    }
+    private boolean checkPermession() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermession() {
+        ActivityCompat.requestPermissions(DialogActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ;
+
     }
 }
