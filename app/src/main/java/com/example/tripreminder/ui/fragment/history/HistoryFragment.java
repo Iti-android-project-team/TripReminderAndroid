@@ -89,23 +89,10 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         if (!userEmail.equals(" ")) {
             historyViewModel = new ViewModelProvider(this, new HistoryViewModelFactory(getActivity().getApplication(),
                     userEmail)).get(HistoryViewModel.class);
+            getAllHistoryTrips();
         }
 
-        historyViewModel.getAllHistory().observe(getViewLifecycleOwner(), it -> {
-            Log.i("size", String.valueOf(it.size()));
-            if (it.size() > 0) {
-                Log.i("data", String.valueOf(it.size()));
-                if (it != null) {
-                    List<Trips> t = it;
-                    historyRV.setVisibility(View.VISIBLE);
-                    historyList = t;
-                    adapter.loadData(historyList);
-                }
-            } else {
-                historyRV.setVisibility(View.INVISIBLE);
-            }
 
-        });
         deleteItemBySwabbing();
     }
     private void deleteItemBySwabbing() {
@@ -174,5 +161,22 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         builder1.show();
     }
 
+    private void getAllHistoryTrips(){
+        historyViewModel.getAllHistory().observe(getViewLifecycleOwner(), it -> {
+            Log.i("size", String.valueOf(it.size()));
+            if (it.size() > 0) {
+                Log.i("data", String.valueOf(it.size()));
+                if (it != null) {
+                    List<Trips> t = it;
+                    //historyRV.setVisibility(View.VISIBLE);
+                    historyList = t;
+                    adapter.loadData(historyList);
+                }
+            } else {
+                //historyRV.setVisibility(View.INVISIBLE);
+            }
+
+        });
+    }
 
 }
