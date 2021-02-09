@@ -119,47 +119,20 @@ public class AddTripActivity extends AppCompatActivity {
                 startActivity(new Intent(AddTripActivity.this,MainActivity.class));
             }
         });*/
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
+        back.setOnClickListener(v -> finish());
+        cancel.setOnClickListener(v -> finish());
+        tripStartPoint.setOnClickListener(v -> {
+              //placeOuto();
+              isStart = true;
+            tripStartPoint.setText("start");
 
-            }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AddTripActivity.this, MainActivity.class));
-            }
+        tripEndPoint.setOnClickListener(v -> {
+             //placeOuto();
+            tripEndPoint.setText("end");
         });
-        tripStartPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                  //placeOuto();
-                  isStart = true;
-                tripStartPoint.setText("start");
-
-            }
-        });
-        tripEndPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 //placeOuto();
-                tripEndPoint.setText("end");
-            }
-        });
-        tripDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
-        tripTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog();
-            }
-        });
+        tripDate.setOnClickListener(v -> showDatePickerDialog());
+        tripTime.setOnClickListener(v -> showTimePickerDialog());
         rounded.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
