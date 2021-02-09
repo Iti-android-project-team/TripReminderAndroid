@@ -168,12 +168,10 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                 Log.i("data", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
-                    //historyRV.setVisibility(View.VISIBLE);
                     historyList = t;
                     adapter.loadData(historyList);
                 }
             } else {
-                //historyRV.setVisibility(View.INVISIBLE);
             }
 
         });

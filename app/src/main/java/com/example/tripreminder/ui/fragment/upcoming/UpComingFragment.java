@@ -280,7 +280,6 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
 
             if (it.size() > 0) {
-                //recyclerView.setVisibility(ViewPager.VISIBLE);
                 Log.i("data getAllTrips", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
@@ -288,9 +287,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
                     adapter.setTrips(tripList);
                 }
             }else{
-                //recyclerView.setVisibility(ViewPager.GONE);
-                Log.i("data getAllTrips", String.valueOf(it.size()));
-                //adapter.setTrips(tripList);
+
             }
 
         });
