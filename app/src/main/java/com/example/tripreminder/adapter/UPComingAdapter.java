@@ -18,11 +18,12 @@ import com.example.tripreminder.R;
 import com.example.tripreminder.data.model.db.Trips;
 import com.example.tripreminder.ui.fragment.upcoming.UpComingFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPComingViewHolder> {
     Context context;
-    private List<Trips> trips ;
+    private List<Trips> trips  = new ArrayList<>();
     private Fragment parent;
     private OnItemClickListener mListener;
 
@@ -37,9 +38,8 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
     }
 
 
-    public UPComingAdapter(Context context, List<Trips> trips, Fragment parent) {
+    public UPComingAdapter(Context context, Fragment parent) {
         this.context=context;
-        this.trips= trips;
         this.parent = parent;
     }
 
@@ -72,11 +72,7 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
 
     @Override
     public int getItemCount() {
-        if (trips.size() != 0)
             return trips.size();
-        else
-            return 0;
-
 
     }
     @Nullable
@@ -104,11 +100,6 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             tripNote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  if (listener!= null){
-                    //    int position = getAdapterPosition();
-                      //  if (position!= RecyclerView.NO_POSITION);
-                       // listener.onItemNoteClick(position);
-                    //}
                     int position = getAdapterPosition();
                     mListener = (UpComingFragment)parent;
                     mListener.onItemNoteClick(position);
@@ -117,11 +108,6 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             tripEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                /*    if (listener!= null){
-                        int position = getAdapterPosition();
-                        if (position!= RecyclerView.NO_POSITION);
-                        listener.onItemEditClick(position);
-                    }*/
                     int position = getAdapterPosition();
                     mListener = (UpComingFragment)parent;
                     mListener.onItemEditClick(position);
@@ -130,11 +116,6 @@ public class UPComingAdapter extends  RecyclerView.Adapter<UPComingAdapter.UPCom
             start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 /*   if (listener!= null){
-                        int position = getAdapterPosition();
-                        if (position!= RecyclerView.NO_POSITION);
-                        listener.onItemStartClick(position);
-                    }*/
                     int position = getAdapterPosition();
                     mListener = (UpComingFragment)parent;
                     mListener.onItemStartClick(position);

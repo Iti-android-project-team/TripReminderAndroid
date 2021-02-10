@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.provider.Settings;
 import android.util.Log;
@@ -63,7 +64,6 @@ import java.util.Objects;
 import static android.content.Context.ALARM_SERVICE;
 
 public class UpComingFragment extends Fragment implements UPComingAdapter.OnItemClickListener {
-    //implements Dialog.DialogListener{
     private UPComingAdapter adapter;
     private List<Trips> tripList;
     private RecyclerView recyclerView;
@@ -107,7 +107,6 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
                 return false;
             }
 
-            @SuppressLint("NewApi")
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
@@ -129,6 +128,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
             public void onClick(DialogInterface dialog, int which) {
                 upComingViewModel.updateTrip("delete", trip.getTripId());
                 cancelWorkManager(userEmail, trip.getTripId());
+                //adapter.setTrips(tripList);
             }
         });
 
@@ -171,6 +171,8 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         tripList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.upComing_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new UPComingAdapter(getContext(), this);
+        recyclerView.setAdapter(adapter);
 
         SharedPref.createPrefObject(getContext());
         userEmail = SharedPref.getUserEmail();
@@ -220,6 +222,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         intent.putExtra("EDITDATE", editTripDate);
         intent.putExtra("EDITROUND", editTripRound);
         intent.putExtra("EDITSPINNER", editTripSpinner);
+        intent.putExtra("WORK_MANGER_TAG",tripList.get(position).getWorkManagerTag());
 
         startActivity(intent);
 
@@ -254,12 +257,16 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         }
         upComingViewModel.updateTrip("Done", tripId);
         cancelWorkManager(userEmail, tripList.get(position).getTripId());
+        tripList.remove(position);
+        adapter.setTrips(tripList);
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + editTripEnd);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
 
+
+//
 
     private void cancelWorkManager(String userEmail, int tripId) {
         upComingViewModel.getWorkManageTag(userEmail, tripId).observe(getViewLifecycleOwner(), it -> {
@@ -273,15 +280,15 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
     private void getAllTrips() {
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
 
-            if (it.size() != 0) {
-                Log.i("data", String.valueOf(it.size()));
+            if (it.size() > 0) {
+                Log.i("data getAllTrips", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
                     tripList = t;
-                    adapter = new UPComingAdapter(getContext(), tripList, this);
-                    recyclerView.setAdapter(adapter);
-
+                    adapter.setTrips(tripList);
                 }
+            }else{
+
             }
 
         });

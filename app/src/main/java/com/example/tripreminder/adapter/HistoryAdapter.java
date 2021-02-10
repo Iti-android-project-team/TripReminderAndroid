@@ -23,8 +23,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private List<Trips> trips = new ArrayList<>();
     private OnItemClickListener listener;
-    private Fragment parent;
-    private Context context;
+    private final Fragment parent;
+    private final Context context;
 
     public interface OnItemClickListener {
         void showNotesButtonClicked(int position);
@@ -67,10 +67,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public int getItemCount() {
-        if (trips.size() != 0)
             return trips.size();
-        else
-            return 0;
     }
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
@@ -89,27 +86,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             imageView = itemView.findViewById(R.id.imgDeleteTrip);
             viewDetails = itemView.findViewById(R.id.viewDetailsBtn);
 
-            viewDetails.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    listener = (HistoryFragment) parent;
-                    listener.showNotesButtonClicked(position);
-                }
+            viewDetails.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                listener = (HistoryFragment) parent;
+                listener.showNotesButtonClicked(position);
             });
 
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    listener = (HistoryFragment) parent;
-                    listener.deleteTripButtonClicked(position);
-                }
+            imageView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                listener = (HistoryFragment) parent;
+                listener.deleteTripButtonClicked(position);
             });
         }
     }
     public void loadData( List<Trips> trips) {
-            this.trips = new  ArrayList(trips);
+            this.trips = trips;
             notifyDataSetChanged();
     }
 }
