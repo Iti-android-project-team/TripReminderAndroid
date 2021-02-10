@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2ba430e-3deb-4d99-97cd-7dfd9cbcb762" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/EditTripActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/addNote/AddNoteActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/addNote/AddNoteViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/res/layout/activity_edit_trip.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/adapter/NoteAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/adapter/NoteAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/adapter/UPComingAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/adapter/UPComingAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Converters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Converters.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Note.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Notes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/Notes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/TripRoomDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/data/model/db/TripRoomDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/AddNoteActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/addTrip/AddTripActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/activities/addTrip/AddTripActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/fragment/upcoming/UpComingFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/fragment/upcoming/UpComingFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/fragment/upcoming/UpComingViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/tripreminder/ui/fragment/upcoming/UpComingViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_add_note.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_add_note.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_add_trip.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_add_trip.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credentials.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
