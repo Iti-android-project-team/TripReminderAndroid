@@ -1,19 +1,16 @@
 package com.example.tripreminder.ui.fragment.history;
 
-import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,28 +20,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.tripreminder.MapsFragment;
 import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
-import com.example.tripreminder.adapter.UPComingAdapter;
 import com.example.tripreminder.data.local.SharedPref;
-import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
-import com.example.tripreminder.data.services.DialogReceiver;
-import com.example.tripreminder.helper.MyViewModelFactory;
-import com.example.tripreminder.ui.fragment.upcoming.UpComingViewModel;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-
-import static android.content.Context.ALARM_SERVICE;
 
 
 public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemClickListener {
@@ -53,7 +42,14 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     private HistoryAdapter adapter;
 
     private HistoryViewModel historyViewModel;
-    private List<Trips> historyList;
+    private List<Trips> historyList = new ArrayList<>();
+    private List<Double>  latitudeStartPointList = new ArrayList<>();
+    private List<Double>  longitudeStartPointList = new ArrayList<>();
+    private List<Double>  latitudeEndPointList = new ArrayList<>();
+    private List<Double>  longitudeEndPointList = new ArrayList<>();
+
+    private Button btnShowTrips;
+    ProgressDialog progressDialog;
 
 
     public HistoryFragment() {
@@ -81,6 +77,10 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
         historyRV.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HistoryAdapter(this, getContext());
         historyRV.setAdapter(adapter);
+        btnShowTrips = view.findViewById(R.id.btnShowTrips);
+
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Please wait until map loaded...");
 
         SharedPref.createPrefObject(getContext());
         String userEmail = SharedPref.getUserEmail();
@@ -92,7 +92,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
             getAllHistoryTrips();
         }
 
-
+        buttonClickedListeners();
         deleteItemBySwabbing();
     }
     private void deleteItemBySwabbing() {
@@ -172,9 +172,101 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                     adapter.loadData(historyList);
                 }
             } else {
+
             }
 
         });
+    }
+    private void getAddress(){
+        Log.i("History getLatLog", String.valueOf(historyList.size()));
+        if(historyList.size() > 0){
+            for(int i = 0 ;i<historyList.size();i++){
+                getLatLong(historyList.get(i).getStartPoint());
+                getLatLongEndPoint(historyList.get(i).getEndPoint());
+            }
+            openMap();
+            progressDialog.dismiss();
+        }else{
+            progressDialog.dismiss();
+            Toast.makeText(getContext(),"There is  no trips to show",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void buttonClickedListeners(){
+        latitudeStartPointList.clear();
+        latitudeEndPointList.clear();
+        longitudeStartPointList.clear();
+        longitudeEndPointList.clear();
+        btnShowTrips.setOnClickListener(v->{
+            progressDialog.show();
+            getAddress();
+        });
+    }
+
+    private void openMap(){
+        Intent startMap = new Intent(getContext(), MapsFragment.class);
+        startMap.putExtra("LATITUDE_START-POINT",(new Gson().toJson(latitudeStartPointList)));
+        startMap.putExtra("LONGITUDE_START_POINT",(new Gson().toJson(longitudeStartPointList)));
+        startMap.putExtra("LATITUDE_END_POINT",(new Gson().toJson(latitudeEndPointList)));
+        startMap.putExtra("LONGITUDE_END_POINT",(new Gson().toJson(longitudeEndPointList)));
+        startActivity(startMap);
+    }
+
+    private void getLatLong(String address){
+        if(Geocoder.isPresent()){
+            try {
+                String location = address;
+                Geocoder gc = new Geocoder(getContext());
+                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+
+                List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
+                for(Address a : addresses){
+                    if(a.hasLatitude() && a.hasLongitude()){
+                        ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+                    }
+                }
+                if(ll.size()>0){
+                    latitudeStartPointList.add(ll.get(0).latitude) ;
+                    longitudeStartPointList.add( ll.get(0).longitude);
+                    Log.i("IOException", String.valueOf(ll.get(0).latitude));
+                    Log.i("IOException", String.valueOf(ll.get(0).longitude));
+                }
+
+            } catch (IOException e) {
+                // handle the exception
+                Log.i("IOException",e.getLocalizedMessage());
+            }
+        }
+
+    }
+
+    private void getLatLongEndPoint(String address){
+        if(Geocoder.isPresent()){
+            try {
+                String location = address;
+                Geocoder gc = new Geocoder(getContext());
+                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+
+                List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
+                for(Address a : addresses){
+                    if(a.hasLatitude() && a.hasLongitude()){
+                        ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+                    }
+                }
+                if(ll.size()>0){
+                    latitudeEndPointList.add(ll.get(0).latitude) ;
+                    longitudeEndPointList.add( ll.get(0).longitude);
+                    Log.i("IOException", String.valueOf(ll.get(0).latitude));
+                    Log.i("IOException", String.valueOf(ll.get(0).longitude));
+                }
+
+            } catch (IOException e) {
+                // handle the exception
+                Log.i("IOException",e.getLocalizedMessage());
+            }
+        }
+
     }
 
 }

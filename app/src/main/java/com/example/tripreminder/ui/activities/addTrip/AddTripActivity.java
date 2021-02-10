@@ -14,6 +14,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,7 @@ import com.example.tripreminder.ui.activities.MainActivity;
 import com.example.tripreminder.ui.activities.dialog.DialogActivity;
 import com.google.android.gms.common.api.Status;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -52,9 +55,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,6 +111,8 @@ public class AddTripActivity extends AppCompatActivity {
     private long selectedTimeInMilliSecond;
     private String userEmail;
     private int tripId;
+    private double longitude;
+    private  double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +129,14 @@ public class AddTripActivity extends AppCompatActivity {
         back.setOnClickListener(v -> finish());
         cancel.setOnClickListener(v -> finish());
         tripStartPoint.setOnClickListener(v -> {
-              //placeOuto();
+              placeOuto();
               isStart = true;
-            tripStartPoint.setText("start");
+           // tripStartPoint.setText("start");
 
         });
         tripEndPoint.setOnClickListener(v -> {
-             //placeOuto();
-            tripEndPoint.setText("end");
+             placeOuto();
+            //tripEndPoint.setText("end");
         });
         tripDate.setOnClickListener(v -> showDatePickerDialog());
         tripTime.setOnClickListener(v -> showTimePickerDialog());
@@ -269,6 +276,9 @@ public class AddTripActivity extends AppCompatActivity {
             Place place = Autocomplete.getPlaceFromIntent(data);
             Log.i("TAG", "place:" + place.getName() + "," + place.getId());
             address = Autocomplete.getPlaceFromIntent(data).getName();
+            Log.i("TAG", "place:" + place);
+            //getLatLong(address);
+
         } else if (requestCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -459,25 +469,5 @@ public class AddTripActivity extends AppCompatActivity {
         return  userEmail+"-"+selectDateYear+"-"+
                 selectDateMonth+"-"+selectDateDay+"-"+selectDateTimeHou+"-"+selectDateTimeMin+"-"+00;
     }
-    private int getTripId(){
-        //int lastTripID =viewModel.getTripId();
-        //return (lastTripID);
-        return 1;
-    }
-  /*  public void insertIntoFirebase()
-    {
-        String NameTrip = tripName.getText().toString();
-        String startPointTrip = tripStartPoint.getText().toString();
-        String endPointTrip = tripEndPoint.getText().toString();
-        String dateTrip = tripDate.getText().toString();
-        String timeTrip = tripTime.getText().toString();
-        Boolean roundTrip = false;
-        String repeatTrip = tripRepeat;
-        String statusTrip = "UpComing";
-        String userID = fAuth.getCurrentUser().getUid();
-        reference =fDatabase.getReference("users").child(userID).child("Trips");
-        Trips tripData= new Trips(NameTrip,startPointTrip,endPointTrip,timeTrip,dateTrip,statusTrip,roundTrip,repeatTrip);
-        reference.push().setValue(tripData);
-    }*/
 
 }

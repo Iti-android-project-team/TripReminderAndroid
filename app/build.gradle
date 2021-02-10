@@ -52,6 +52,7 @@ dependencies {
 
     // Room components
     implementation "androidx.room:room-runtime:$roomVersion"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
@@ -70,11 +71,15 @@ dependencies {
 
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation  'com.google.maps:google-maps-services:0.2.5'
+
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
 
     testImplementation 'junit:junit:4.+'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
