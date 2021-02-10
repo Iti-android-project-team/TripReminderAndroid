@@ -54,6 +54,7 @@ public class Trips {
     @ColumnInfo(name = "work-manager-tag")
     private String workManagerTag;
 
+
     public String getWorkManagerTag() {
         return workManagerTag;
     }
