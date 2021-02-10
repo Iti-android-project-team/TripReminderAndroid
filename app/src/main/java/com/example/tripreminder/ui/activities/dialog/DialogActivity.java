@@ -220,6 +220,7 @@ public class DialogActivity extends AppCompatActivity {
     private void navigateToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void init() {

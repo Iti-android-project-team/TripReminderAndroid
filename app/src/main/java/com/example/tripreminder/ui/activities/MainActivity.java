@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.tripreminder.R;
@@ -68,5 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void buttonClicked(){
         mainButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AddTripActivity.class)));
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

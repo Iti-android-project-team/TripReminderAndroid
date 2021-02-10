@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.example.tripreminder.data.model.db.Note;
@@ -42,11 +43,11 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private String TAG = "MapsFragment";
 
-    private List<Double> latitudeStartPointList = new ArrayList<>();
-    private List<Double> longitudeStartPointList = new ArrayList<>();
-    private List<Double> latitudeEndPointList = new ArrayList<>();
-    private List<Double> longitudeEndPointList = new ArrayList<>();
-    private List<Trips> historyList = new ArrayList<>();
+    private  final List<Double> latitudeStartPointList = new ArrayList<>();
+    private final List<Double> longitudeStartPointList = new ArrayList<>();
+    private final List<Double> latitudeEndPointList = new ArrayList<>();
+    private final List<Double> longitudeEndPointList = new ArrayList<>();
+    private  List<Trips> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,29 +61,12 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void init() {
-//        String latitudeString = getIntent().getStringExtra("LATITUDE_START-POINT");
-//        String longitudeString = getIntent().getStringExtra("LONGITUDE_START_POINT");
-//        String latitudeEndPointString = getIntent().getStringExtra("LATITUDE_END_POINT");
-//        String longitudeEndPointString = getIntent().getStringExtra("LONGITUDE_END_POINT");
+
         String historyTrips = getIntent().getStringExtra("HISTORY_TRIPS");
 
         Type collectionType = new TypeToken<List<Trips>>() {
         }.getType();
-//        latitudeStartPointList = new Gson()
-//                .fromJson(latitudeString, collectionType);
-//
-//        longitudeStartPointList = new Gson()
-//                .fromJson(longitudeString, collectionType);
-//
-//        latitudeEndPointList = new Gson()
-//                .fromJson(latitudeEndPointString, collectionType);
-//
-//        longitudeEndPointList = new Gson()
-//                .fromJson(longitudeEndPointString, collectionType);
-//        Log.i(TAG, latitudeEndPointString);
-//        Log.i(TAG, latitudeString);
-//        Log.i(TAG, longitudeEndPointString);
-//        Log.i(TAG, longitudeString);
+
 
         historyList = new Gson()
                 .fromJson(historyTrips, collectionType);
@@ -244,5 +228,15 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
