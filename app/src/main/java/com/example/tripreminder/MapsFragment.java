@@ -3,11 +3,15 @@ package com.example.tripreminder;
 import androidx.fragment.app.FragmentActivity;
 
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tripreminder.data.model.db.Note;
+import com.example.tripreminder.data.model.db.Trips;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,6 +32,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,7 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private List<Double> longitudeStartPointList = new ArrayList<>();
     private List<Double> latitudeEndPointList = new ArrayList<>();
     private List<Double> longitudeEndPointList = new ArrayList<>();
+    private List<Trips> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,34 +60,46 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void init() {
-        String latitudeString = getIntent().getStringExtra("LATITUDE_START-POINT");
-        String longitudeString = getIntent().getStringExtra("LONGITUDE_START_POINT");
-        String latitudeEndPointString = getIntent().getStringExtra("LATITUDE_END_POINT");
-        String longitudeEndPointString = getIntent().getStringExtra("LONGITUDE_END_POINT");
-        Type collectionType = new TypeToken<List<Double>>() {
+//        String latitudeString = getIntent().getStringExtra("LATITUDE_START-POINT");
+//        String longitudeString = getIntent().getStringExtra("LONGITUDE_START_POINT");
+//        String latitudeEndPointString = getIntent().getStringExtra("LATITUDE_END_POINT");
+//        String longitudeEndPointString = getIntent().getStringExtra("LONGITUDE_END_POINT");
+        String historyTrips = getIntent().getStringExtra("HISTORY_TRIPS");
+
+        Type collectionType = new TypeToken<List<Trips>>() {
         }.getType();
-        latitudeStartPointList = new Gson()
-                .fromJson(latitudeString, collectionType);
+//        latitudeStartPointList = new Gson()
+//                .fromJson(latitudeString, collectionType);
+//
+//        longitudeStartPointList = new Gson()
+//                .fromJson(longitudeString, collectionType);
+//
+//        latitudeEndPointList = new Gson()
+//                .fromJson(latitudeEndPointString, collectionType);
+//
+//        longitudeEndPointList = new Gson()
+//                .fromJson(longitudeEndPointString, collectionType);
+//        Log.i(TAG, latitudeEndPointString);
+//        Log.i(TAG, latitudeString);
+//        Log.i(TAG, longitudeEndPointString);
+//        Log.i(TAG, longitudeString);
 
-        longitudeStartPointList = new Gson()
-                .fromJson(longitudeString, collectionType);
+        historyList = new Gson()
+                .fromJson(historyTrips, collectionType);
 
-        latitudeEndPointList = new Gson()
-                .fromJson(latitudeEndPointString, collectionType);
-
-        longitudeEndPointList = new Gson()
-                .fromJson(longitudeEndPointString, collectionType);
-        Log.i(TAG, latitudeEndPointString);
-        Log.i(TAG, latitudeString);
-        Log.i(TAG, longitudeEndPointString);
-        Log.i(TAG, longitudeString);
+            for(int i = 0 ;i<historyList.size();i++){
+                getLatLong(historyList.get(i).getStartPoint());
+                getLatLongEndPoint(historyList.get(i).getEndPoint());
+            }
+            //openMap();
+        //}
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        for (int i = 0; i < longitudeStartPointList.size(); i++) {
+        for (int i = 0; i < historyList.size(); i++) {
             drawMapLines(latitudeStartPointList.get(i), longitudeStartPointList.get(i),
                     latitudeEndPointList.get(i), longitudeEndPointList.get(i));
         }
@@ -169,5 +187,62 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     public int getRandomColor() {
         Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+
+    private void getLatLong(String address){
+        if(Geocoder.isPresent()){
+            try {
+                String location = address;
+                Geocoder gc = new Geocoder(this);
+                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+
+                List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
+                for(Address a : addresses){
+                    if(a.hasLatitude() && a.hasLongitude()){
+                        ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+                    }
+                }
+                if(ll.size()>0){
+                    latitudeStartPointList.add(ll.get(0).latitude) ;
+                    longitudeStartPointList.add( ll.get(0).longitude);
+                    Log.i("IOException", String.valueOf(ll.get(0).latitude));
+                    Log.i("IOException", String.valueOf(ll.get(0).longitude));
+                }
+
+            } catch (IOException e) {
+                // handle the exception
+                Log.i("IOException",e.getLocalizedMessage());
+            }
+        }
+
+    }
+
+    private void getLatLongEndPoint(String address){
+        if(Geocoder.isPresent()){
+            try {
+                String location = address;
+                Geocoder gc = new Geocoder(this);
+                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+
+                List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
+                for(Address a : addresses){
+                    if(a.hasLatitude() && a.hasLongitude()){
+                        ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+                    }
+                }
+                if(ll.size()>0){
+                    latitudeEndPointList.add(ll.get(0).latitude) ;
+                    longitudeEndPointList.add( ll.get(0).longitude);
+                    Log.i("IOException", String.valueOf(ll.get(0).latitude));
+                    Log.i("IOException", String.valueOf(ll.get(0).longitude));
+                }
+
+            } catch (IOException e) {
+                // handle the exception
+                Log.i("IOException",e.getLocalizedMessage());
+            }
+        }
+
     }
 }

@@ -29,8 +29,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.tripreminder.data.local.SharedPref;
 import com.example.tripreminder.data.services.DialogReceiver;
 import com.example.tripreminder.ui.activities.dialog.DialogActivity;
@@ -75,6 +77,8 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
     boolean isBound;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String userEmail;
+    private LottieAnimationView emptyList;
+    private TextView txtEmptyList;
 
 
     @Override
@@ -173,6 +177,8 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new UPComingAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
+        emptyList = view.findViewById(R.id.empty_list);
+        txtEmptyList = view.findViewById(R.id.txt_empty);
 
         SharedPref.createPrefObject(getContext());
         userEmail = SharedPref.getUserEmail();
@@ -222,7 +228,7 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         intent.putExtra("EDITDATE", editTripDate);
         intent.putExtra("EDITROUND", editTripRound);
         intent.putExtra("EDITSPINNER", editTripSpinner);
-        intent.putExtra("WORK_MANGER_TAG",tripList.get(position).getWorkManagerTag());
+        intent.putExtra("WORK_MANGER_TAG", tripList.get(position).getWorkManagerTag());
 
         startActivity(intent);
 
@@ -281,14 +287,19 @@ public class UpComingFragment extends Fragment implements UPComingAdapter.OnItem
         upComingViewModel.getAllTrips().observe(getViewLifecycleOwner(), it -> {
 
             if (it.size() > 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyList.setVisibility(View.GONE);
+                txtEmptyList.setVisibility(View.GONE);
                 Log.i("data getAllTrips", String.valueOf(it.size()));
                 if (it != null) {
                     List<Trips> t = it;
                     tripList = t;
                     adapter.setTrips(tripList);
                 }
-            }else{
-
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                emptyList.setVisibility(View.VISIBLE);
+                txtEmptyList.setVisibility(View.VISIBLE);
             }
 
         });

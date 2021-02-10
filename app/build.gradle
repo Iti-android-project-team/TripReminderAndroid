@@ -7,6 +7,7 @@ ext{
     roomVersion = '2.2.6'
     lifecycleVersion = '2.2.0'
     work_version = '2.5.0'
+    lottieVersion ='3.4.0'
 }
 
 android {
@@ -80,6 +81,8 @@ dependencies {
     // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
+
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     testImplementation 'junit:junit:4.+'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
