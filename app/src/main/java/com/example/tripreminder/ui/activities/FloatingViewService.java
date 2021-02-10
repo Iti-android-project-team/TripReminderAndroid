@@ -62,7 +62,7 @@ public class FloatingViewService extends Service {
             }.getType();
             notesList = new Gson()
                     .fromJson(notesString, collectionType);
-            Log.i("notesFromService", notesList.get(0).getNotes());
+//            Log.i("notesFromService", notesList.get(0).getNotes());
 
         }
         mRecycler = mFloatingView.findViewById(R.id.notesRecyclerView);
