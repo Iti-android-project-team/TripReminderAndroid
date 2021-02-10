@@ -156,16 +156,18 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                 historyRV.setVisibility(View.VISIBLE);
                 emptyList.setVisibility(View.GONE);
                 txtEmptyList.setVisibility(View.GONE);
+                btnShowTrips.setVisibility(View.VISIBLE);
                 Log.i("data", String.valueOf(it.size()));
                 if (it != null) {
                     historyList = it;
                     adapter.loadData(historyList);
                 }
             } else {
-
                 historyRV.setVisibility(View.GONE);
                 emptyList.setVisibility(View.VISIBLE);
                 txtEmptyList.setVisibility(View.VISIBLE);
+                btnShowTrips.setVisibility(View.GONE);
+                //historyList.clear();
             }
 
         });
@@ -180,7 +182,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     }
 
     private void openMap() {
-        if (historyList.size() > 0) {
+        if (historyList.size() > 0 && !historyList.isEmpty()) {
             Intent startMap = new Intent(getContext(), MapsFragment.class);
             startMap.putExtra("HISTORY_TRIPS", (new Gson().toJson(historyList)));
             startActivity(startMap);
