@@ -43,10 +43,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@drawable/background_btn_create"
+                android:background="@drawable/background_btn_login"
                 android:text="@string/add"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/blue"
+                android:textColor="#F16950"
+                app:backgroundTint="#F16950"
                 app:iconTint="@color/blue" />
 
             <Button
@@ -56,9 +56,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/background_btn_cancel"
+                android:background="@drawable/background_btn_login"
                 android:text="@string/reset"
-                app:backgroundTint="#C8C6C6" />
+                app:backgroundTint="#C8C6C6"
+                android:textColor="#C8C6C6"/>
 
 
         </LinearLayout>

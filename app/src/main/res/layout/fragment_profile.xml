@@ -39,14 +39,16 @@
 <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <!--    </androidx.appcompat.widget.Toolbar>-->
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_toolbar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.3"
+        android:scaleType="centerCrop"
         android:src="@drawable/toolbar_background"
+        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"/>
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/txt_profile"
@@ -62,9 +64,10 @@
         app:layout_constraintTop_toTopOf="parent" />
     <ImageView
         android:id="@+id/imgUser"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/user_profile"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logo"
+        android:background="@drawable/rounded_shape"
         app:layout_constraintBottom_toBottomOf="@+id/img_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_toolbar"
@@ -88,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_shape"
+                android:background="@drawable/background_btn_login"
                 android:gravity="start"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
@@ -96,12 +99,12 @@
                 android:paddingBottom="8dp"
                 android:text="@string/email"
                 android:textAllCaps="false"
-                android:textColor="@color/gray"
-                app:backgroundTint="@color/white"
+                android:textColor="#F16950"
+                app:backgroundTint="#F16950"
                 app:icon="@drawable/ic_baseline_email_24"
                 app:iconGravity="start"
                 app:iconPadding="4dp"
-                app:iconTint="@color/gray"
+                app:iconTint="#F16950"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <com.google.android.material.button.MaterialButton
@@ -111,7 +114,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_shape"
+                android:background="@drawable/background_btn_login"
                 android:gravity="start"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
@@ -119,12 +122,12 @@
                 android:paddingBottom="8dp"
                 android:text="@string/sync"
                 android:textAllCaps="false"
-                android:textColor="@color/gray"
-                app:backgroundTint="@color/white"
+                android:textColor="#F16950"
+                app:backgroundTint="#F16950"
                 app:icon="@drawable/ic_baseline_send_24"
                 app:iconGravity="start"
                 app:iconPadding="4dp"
-                app:iconTint="@color/gray"
+                app:iconTint="#F16950"
                 app:layout_constraintTop_toBottomOf="@+id/btn_email" />
 
             <com.google.android.material.button.MaterialButton
@@ -134,7 +137,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_shape"
+                android:background="@drawable/background_btn_login"
                 android:gravity="start"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
@@ -142,12 +145,12 @@
                 android:paddingBottom="8dp"
                 android:text="@string/logout"
                 android:textAllCaps="false"
-                android:textColor="@color/gray"
-                app:backgroundTint="@color/white"
+                android:textColor="#F16950"
+                app:backgroundTint="#F16950"
                 app:icon="@drawable/ic_baseline_login_24"
                 app:iconGravity="start"
                 app:iconPadding="4dp"
-                app:iconTint="@color/gray"
+                app:iconTint="#F16950"
                 app:layout_constraintTop_toBottomOf="@+id/btn_sync" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,8 +57,8 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/background_btn_login"
                 android:text="@string/viewNotes"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@color/blue"
+                android:textColor="#F16950"
+                app:backgroundTint="#F16950"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

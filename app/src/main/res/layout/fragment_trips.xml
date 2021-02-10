@@ -89,6 +89,7 @@
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
@@ -96,7 +97,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_shape"
+        android:background="@drawable/tab_rounded"
         app:layout_constraintBottom_toBottomOf="@id/img_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,7 @@
         app:layout_constraintWidth_percent="0.6"
         app:tabGravity="fill"
         app:tabIndicator="@drawable/incore_round_shape"
-        app:tabIndicatorColor="@android:color/holo_purple"
+        app:tabIndicatorColor="@color/purple_500"
         app:tabIndicatorGravity="stretch"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
