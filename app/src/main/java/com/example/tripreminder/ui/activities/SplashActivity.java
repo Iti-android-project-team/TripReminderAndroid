@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void init(){
-        CircleImageView imageView =findViewById(R.id.logo);
+        CircleImageView imageView =findViewById(R.id.logoo);
         textAnimation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.bottom_to_top);
         imageView.setVisibility(View.VISIBLE);
         imageView.setAnimation(textAnimation);
