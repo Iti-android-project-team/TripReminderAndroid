@@ -161,7 +161,7 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
 
         //Draw the polyline
         if (path.size() > 0) {
-            PolylineOptions opts = new PolylineOptions().addAll(path).color(getRandomColor()).width(12);
+            PolylineOptions opts = new PolylineOptions().addAll(path).color(getRandomColor()).width(18);
             mMap.addPolyline(opts);
         }
     }

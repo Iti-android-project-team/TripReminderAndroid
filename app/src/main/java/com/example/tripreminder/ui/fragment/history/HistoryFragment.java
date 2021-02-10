@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tripreminder.MapsFragment;
@@ -48,7 +49,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     private List<Double>  latitudeEndPointList = new ArrayList<>();
     private List<Double>  longitudeEndPointList = new ArrayList<>();
 
-    private Button btnShowTrips;
+    private ImageView btnShowTrips;
     ProgressDialog progressDialog;
 
 
@@ -185,7 +186,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
                 getLatLongEndPoint(historyList.get(i).getEndPoint());
             }
             openMap();
-            progressDialog.dismiss();
         }else{
             progressDialog.dismiss();
             Toast.makeText(getContext(),"There is  no trips to show",Toast.LENGTH_SHORT).show();
@@ -269,4 +269,9 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        progressDialog.dismiss();
+    }
 }
