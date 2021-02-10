@@ -20,6 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/logo"
         android:background="@drawable/rounded_shape"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
