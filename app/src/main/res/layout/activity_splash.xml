@@ -7,35 +7,32 @@
     tools:context=".ui.activities.SplashActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/logo"
-        android:background="@drawable/background_btn_login"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Trip Remender"
+        android:textColor="@color/purple_500"
         android:textSize="24dp"
-        android:layout_marginTop="130dp"
-        android:textColor="@color/gray"
         android:textStyle="bold"
+        android:layout_marginTop="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/logoo"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:civ_border_color="#F16950"
         android:layout_centerInParent="true"
         android:src="@drawable/logo"
+        app:civ_border_width="2dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
 
