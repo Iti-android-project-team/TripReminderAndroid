@@ -1,4 +1,4 @@
-package com.example.tripreminder;
+package com.example.tripreminder.ui.activities;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.example.tripreminder.R;
 import com.example.tripreminder.data.model.db.Note;
 import com.example.tripreminder.data.model.db.Trips;
 import com.google.android.gms.maps.CameraUpdateFactory;

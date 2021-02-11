@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.tripreminder.MapsFragment;
+import com.example.tripreminder.ui.activities.MapsFragment;
 import com.example.tripreminder.R;
 import com.example.tripreminder.adapter.HistoryAdapter;
 import com.example.tripreminder.data.local.SharedPref;
