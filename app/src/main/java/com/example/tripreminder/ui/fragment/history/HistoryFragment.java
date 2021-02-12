@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -183,9 +184,15 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
 
     private void openMap() {
         if (historyList.size() > 0 && !historyList.isEmpty()) {
-            Intent startMap = new Intent(getContext(), MapsFragment.class);
-            startMap.putExtra("HISTORY_TRIPS", (new Gson().toJson(historyList)));
-            startActivity(startMap);
+            if(isNetworkConnected()){
+                Intent startMap = new Intent(getContext(), MapsFragment.class);
+                startMap.putExtra("HISTORY_TRIPS", (new Gson().toJson(historyList)));
+                startActivity(startMap);
+            }else{
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "connection issue please check you connection", Toast.LENGTH_SHORT).show();
+            }
+
         } else {
             progressDialog.dismiss();
             Toast.makeText(getContext(), "There is  no trips to show", Toast.LENGTH_SHORT).show();
@@ -198,5 +205,11 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.OnItemCl
     public void onResume() {
         super.onResume();
         progressDialog.dismiss();
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

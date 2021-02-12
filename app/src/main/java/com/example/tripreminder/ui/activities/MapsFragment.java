@@ -2,9 +2,11 @@ package com.example.tripreminder.ui.activities;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,11 +46,11 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private String TAG = "MapsFragment";
 
-    private  final List<Double> latitudeStartPointList = new ArrayList<>();
+    private final List<Double> latitudeStartPointList = new ArrayList<>();
     private final List<Double> longitudeStartPointList = new ArrayList<>();
     private final List<Double> latitudeEndPointList = new ArrayList<>();
     private final List<Double> longitudeEndPointList = new ArrayList<>();
-    private  List<Trips> historyList = new ArrayList<>();
+    private List<Trips> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +74,37 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
         historyList = new Gson()
                 .fromJson(historyTrips, collectionType);
 
-            for(int i = 0 ;i<historyList.size();i++){
+        if (isNetworkConnected()) {
+            for (int i = 0; i < historyList.size(); i++) {
                 getLatLong(historyList.get(i).getStartPoint());
                 getLatLongEndPoint(historyList.get(i).getEndPoint());
             }
-            //openMap();
+        } else {
+            Toast.makeText(this, "connection issue please check you connection", Toast.LENGTH_SHORT).show();
+        }
+
+        //openMap();
         //}
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        for (int i = 0; i < historyList.size(); i++) {
-            drawMapLines(latitudeStartPointList.get(i), longitudeStartPointList.get(i),
-                    latitudeEndPointList.get(i), longitudeEndPointList.get(i));
+        if (historyList.size() > 0) {
+            if (latitudeStartPointList.size() > 0 && longitudeStartPointList.size() > 0 &&
+                    latitudeEndPointList.size() > 0 && longitudeEndPointList.size() > 0) {
+                for (int i = 0; i < historyList.size(); i++) {
+                    drawMapLines(latitudeStartPointList.get(i), longitudeStartPointList.get(i),
+                            latitudeEndPointList.get(i), longitudeEndPointList.get(i));
+                }
+            } else {
+                Toast.makeText(this, "cannot found places please try again", Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            Toast.makeText(this, "empty list please try again", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -175,69 +193,75 @@ public class MapsFragment extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void getLatLong(String address){
-        if(Geocoder.isPresent()){
+    private void getLatLong(String address) {
+        if (Geocoder.isPresent()) {
             try {
                 String location = address;
                 Geocoder gc = new Geocoder(this);
-                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+                List<Address> addresses = gc.getFromLocationName(location, 5); // get the found Address Objects
 
                 List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
-                for(Address a : addresses){
-                    if(a.hasLatitude() && a.hasLongitude()){
+                for (Address a : addresses) {
+                    if (a.hasLatitude() && a.hasLongitude()) {
                         ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
                     }
                 }
-                if(ll.size()>0){
-                    latitudeStartPointList.add(ll.get(0).latitude) ;
-                    longitudeStartPointList.add( ll.get(0).longitude);
+                if (ll.size() > 0) {
+                    latitudeStartPointList.add(ll.get(0).latitude);
+                    longitudeStartPointList.add(ll.get(0).longitude);
                     Log.i("IOException", String.valueOf(ll.get(0).latitude));
                     Log.i("IOException", String.valueOf(ll.get(0).longitude));
                 }
 
             } catch (IOException e) {
                 // handle the exception
-                Log.i("IOException",e.getLocalizedMessage());
+                Log.i("IOException", "IOException");
             }
         }
 
     }
 
-    private void getLatLongEndPoint(String address){
-        if(Geocoder.isPresent()){
+
+    private void getLatLongEndPoint(String address) {
+        if (Geocoder.isPresent()) {
             try {
                 String location = address;
                 Geocoder gc = new Geocoder(this);
-                List<Address> addresses= gc.getFromLocationName(location, 5); // get the found Address Objects
+                List<Address> addresses = gc.getFromLocationName(location, 5); // get the found Address Objects
 
                 List<LatLng> ll = new ArrayList<LatLng>(addresses.size()); // A list to save the coordinates if they are available
-                for(Address a : addresses){
-                    if(a.hasLatitude() && a.hasLongitude()){
+                for (Address a : addresses) {
+                    if (a.hasLatitude() && a.hasLongitude()) {
                         ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
                     }
                 }
-                if(ll.size()>0){
-                    latitudeEndPointList.add(ll.get(0).latitude) ;
-                    longitudeEndPointList.add( ll.get(0).longitude);
+                if (ll.size() > 0) {
+                    latitudeEndPointList.add(ll.get(0).latitude);
+                    longitudeEndPointList.add(ll.get(0).longitude);
                     Log.i("IOException", String.valueOf(ll.get(0).latitude));
                     Log.i("IOException", String.valueOf(ll.get(0).longitude));
                 }
 
             } catch (IOException e) {
                 // handle the exception
-                Log.i("IOException",e.getLocalizedMessage());
+                Log.i("IOException", e.getLocalizedMessage());
             }
         }
 
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             finish();
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
 }
