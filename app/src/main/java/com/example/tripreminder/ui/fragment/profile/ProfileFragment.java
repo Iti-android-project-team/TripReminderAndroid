@@ -24,7 +24,10 @@ import com.example.tripreminder.ui.fragment.history.HistoryViewModel;
 import com.example.tripreminder.ui.fragment.history.HistoryViewModelFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -105,12 +108,12 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
                 //getActivity().getFragmentManager().popBackStack();
                 if(!SharedPref.checkLoginWithFirebase()){
+                    clearUserFromFirebase();
                     signOut();
                     LoginActivity.account = null;
                 }
             }
         });
-
 
         syncButton.setOnClickListener(v -> {
             syncData();
@@ -138,6 +141,7 @@ public class ProfileFragment extends Fragment {
 
     private void insertIntoFirebase() {
         progressDialog.show();
+        Log.i("SharedPref", String.valueOf(SharedPref.checkRegisterWithFirebase()));
         if (SharedPref.checkRegisterWithFirebase()) {
             if (tripList != null && tripList.size() > 0) {
                 String userID = fAuth.getCurrentUser().getUid();
@@ -165,6 +169,38 @@ public class ProfileFragment extends Fragment {
             progressDialog.dismiss();
             Toast.makeText(getContext(), "Sorry your account not found in cloud", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void clearUserFromFirebase(){
+        FirebaseUser user = fAuth.getCurrentUser();
+
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(userEmail, userEmail);
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        user.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("TAG", "User account deleted.");
+                                        }
+                                    }
+                                });
+
+                    }
+                });
+
+        String userID = fAuth.getCurrentUser().getUid();
+        reference = fDatabase.getReference("users").child(userID);
+        reference.removeValue();
     }
 
 

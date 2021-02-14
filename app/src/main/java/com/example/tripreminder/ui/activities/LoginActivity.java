@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.pass_edit);
         register = findViewById(R.id.text_register);
         fAuth=FirebaseAuth.getInstance();
+        fDatabase = FirebaseDatabase.getInstance();
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing In please wait...");
         SharedPref.createPrefObject(LoginActivity.this);
@@ -112,13 +113,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     public void updateUI(GoogleSignInAccount account){
-
         if (account != null){
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
             SharedPref.setLoginWithFirebase(false);
-//            registerToFirebase();
+            registerToFirebase(account.getEmail());
             startActivity(intent);
+            finish();
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
         }
@@ -173,18 +174,18 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void registerToFirebase(){
-        fAuth.createUserWithEmailAndPassword(account.getEmail(),account.getEmail()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void registerToFirebase(String userEmail){
+        fAuth.createUserWithEmailAndPassword(userEmail,userEmail).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     userID = fAuth.getCurrentUser().getUid();
                     reference =fDatabase.getReference().child("users").child(userID);
-                    User userData = new User(account.getEmail(),account.getEmail());
+                    User userData = new User(userEmail,userEmail);
                     reference.setValue(userData);
                     SharedPref.setRegisterWithFirebase(true);
                 }else{
-                    SharedPref.setRegisterWithFirebase(false);
+                    //SharedPref.setRegisterWithFirebase(false);
                 }
             }
         });

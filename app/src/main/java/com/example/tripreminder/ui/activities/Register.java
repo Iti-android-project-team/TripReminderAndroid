@@ -36,48 +36,49 @@ public class Register extends AppCompatActivity {
     DatabaseReference reference;
     ProgressDialog progressDialog;
     String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-      initialize();
+        initialize();
 //      if (fAuth.getCurrentUser()!= null){
 //          startActivity(new Intent(getApplicationContext(),MainActivity.class));
 //          finish();
 //      }
-      signup.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              String email = editEmail.getText().toString().trim();
-              String passward = editPassword.getText().toString().trim();
-              String confirmPassword = editConfirmPassword.getText().toString().trim();
-              if (TextUtils.isEmpty(email)){
-                  editEmail.setError("Email is Required.");
-                  return;
-              }
-              if (TextUtils.isEmpty(passward)){
-                  editPassword.setError("Password is Required.");
-                  return;
-              }
-              if (TextUtils.isEmpty(confirmPassword)){
-                  editConfirmPassword.setError("ConfirmPassword is Required.");
-                  return;
-              }
-              if (!passward.equals(confirmPassword)){
-                  editConfirmPassword.setError("ConfirmPassword not Equal Password");
-                  return;
-              }
-              fAuth.createUserWithEmailAndPassword(email,passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                  @Override
-                  public void onComplete(@NonNull Task<AuthResult> task) {
-                      progressDialog.show();
-                      if (task.isSuccessful()){
-                          Toast.makeText(Register.this, "User Created!", Toast.LENGTH_LONG).show();
-                           userID = fAuth.getCurrentUser().getUid();
-                          reference =fDatabase.getReference().child("users").child(userID);
-                          User userData = new User(email,passward);
-                           reference.setValue(userData);
-                          SharedPref.setRegisterWithFirebase(true);
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = editEmail.getText().toString().trim();
+                String passward = editPassword.getText().toString().trim();
+                String confirmPassword = editConfirmPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    editEmail.setError("Email is Required.");
+                    return;
+                }
+                if (TextUtils.isEmpty(passward)) {
+                    editPassword.setError("Password is Required.");
+                    return;
+                }
+                if (TextUtils.isEmpty(confirmPassword)) {
+                    editConfirmPassword.setError("ConfirmPassword is Required.");
+                    return;
+                }
+                if (!passward.equals(confirmPassword)) {
+                    editConfirmPassword.setError("ConfirmPassword not Equal Password");
+                    return;
+                }
+                fAuth.createUserWithEmailAndPassword(email, passward).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.show();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Register.this, "User Created!", Toast.LENGTH_LONG).show();
+                            userID = fAuth.getCurrentUser().getUid();
+                            reference = fDatabase.getReference().child("users").child(userID);
+                            User userData = new User(email, passward);
+                            reference.setValue(userData);
+                            SharedPref.setRegisterWithFirebase(true);
                          /* DocumentReference documentReference =fStore.collection("users").document(userID);
                           Map<String,Object> user = new HashMap<>();
                           user.put("Email",email);
@@ -93,36 +94,35 @@ public class Register extends AppCompatActivity {
                                   Log.d(TAG,"fail "+e.toString());
                               }
                           });*/
-                          startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                          progressDialog.dismiss();
-                          finish();
-                      }else {
-                          Toast.makeText(Register.this, "Error!"+task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                          progressDialog.dismiss();
-                      }
-                  }
-              });
-          }
-      });
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            progressDialog.dismiss();
+                            finish();
+                        } else {
+                            Toast.makeText(Register.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
     }
 
 
-
-    public void initialize(){
+    public void initialize() {
         editEmail = findViewById(R.id.edit_email_signup);
         editPassword = findViewById(R.id.edit_password_sign_up);
         editConfirmPassword = findViewById(R.id.edit_confirm_password_sign_up);
         signup = findViewById(R.id.button_sign_up);
-        fAuth=FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
-        progressDialog=new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing up please wait...");
         signLink = findViewById(R.id.text_sign_in);
         signLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Register.this,LoginActivity.class));
+                startActivity(new Intent(Register.this, LoginActivity.class));
                 finish();
             }
         });
