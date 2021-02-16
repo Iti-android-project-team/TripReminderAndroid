@@ -3,11 +3,15 @@
     <item
         android:id="@+id/nav_tripe"
         android:icon="@drawable/ic_tripe"
-        android:title="@string/trips"/>
+        android:title="@string/trips"
+        android:color="@color/gray"
+        android:tint="@color/gray"
+        android:backgroundTint="@color/gray"/>
 
     <item
         android:id="@+id/nave_profile"
         android:icon="@drawable/ic_user"
-        android:title="@string/profile"/>
+        android:title="@string/profile"
+        android:iconTint="@color/gray"/>
 
 </menu>

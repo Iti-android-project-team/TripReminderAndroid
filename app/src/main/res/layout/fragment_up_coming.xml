@@ -29,7 +29,8 @@
         android:text="@string/empty_list"
         android:gravity="center"
         android:textSize="22sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textColor="@color/gray"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/upComing_recyclerView"

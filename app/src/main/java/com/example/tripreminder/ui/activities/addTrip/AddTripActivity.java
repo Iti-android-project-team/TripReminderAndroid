@@ -129,14 +129,14 @@ public class AddTripActivity extends AppCompatActivity {
         back.setOnClickListener(v -> finish());
         cancel.setOnClickListener(v -> finish());
         tripStartPoint.setOnClickListener(v -> {
-              placeOuto();
+              //placeOuto();
               isStart = true;
-           // tripStartPoint.setText("start");
+            tripStartPoint.setText("start");
 
         });
         tripEndPoint.setOnClickListener(v -> {
-             placeOuto();
-            //tripEndPoint.setText("end");
+            // placeOuto();
+            tripEndPoint.setText("end");
         });
         tripDate.setOnClickListener(v -> showDatePickerDialog());
         tripTime.setOnClickListener(v -> showTimePickerDialog());

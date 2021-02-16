@@ -139,7 +139,7 @@ public class DialogActivity extends AppCompatActivity {
             Toast.makeText(this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
         }
         viewModel.updateTrip("Done", tripId);
-        navigateToMain();
+
         //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
         if (checkPermession()) {
             if (isLocationEnabled()) {
@@ -155,6 +155,9 @@ public class DialogActivity extends AppCompatActivity {
         } else {
             requestPermession();
         }
+        finish();
+
+       // navigateToMain();
     }
 
     public void onCancelClicked() {
